@@ -1,0 +1,59 @@
+<nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+    <div class="container-fluid d-flex flex-column p-0"><a
+            class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+            <div class="sidebar-brand-text mx-3"><span>Brand</span></div>
+        </a>
+        <hr class="sidebar-divider my-0" />
+        <ul id="accordionSidebar" class="navbar-nav text-light">
+            <!-- Manage -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-toggle="collapse" href="#collapseManage" role="button"
+                    aria-expanded="false" aria-controls="collapseManage">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Manage</span>
+                </a>
+                <div id="collapseManage" class="collapse">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="">Admin</a>
+                        <a class="collapse-item" href="">Charity</a>
+                        <a class="collapse-item" href="">Driver</a>
+                        <a class="collapse-item" href="">Donor/Shopper</a>
+                        <a class="collapse-item" href="">Donationa</a>
+                        <a class="collapse-item" href="">Products</a>
+                        <a class="collapse-item" href="">Purchase</a>
+                        <a class="collapse-item" href="">Transaction</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Reports -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-toggle="collapse" href="#collapseReports" role="button"
+                    aria-expanded="false" aria-controls="collapseReports">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Reports</span>
+                </a>
+                <div id="collapseReports" class="collapse">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" data-bs-toggle="collapse" href="#collapseReportsList" role="button"
+                            aria-expanded="false" aria-controls="collapseReportsList">
+                            <span>List</span></a>
+                        <div id="collapseReportsList" class="collapse">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <a class="collapse-item" href="">Charity</a>
+                                <a class="collapse-item" href="">Donor/Shopper</a>
+                                <a class="collapse-item" href="">Order</a>
+                                <a class="collapse-item" href="">Transaction</a>
+                            </div>
+                        </div>
+                        <a class="collapse-item" href="">History</a>
+                        <a class="collapse-item" href="">Sales</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="text-center d-none d-md-inline"><button id="sidebarToggle" class="btn rounded-circle border-0"
+                type="button"></button></div>
+    </div>
+</nav>
