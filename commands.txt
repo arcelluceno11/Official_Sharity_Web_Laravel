@@ -1,0 +1,11 @@
+//Run Server
+    php artisan serve
+
+//Create Controller
+    php artisan make:controller ControllerName -r
+    Route::resource('donations', ControllerName::class); //Add this to routes/web.php
+//Get Route List
+    php artisan route:list
+
+//Create Model
+    php artisan make:model ModelName

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\DonationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ use App\Http\Controllers\TestController;
 */
 
 Route::get('/', function () {
-    return view('pages.manage_admin');
+    return redirect('donations');
 });
 
-Route::resource('/test', 'TestController');
+Route::resource('/donations', DonationController::class);

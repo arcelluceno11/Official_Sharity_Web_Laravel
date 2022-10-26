@@ -1,5 +1,0 @@
-//Run Server
-php artisan serve
-
-//Create Controller
-php artisan make:controller ControllerName -r
