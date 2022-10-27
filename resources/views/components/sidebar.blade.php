@@ -15,11 +15,11 @@
                 </a>
                 <div id="collapseManage" class="collapse">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Admin</a>
-                        <a class="collapse-item" href="">Charity</a>
+                        <a class="collapse-item" href="admin">Admin</a>
+                        <a class="collapse-item" href="charity">Charity</a>
                         <a class="collapse-item" href="">Driver</a>
                         <a class="collapse-item" href="">Donor/Shopper</a>
-                        <a class="collapse-item" href="">Donation</a>
+                        <a class="collapse-item" href="donation">Donation</a>
                         <a class="collapse-item" href="">Products</a>
                         <a class="collapse-item" href="">Purchase</a>
                         <a class="collapse-item" href="">Transaction</a>

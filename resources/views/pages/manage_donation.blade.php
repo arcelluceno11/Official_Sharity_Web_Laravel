@@ -1,7 +1,7 @@
 @extends('layouts.index')
 
 <!-- Page Title -->
-@section('title', 'Manage Product')
+@section('title', 'Manage Donation')
 
 <!-- Styles -->
 @section('styles')
@@ -134,54 +134,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>1001</td>
-                            <td>Pamela May Tañedo</td>
-                            <td>Youth for Youth Foundation</td>
-                            <td>10</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#editWholeModal">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>1002</td>
-                            <td>Arcel Luceno</td>
-                            <td>Bukas Palad Foundation Inc.</td>
-                            <td>2</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#editWholeModal">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>1003</td>
-                            <td>Paul Angelo Soltero</td>
-                            <td>Bukas Palad Foundation Inc.</td>
-                            <td>6</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#editWholeModal">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
-                        </tr>
+                        @php
+                            $num = 1;
+                        @endphp
+
+                        @foreach ($donations as $donate)
+                            @if ($donate['status'] == 'Cancelled')
+                                <tr>
+                                    <td>{{ $num++ }}</td>
+                                    <td>{{ $donate['id'] }}</td>
+                                    <td>Pamela May Tañedo</td>
+                                    <td>Youth for Youth Foundation</td>
+                                    <td>10</td>
+                                    <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#editWholeModal{{ $donate['id'] }}">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -216,14 +192,14 @@
                             <td>Youth for Youth Foundation</td>
                             <td>10</td>
                             <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#editWholeModal">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
+                                    data-bs-target="#editWholeModal">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </td>
                         </tr>
                         <tr>
                             <td>2</td>
@@ -232,14 +208,14 @@
                             <td>Bukas Palad Foundation Inc.</td>
                             <td>2</td>
                             <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#editWholeModal">
-                                <i class="fa-regular fa-pen-to-square"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
+                                    data-bs-target="#editWholeModal">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </td>
                         </tr>
                         <tr>
                             <td>3</td>
@@ -264,106 +240,85 @@
     </div>
 
     <!-- Edit Donation (As Whole) Modal -->
-    <div class="modal fade" id="editWholeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="card shadow">
-                        <div class="card-header py-3">
-                            <div class="form-group row">
-                                <div class="form-group col-md-2">
-                                    <label class="form-label" for="">ID No: 1001</label>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="form-label" for="">Donated by: Pamela May</label>
-                                </div>
-                                <div class="form-group col-md-7">
-                                    <label class="form-label" for="">Donated to: Youth for Youth Foundation</label>
-                                </div>
-                            </div>
+    @foreach ($donations as $donate)
+        @if ($donate['status'] == 'Cancelled')
+            <div class="modal fade" id="editWholeModal{{ $donate['id'] }}" tabindex="-1"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive " id="dataTable" role="grid"
-                                aria-describedby="dataTable_info">
-                                <table class="table table-hover table-bordered pt-3 display" id="example"
-                                    style="">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Title</th>
-                                            <th>Category</th>
-                                            <th>Price</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Versace Shirt</td>
-                                            <td>Top & Blouses</td>
-                                            <td>P100.00</td>
-                                            <td>Accepted</td>
-                                            <td><button type="button" class="btn btn-primary btn-sm"
-                                                    data-bs-toggle="modal" data-bs-target="#editModal">
-                                                    <i class="fa-regular fa-pen-to-square"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-danger btn-sm"
-                                                    data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Penshoppe Hoodie Brown</td>
-                                            <td>Jacket & Hoodies</td>
-                                            <td>P350.00</td>
-                                            <td>Accepted</td>
-                                            <td><button type="button" class="btn btn-primary btn-sm"
-                                                    data-bs-toggle="modal" data-bs-target="#editModal">
-                                                    <i class="fa-regular fa-pen-to-square"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-danger btn-sm"
-                                                    data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Shein Pants</td>
-                                            <td>Pants</td>
-                                            <td>P150.00</td>
-                                            <td>Rejected</td>
-                                            <td><button type="button" class="btn btn-primary btn-sm"
-                                                    data-bs-toggle="modal" data-bs-target="#editModal">
-                                                    <i class="fa-regular fa-pen-to-square"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-danger btn-sm"
-                                                    data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="modal-body">
+                            <div class="card shadow">
+                                <div class="card-header py-3">
+                                    <div class="form-group row">
+                                        <div class="form-group col-md-2">
+                                            <label class="form-label" for="">ID No: {{ $donate['id'] }}</label>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label class="form-label" for="">Donated by: Pamela May</label>
+                                        </div>
+                                        <div class="form-group col-md-7">
+                                            <label class="form-label" for="">Donated to: Youth for Youth
+                                                Foundation</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive " id="dataTable" role="grid"
+                                        aria-describedby="dataTable_info">
+                                        <table class="table table-hover table-bordered pt-3 display" id="example"
+                                            style="">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>Title</th>
+                                                    <th>Category</th>
+                                                    <th>Price</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if ($donate['type'] == 'By Piece')
+                                                    @foreach ($donate['items'] as $item)
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>Versace Shirt</td>
+                                                            <td>{{ $item['category'] }}</td>
+                                                            <td>P100.00</td>
+                                                            <td>Accepted</td>
+                                                            <td><button type="button" class="btn btn-primary btn-sm"
+                                                                    data-bs-toggle="modal" data-bs-target="#editModal">
+                                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                                                </button>
+                                                                <button type="button" class="btn btn-danger btn-sm"
+                                                                    data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                                                    <i class="fa-solid fa-trash-can"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
+                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                                data-bs-target="#addModal">Add New Donations</button>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Add New Donations</button>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
-        </div>
-    </div>
+        @endif
+    @endforeach
 
     <!-- Add Donation (Individual) Modal -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
