@@ -18,4 +18,3 @@ Route::get('/', function () {
     return view('pages.manage_admin');
 });
 
-Route::resource('/test', 'TestController');
