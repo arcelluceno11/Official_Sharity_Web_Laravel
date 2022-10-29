@@ -5,8 +5,6 @@
 
 <!-- Styles -->
 @section('styles')
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
     <style>
         .modal-confirm {
@@ -72,39 +70,6 @@
             margin-top: 13px;
         }
 
-        .modal-confirm .btn,
-        .modal-confirm .btn:active {
-            color: #fff;
-            border-radius: 4px;
-            background: #60c7c1;
-            text-decoration: none;
-            transition: all 0.4s;
-            line-height: normal;
-            min-width: 120px;
-            border: none;
-            min-height: 40px;
-            border-radius: 3px;
-            margin: 0 5px;
-        }
-
-        .modal-confirm .btn-secondary {
-            background: #c1c1c1;
-        }
-
-        .modal-confirm .btn-secondary:hover,
-        .modal-confirm .btn-secondary:focus {
-            background: #a8a8a8;
-        }
-
-        .modal-confirm .btn-danger {
-            background: #f15e5e;
-        }
-
-        .modal-confirm .btn-danger:hover,
-        .modal-confirm .btn-danger:focus {
-            background: #ee3535;
-        }
-
         .trigger-btn {
             display: inline-block;
             margin: 100px auto;
@@ -115,10 +80,57 @@
 <!-- Content -->
 @section('content')
 
-    <!--Pending Applications-->
+    <!--Pending Donations-->
     <div class="card shadow">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Pending Donations</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Pending Donations - Drop-off / Third-Party Delivery Service</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table table-hover table-bordered pt-3 display" id="example" style="">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>No.</th>
+                            <th>ID No.</th>
+                            <th>Donated by</th>
+                            <th>Donated to</th>
+                            <th>No. of Items</th>
+                            <th>Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $num = 1;
+                        @endphp
+
+                        @foreach ($donations as $donate)
+                            @if ($donate['status'] == 'Cancelled')
+                                <tr>
+                                    <td>{{ $num++ }}</td>
+                                    <td>{{ $donate['id'] }}</td>
+                                    <td>Pamela May Tañedo</td>
+                                    <td>Youth for Youth Foundation</td>
+                                    <td>10</td>
+                                    <td>Drop-off</td>
+                                    <td><button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#receiveModal">
+                                            <i class="fa-solid fa-check text-light"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--Waiting for Driver Assignment-->
+    <div class="card shadow mt-5">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Waiting for Driver's Assignment</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
@@ -147,12 +159,8 @@
                                     <td>Youth for Youth Foundation</td>
                                     <td>10</td>
                                     <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#editWholeModal{{ $donate['id'] }}">
-                                            <i class="fa-regular fa-pen-to-square"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal">
-                                            <i class="fa-solid fa-trash-can"></i>
+                                            data-bs-target="#driverModal">
+                                            <i class="fa-solid fa-truck"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -164,7 +172,54 @@
         </div>
     </div>
 
-    <!--Products Sold-->
+    <!--In Progress -->
+    <div class="card shadow mt-5">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">In Progress</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table table-hover table-bordered pt-3 display" id="example" style="">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>No.</th>
+                            <th>ID No.</th>
+                            <th>Donated by</th>
+                            <th>Driver</th>
+                            <th>No. of Items</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $num = 1;
+                        @endphp
+
+                        @foreach ($donations as $donate)
+                            @if ($donate['status'] == 'Cancelled')
+                                <tr>
+                                    <td>{{ $num++ }}</td>
+                                    <td>{{ $donate['id'] }}</td>
+                                    <td>Pamela May Tañedo</td>
+                                    <td>Arcel Luceno</td>
+                                    <td>10</td>
+                                    <td>On the Way</td>
+                                    <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#editWholeModal{{ $donate['id'] }}">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--Quality-Checked Donations-->
     <div class="card shadow mt-5">
         <div class="card-header py-3">
             <div class="row">
@@ -192,12 +247,8 @@
                             <td>Youth for Youth Foundation</td>
                             <td>10</td>
                             <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editWholeModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
+                                    data-bs-target="#viewModal">
+                                    <i class="fa-sharp fa-solid fa-eye"></i>
                                 </button>
                             </td>
                         </tr>
@@ -208,12 +259,8 @@
                             <td>Bukas Palad Foundation Inc.</td>
                             <td>2</td>
                             <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editWholeModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
+                                    data-bs-target="#viewModal">
+                                    <i class="fa-sharp fa-solid fa-eye"></i>
                                 </button>
                             </td>
                         </tr>
@@ -224,12 +271,8 @@
                             <td>Bukas Palad Foundation Inc.</td>
                             <td>6</td>
                             <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editWholeModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
+                                    data-bs-target="#viewModal">
+                                    <i class="fa-sharp fa-solid fa-eye"></i>
                                 </button>
                             </td>
                         </tr>
@@ -253,13 +296,13 @@
                             <div class="card shadow">
                                 <div class="card-header py-3">
                                     <div class="form-group row">
-                                        <div class="form-group col-md-2">
+                                        <div class="form-group col-md-3">
                                             <label class="form-label" for="">ID No: {{ $donate['id'] }}</label>
                                         </div>
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-4">
                                             <label class="form-label" for="">Donated by: Pamela May</label>
                                         </div>
-                                        <div class="form-group col-md-7">
+                                        <div class="form-group col-md-5">
                                             <label class="form-label" for="">Donated to: Youth for Youth
                                                 Foundation</label>
                                         </div>
@@ -292,10 +335,6 @@
                                                             <td><button type="button" class="btn btn-primary btn-sm"
                                                                     data-bs-toggle="modal" data-bs-target="#editModal">
                                                                     <i class="fa-regular fa-pen-to-square"></i>
-                                                                </button>
-                                                                <button type="button" class="btn btn-danger btn-sm"
-                                                                    data-bs-toggle="modal" data-bs-target="#deleteModal">
-                                                                    <i class="fa-solid fa-trash-can"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -333,11 +372,12 @@
                         <div class="form-group row mt-3">
                             <div class="form-group col-md-3 text-center">
                                 <div class="col">
-                                    <img src="profile.JPG" alt="..." class="img-thumbnail w-75 p-1">
+                                    <img src="profile.JPG" alt="..." class="img-thumbnail" style="width:250px; height:auto;">
                                 </div>
                                 <div class="col">
-                                    <button type="submit" class="btn btn-success mt-3">Change
-                                        Photo</button>
+                                    <button type="submit" class="btn btn-success mt-4" >
+                                        <input class="form-control form-control-sm" type="file" id="formFileSm" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
+                                    </button>
                                 </div>
                             </div>
                             <div class="form-group col-md-9">
@@ -417,7 +457,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#editWholeModal{{ $donate['id'] }}">Back</button>
                     <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
@@ -437,29 +478,36 @@
                         <div class="form-group row mt-3">
                             <div class="form-group col-md-3 text-center">
                                 <div class="col">
-                                    <img src="profile.JPG" alt="..." class="img-thumbnail w-75 p-1">
+                                    <img src="profile.JPG" alt="..." class="img-thumbnail" style="width:250px; height:auto;">
                                 </div>
                                 <div class="col">
-                                    <button type="submit" class="btn btn-success mt-3">Change
-                                        Photo</button>
+                                    <button type="submit" class="btn btn-success mt-4" >
+                                        <input class="form-control form-control-sm" type="file" id="formFileSm" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
+                                    </button>
                                 </div>
                             </div>
                             <div class="form-group col-md-9">
                                 <div class="form-group row mt-3">
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="">ID No:</label>
-                                        <input type="text" name="idno" class="form-control item"
-                                            placeholder="1001">
+                                        <fieldset disabled>
+                                            <input type="text" name="idno" class="form-control item"
+                                                placeholder="1001">
+                                        </fieldset>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="">Donated by:</label>
-                                        <input type="text" name="donatedby" class="form-control item"
-                                            placeholder="1001">
+                                        <fieldset disabled>
+                                            <input type="text" name="donatedby" class="form-control item"
+                                                placeholder="1001">
+                                        </fieldset>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="">Donated to:</label>
-                                        <input type="text" name="donatedto" class="form-control item"
-                                            placeholder="1001">
+                                        <fieldset disabled>
+                                            <input type="text" name="donatedto" class="form-control item"
+                                                placeholder="1001">
+                                        </fieldset>
                                     </div>
                                 </div>
                                 <div class="form-group row mt-3">
@@ -514,14 +562,162 @@
                                         <input type="text" name="price" class="form-control item"
                                             placeholder="PHP 000.00">
                                     </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputStatus">Status</label>
+                                        <select class="form-select mt-2" aria-label="Default select example"
+                                            name="status">
+                                            <option selected>Choose Status...</option>
+                                            <option value="1">Accepted</option>
+                                            <option value="2">Rejected</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#editWholeModal{{ $donate['id'] }}">Back</button>
                     <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">View Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group row mt-1">
+                            <div class="form-group col-md-2">
+                                <p><b>Donation ID:</b></p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <p name="orderID">11900005</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>Donation Created:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="orderDate">10/29/22 10:50:59 AM</p>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="form-group col-md-2">
+                                <p><b>Donated By:</b></p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <p name="purchasedName">Paul Angelo Soltero</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>No. of Items:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="noItems">12 items</p>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="form-group col-md-2">
+                                <p><b>Address:</b></p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <p name="purchasedAdress">Brgy. Casili, Consolacion, Cebu 6001, Philippines</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>Delivery Driver:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="deliveryDriver">Arcel Luceno</p>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="form-group col-md-2">
+                                <p><b>Pickup Date:</b></p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <p name="pickupDate">10/22/22 10:50:60 AM</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>Complete Date:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="completeDate">10/22/22 10:50:60 AM</p>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="form-group col-md-2">
+                                <p><b>Quality-Checked Date:</b></p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <p name="qualityDate">10/22/22 10:50:60 AM</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>Checked By:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="checkedBy">Pamela May Tanedo</p>
+                            </div>
+                        </div>
+                        <div class="embed-responsive">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d31391.57433512359!2d123.95270045000001!3d10.42579715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1667039419823!5m2!1sen!2sph"
+                                onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
+                                style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive " id="dataTable" role="grid"
+                                aria-describedby="dataTable_info">
+                                <table class="table table-hover table-bordered pt-3 display" id="example"
+                                    style="">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Title</th>
+                                            <th>Category</th>
+                                            <th>Sex</th>
+                                            <th>Color</th>
+                                            <th>Size</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <th>Versace Shirt</th>
+                                            <td>Top & Blouse</td>
+                                            <td>Unisex</td>
+                                            <td>White</td>
+                                            <td>XL</td>
+                                            <td>PHP 500.00</td>
+                                            <td>Accepted</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <th>Versace Shirt</th>
+                                            <td>Top & Blouse</td>
+                                            <td>Unisex</td>
+                                            <td>White</td>
+                                            <td>XL</td>
+                                            <td>PHP 0.00</td>
+                                            <td>Rejected</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
                 </div>
             </div>
         </div>
@@ -548,12 +744,93 @@
             </div>
         </div>
     </div>
+
+    <!-- Accept Modal -->
+    <div class="modal fade" id="receiveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box " style="border: 3px solid #1cc88a;">
+                        <i class="fa-solid fa-check  text-success"></i>
+                    </div>
+                    <h4 class="modal-title w-100" id="exampleModalLabel">Are you sure?</h4>
+
+                </div>
+                <div class="modal-body">
+                    <p>Have you received already the donated clothes? This process cannot be undone.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success text-light">Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Driver Modal -->
+    <div class="modal fade" id="driverModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Assign Driver</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row ">
+                        <div class="form-group col-md-2">
+                            <p><b>Driver's ID No.:</b></p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <p name="driverID">DXV102</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <p><b>Driver's Name:</b></p>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <p name="driverName">Arcel Luceno</p>
+                        </div>
+                    </div>
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="table-responsive " id="dataTable" role="grid"
+                                aria-describedby="dataTable_info">
+                                <table class="table table-hover table-bordered pt-3 display" id="example"
+                                    style="">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>ID Number</th>
+                                            <th>Name</th>
+                                            <th>Current No. of Orders</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <th>119002</th>
+                                            <td>Arcel Luceno</td>
+                                            <td>8</td>
+                                            <td>Available</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 <!-- Scripts -->
 @section('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-        crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js">
     </script>
