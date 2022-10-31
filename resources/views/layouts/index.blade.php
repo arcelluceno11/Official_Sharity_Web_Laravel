@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sharity - @yield('title')</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('sharity_white.png') }}">
+
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet"

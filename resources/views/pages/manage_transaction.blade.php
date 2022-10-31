@@ -1,12 +1,10 @@
 @extends('layouts.index')
 
 <!-- Page Title -->
-@section('title', 'Manage Product')
+@section('title', 'Manage Transaction')
 
 <!-- Styles -->
 @section('styles')
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
     <style>
         .modal-confirm {
@@ -529,8 +527,6 @@
 
 <!-- Scripts -->
 @section('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-        crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js">
     </script>

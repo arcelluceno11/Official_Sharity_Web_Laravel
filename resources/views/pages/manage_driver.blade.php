@@ -5,8 +5,6 @@
 
 <!-- Styles -->
 @section('styles')
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
     <style>
         .modal-confirm {
@@ -212,10 +210,12 @@
                 <div class="modal-body">
                     <form>
                         <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail"
-                                style="width:200px; height:200px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;">Add Photo</button>
+                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle" id="image" style="width:auto; height:200px;">
+                            <button type="submit" class="btn btn-success" style="margin-left:50px;">
+                                <input class="form-control" type="file" id="formFile" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
+                            </button>
                         </div>
+
 
                         <div class="form-group row mt-3">
                             <div class="form-group col-md-4">
@@ -339,10 +339,12 @@
                 <div class="modal-body">
                     <form>
                         <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail"
-                                style="width:200px; height:200px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;">Add Photo</button>
+                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle" id="image" style="width:auto; height:200px;">
+                            <button type="submit" class="btn btn-success" style="margin-left:50px;">
+                                <input class="form-control" type="file" id="formFile" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
+                            </button>
                         </div>
+
 
                         <div class="form-group row mt-3">
                             <div class="form-group col-md-4">
@@ -480,8 +482,6 @@
 
 <!-- Scripts -->
 @section('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-        crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js">
     </script>

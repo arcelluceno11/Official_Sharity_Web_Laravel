@@ -17,12 +17,12 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="admin">Admin</a>
                         <a class="collapse-item" href="charity">Charity</a>
-                        <a class="collapse-item" href="">Driver</a>
-                        <a class="collapse-item" href="">Donor/Shopper</a>
+                        <a class="collapse-item" href="driver">Driver</a>
+                        <a class="collapse-item" href="donor">Donor/Shopper</a>
                         <a class="collapse-item" href="donation">Donation</a>
-                        <a class="collapse-item" href="">Products</a>
-                        <a class="collapse-item" href="">Purchase</a>
-                        <a class="collapse-item" href="">Transaction</a>
+                        <a class="collapse-item" href="product">Products</a>
+                        <a class="collapse-item" href="purchase">Purchase</a>
+                        <a class="collapse-item" href="transaction">Transaction</a>
                     </div>
                 </div>
             </li>
