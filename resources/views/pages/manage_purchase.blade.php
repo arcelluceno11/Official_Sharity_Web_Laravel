@@ -349,7 +349,7 @@
                             <td>PHP 590.00</td>
                             <td>10/22/22 10:00 AM</td>
                             <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewModal">
+                                    data-bs-target="#viewCModal">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </td>
@@ -363,7 +363,7 @@
                             <td>PHP 590.00</td>
                             <td>10/22/22 10:00 AM</td>
                             <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewModal">
+                                    data-bs-target="#viewCModal">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </td>
@@ -377,7 +377,7 @@
                             <td>PHP 590.00</td>
                             <td>10/22/22 10:00 AM</td>
                             <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewModal">
+                                    data-bs-target="#viewCModal">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </td>
@@ -388,7 +388,7 @@
         </div>
     </div>
 
-    <!-- Edit Modal -->
+    <!-- Edit Modal - Pending Orders -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -398,6 +398,12 @@
                 </div>
                 <div class="modal-body">
                     <form>
+                        <div class="embed-responsive">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d31391.57433512359!2d123.95270045000001!3d10.42579715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1667039419823!5m2!1sen!2sph"
+                                onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
+                                style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
+                        </div>
                         <div class="form-group row mt-1">
                             <div class="form-group col-md-2">
                                 <p><b>Order ID:</b></p>
@@ -442,16 +448,16 @@
                         </div>
                         <div class="form-group row ">
                             <div class="form-group col-md-2">
-
-                            </div>
-                            <div class="form-group col-md-5">
-
-                            </div>
-                            <div class="form-group col-md-2">
                                 <p><b>Payment Method:</b></p>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-5">
                                 <p name="paymentMethod">Cash on Deliver</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>Proof of Payment:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="paymentProof"><a href="">gt.sharitylink</a></p>
                             </div>
                         </div>
                         <div class="card-body">
@@ -497,7 +503,141 @@
         </div>
     </div>
 
-    <!-- View Modal -->
+    <!-- Driver Modal -->
+    <div class="modal fade" id="driverModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Assign Driver</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="embed-responsive">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d31391.57433512359!2d123.95270045000001!3d10.42579715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1667039419823!5m2!1sen!2sph"
+                            onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
+                            style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
+                    </div>
+                    <div class="form-group row mt-1">
+                        <div class="form-group col-md-2">
+                            <p><b>Order ID:</b></p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <p name="orderID">11900005</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <p><b>Order Created:</b></p>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <p name="orderDate">10/29/22 10:50:59 AM</p>
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <div class="form-group col-md-2">
+                            <p><b>Purchased By:</b></p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <p name="purchasedName">Paul Angelo Soltero</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <p><b>No. of Items:</b></p>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <p name="noItems">12 items</p>
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <div class="form-group col-md-2">
+                            <p><b>Address:</b></p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <p name="purchasedAdress">Brgy. Casili, Consolacion, Cebu 6001, Philippines</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <p><b>Total Amount:</b></p>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <p name="totalAmount">PHP 590.00</p>
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <div class="form-group col-md-2">
+                            <p><b>Payment Method:</b></p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <p name="paymentMethod">Cash on Deliver</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <p><b>Proof of Payment:</b></p>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <p name="paymentProof"><a href="">gt.sharitylink</a></p>
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <div class="form-group col-md-2">
+                            <p><b>Driver's ID No.:</b></p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <fieldset disabled>
+                                <input type="text" class="form-control" id="driverID" name="driverID">
+                            </fieldset>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <p><b>Driver's Name:</b></p>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <fieldset disabled>
+                                <input type="text" class="form-control" id="driverName" name="driverName">
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="card shadow mt-3">
+                        <div class="card-body">
+                            <div class="table-responsive " id="dataTable" role="grid"
+                                aria-describedby="dataTable_info">
+                                <table class="table table-hover table-bordered pt-3 display" id="table"
+                                    style="">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>ID Number</th>
+                                            <th>Name</th>
+                                            <th>Current No. of Orders</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <th>119002</th>
+                                            <td>Arcel Luceno</td>
+                                            <td>8 / 10</td>
+                                            <td>Available</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <th>119003</th>
+                                            <td>Paul Angelo</td>
+                                            <td>10 / 10</td>
+                                            <td>Unavailable</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Modal - In progress -->
     <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -507,6 +647,12 @@
                 </div>
                 <div class="modal-body">
                     <form>
+                        <div class="embed-responsive">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d31391.57433512359!2d123.95270045000001!3d10.42579715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1667039419823!5m2!1sen!2sph"
+                                onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
+                                style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
+                        </div>
                         <div class="form-group row mt-1">
                             <div class="form-group col-md-2">
                                 <p><b>Order ID:</b></p>
@@ -551,27 +697,27 @@
                         </div>
                         <div class="form-group row ">
                             <div class="form-group col-md-2">
+                                <p><b>Payment Method:</b></p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <p name="paymentMethod">Cash on Deliver</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>Proof of Payment:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="paymentProof"><a href="">gt.sharitylink</a></p>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="form-group col-md-2">
                                 <p><b>Delivery Driver:</b></p>
                             </div>
                             <div class="form-group col-md-5">
                                 <p name="deliveryDriver">Arcel Luceno</p>
                             </div>
                             <div class="form-group col-md-2">
-                                <p><b>Payment Method:</b></p>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <p name="paymentMethod">Cash on Deliver</p>
-                            </div>
-                        </div>
-                        <div class="form-group row ">
-                            <div class="form-group col-md-2">
                                 <p><b>Delivered Date:</b></p>
-                            </div>
-                            <div class="form-group col-md-5">
-                                <p name="deliveredDate">10/22/22 10:50:60 AM</p>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <p><b>Complete Date:</b></p>
                             </div>
                             <div class="form-group col-md-3">
                                 <p name="deliveredDate">10/22/22 10:50:60 AM</p>
@@ -601,51 +747,120 @@
                                             <td>Versace Shirt</td>
                                             <td>Category</td>
                                             <td>P100.00</td>
-
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </form>
-                    <div class="embed-responsive w-100">
-                        <iframe class="embed-responsive-item"
-                            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d31391.57433512359!2d123.95270045000001!3d10.42579715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1667039419823!5m2!1sen!2sph"
-                            style="width:100px;"></iframe>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Driver Modal -->
-    <div class="modal fade" id="driverModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- View Modal - Complete Orders -->
+    <div class="modal fade" id="viewCModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Assign Driver</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">View Order</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group row ">
-                        <div class="form-group col-md-2">
-                            <p><b>Driver's ID No.:</b></p>
+                    <form>
+                        <div class="embed-responsive">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d31391.57433512359!2d123.95270045000001!3d10.42579715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1667039419823!5m2!1sen!2sph"
+                                onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
+                                style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
                         </div>
-                        <div class="form-group col-md-5">
-                            <p name="driverID">DXV102</p>
+                        <div class="form-group row mt-1">
+                            <div class="form-group col-md-2">
+                                <p><b>Order ID:</b></p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <p name="orderID">11900005</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>Order Created:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="orderDate">10/29/22 10:50:59 AM</p>
+                            </div>
                         </div>
-                        <div class="form-group col-md-2">
-                            <p><b>Driver's Name:</b></p>
+                        <div class="form-group row ">
+                            <div class="form-group col-md-2">
+                                <p><b>Purchased By:</b></p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <p name="purchasedName">Paul Angelo Soltero</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>No. of Items:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="noItems">12 items</p>
+                            </div>
                         </div>
-                        <div class="form-group col-md-3">
-                            <p name="driverName">Arcel Luceno</p>
+                        <div class="form-group row ">
+                            <div class="form-group col-md-2">
+                                <p><b>Address:</b></p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <p name="purchasedAdress">Brgy. Casili, Consolacion, Cebu 6001, Philippines</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>Total Amount:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="totalAmount">PHP 590.00</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card shadow">
+                        <div class="form-group row ">
+                            <div class="form-group col-md-2">
+                                <p><b>Payment Method:</b></p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <p name="paymentMethod">Cash on Deliver</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>Proof of Payment:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="paymentProof"><a href="">gt.sharitylink</a></p>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="form-group col-md-2">
+                                <p><b>Delivery Driver:</b></p>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <p name="deliveryDriver">Arcel Luceno</p>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>Delivered Date:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="deliveredDate">10/22/22 10:50:60 AM</p>
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="form-group col-md-2">
+
+                            </div>
+                            <div class="form-group col-md-5">
+
+                            </div>
+                            <div class="form-group col-md-2">
+                                <p><b>Completed Date:</b></p>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <p name="completedDate">10/22/22 11:05:60 AM</p>
+                            </div>
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive " id="dataTable" role="grid"
                                 aria-describedby="dataTable_info">
@@ -654,34 +869,37 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No.</th>
-                                            <th>ID Number</th>
-                                            <th>Name</th>
-                                            <th>Current No. of Orders</th>
-                                            <th>Status</th>
+                                            <th>Product ID</th>
+                                            <th>Image</th>
+                                            <th>Title</th>
+                                            <th>Category</th>
+                                            <th>Price</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>1</td>
                                             <th>119002</th>
-                                            <td>Arcel Luceno</td>
-                                            <td>8</td>
-                                            <td>Available</td>
+                                            <td><img src="{{ asset('profile.JPG') }}" alt="..."
+                                                    class="img-thumbnail" style="width:auto; height:150px;"></td>
+                                            <td>Versace Shirt</td>
+                                            <td>Category</td>
+                                            <td>P100.00</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    </div>
-
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
+
+
 @stop
 
 <!-- Scripts -->
@@ -695,6 +913,34 @@
     <script>
         $(document).ready(function() {
             $('table.display').DataTable();
+        });
+    </script>
+
+    <!--Display data from selected row above the table for Driver -->
+    <script>
+        //Display data from selected row above the table
+        var table = document.getElementById('table');
+
+        for (var i = 1; i < table.rows.length; i++) {
+            table.rows[i].onclick = function() {
+                //rIndex = this.rowIndex;
+                document.getElementById("driverID").value = this.cells[1].innerHTML;
+                document.getElementById("driverName").value = this.cells[2].innerHTML;
+            };
+        }
+
+        $(document).ready(function() {
+            var table = $('#table').DataTable();
+
+            $('#table tbody').on('click', 'tr', function() {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                } else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+
         });
     </script>
 @stop

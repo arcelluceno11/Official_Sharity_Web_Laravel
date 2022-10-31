@@ -1174,7 +1174,7 @@
         });
     </script>
 
-    <!--Display data from selected row above the table -->
+    <!--Display data from selected row above the table for Driver -->
     <script>
         //Display data from selected row above the table
         var table = document.getElementById('table');
