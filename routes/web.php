@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CharityController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +18,11 @@ use App\Http\Controllers\DonationController;
 */
 
 Route::get('/', function () {
-    return redirect('admin');
+    return redirect('test');
 });
 
 Route::resource('/admin', AdminController::class);
 Route::resource('/charity', CharityController::class);
 Route::resource('/donation', DonationController::class);
+Route::resource('/test', TestController::class);
 

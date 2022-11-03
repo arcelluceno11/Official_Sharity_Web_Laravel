@@ -137,7 +137,7 @@
                         @php
                             $num = 1;
                         @endphp
-
+    
                         @foreach ($donations as $donate)
                             @if ($donate['status'] == 'Cancelled')
                                 <tr>

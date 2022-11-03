@@ -7,3 +7,25 @@ php artisan make:controller ControllerName -r
 //.env
 FIREBASE_CREDENTIALS="sharity-f983e-firebase-adminsdk-ptji6-3413370d52.json"
 FIREBASE_DATABASE_URL="https://sharity-f983e-default-rtdb.firebaseio.com/"
+
+//Page Template
+@extends('layouts.index')
+
+<!-- Page Title -->
+@section('title', 'Title')
+
+<!-- Styles -->
+@section('styles')
+
+@stop
+
+<!-- Content -->
+@section('content')
+
+@stop
+
+<!-- Scripts -->
+@section('scripts')
+
+@stop
+
