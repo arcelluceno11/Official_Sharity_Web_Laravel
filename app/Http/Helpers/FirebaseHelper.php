@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 
 class FirebaseHelper {
 
-    public static function uploadFile($file, $storagepath, $realtimepath){
+    public static function uploadFile($file, $storagepath){
 
         // Uploading the photo to Firebase Storage
         //Temporary upload the photo to local
@@ -24,18 +24,16 @@ class FirebaseHelper {
         //Delete the temporary file from local
         Storage::delete('public/uploads/'.$name);
 
-        //Saving the link to Firebase Realtime Database
-        $database = app('firebase.database');
-        $database->getReference($realtimepath)->set('gs://sharity-f983e.appspot.com/'.$storagepath.'/'.$name);
+        return 'gs://sharity-f983e.appspot.com/'.$storagepath.'/'.$name;
     }
 
-    public static function getLink($path){
+    public static function getLink($file){
 
         //Getting the link of the file from Firebase Storage
         $storage = app('firebase.storage');
         $defaultBucket = $storage->getBucket();
-        $object = $defaultBucket->object(trim(str_replace('gs://sharity-f983e.appspot.com/','',$path)));
-        $url = $object->signedUrl(
+        $object = $defaultBucket->object(trim(str_replace('gs://sharity-f983e.appspot.com/','',$file)));
+        $link = $object->signedUrl(
             # This URL is valid for 15 minutes
             new \DateTime('15 min'),
             [
@@ -43,6 +41,6 @@ class FirebaseHelper {
             ]
         );
 
-        return $url;
+        return $link;
     }
 }
