@@ -29,7 +29,12 @@ Route::get('/', function () {
 Route::resource('/test', TestController::class);
 Route::resource('/admin', AdminController::class);
 Route::resource('/charity', CharityController::class);
+
+//Donation Controller
 Route::resource('/donation', DonationController::class);
+Route::post('/donation/acceptDonation/{id}', [DonationController::class, 'acceptDonation']);
+Route::post('/donation/assignDriver/{taskid}', [DonationController::class, 'assignDriver']);
+
 Route::resource('/donor', DonorController::class);
 Route::resource('/driver', DriverController::class);
 Route::resource('/purchase', PurchaseController::class);
