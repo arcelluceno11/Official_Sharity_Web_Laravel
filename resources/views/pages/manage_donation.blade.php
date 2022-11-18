@@ -191,18 +191,20 @@
                         <tr>
                             <th>Task ID</th>
                             <th>Donation ID</th>
+                            <th>Status</th>
                             <th>Updated At</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($tasks['data']['task_list'] as $task)
-                            @if ($task['status'] == 'in_progress' && $donations != null)
+                            @if ($task['status'] == 'in_progress' || ($task['status'] == 'assigned' && $donations != null))
                                 @foreach ($donations as $donation)
                                     @if ($donation['id'] == $task['order_id'])
                                         <tr>
                                             <td>{{ $task['task_id'] }}</td>
                                             <td>{{ $task['order_id'] }}</td>
+                                            <td>{{ $task['status'] }}</td>
                                             <td>{{ date('D d/m/y h:i:s A', strtotime($task['updated_at'])) }}</td>
                                             <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                                     data-bs-target="#viewModal{{ $task['task_id'] }}">
@@ -240,7 +242,7 @@
                         @foreach ($tasks['data']['task_list'] as $task)
                             @if ($task['status'] == 'completed' && $donations != null)
                                 @foreach ($donations as $donation)
-                                    @if ($donation['id'] == $task['order_id'])
+                                    @if ($donation['id'] == $task['order_id'] && $donation['checked'] == false)
                                         <tr>
                                             <td>{{ $task['task_id'] }}</td>
                                             <td>{{ $task['order_id'] }}</td>
@@ -265,7 +267,7 @@
     <div class="card shadow mt-5">
         <div class="card-header py-3">
             <div class="row">
-                <h6 class="m-0 font-weight-bold text-primary">Quality-checked Donation</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Quality Checked Donation</h6>
             </div>
         </div>
         <div class="card-body">
@@ -273,51 +275,27 @@
                 <table class="table table-hover table-bordered pt-3 display" id="example" style="">
                     <thead class="thead-light">
                         <tr>
-                            <th>No.</th>
-                            <th>ID No.</th>
-                            <th>Donated by</th>
-                            <th>Donated to</th>
+                            <th>Donation ID</th>
+                            <th>Donated By</th>
+                            <th>Donated To</th>
                             <th>No. of Items</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>1001</td>
-                            <td>Pamela May Tañedo</td>
-                            <td>Youth for Youth Foundation</td>
-                            <td>10</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewCModal">
-                                    <i class="fa-sharp fa-solid fa-eye"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>1002</td>
-                            <td>Arcel Luceno</td>
-                            <td>Bukas Palad Foundation Inc.</td>
-                            <td>2</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewCModal">
-                                    <i class="fa-sharp fa-solid fa-eye"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>1003</td>
-                            <td>Paul Angelo Soltero</td>
-                            <td>Bukas Palad Foundation Inc.</td>
-                            <td>6</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#viewCModal">
-                                    <i class="fa-sharp fa-solid fa-eye"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        @foreach ($tasks['data']['task_list'] as $task)
+                            @if ($task['status'] == 'completed' && $donations != null)
+                                @foreach ($donations as $donation)
+                                    @if ($donation['id'] == $task['order_id'] && $donation['checked'] == true)
+                                        <tr>
+                                            <td>{{ $donation['id'] }}</td>
+                                            <td>{{ $donation['donatedBy'] }}</td>
+                                            <td>{{ $donation['donatedTo'] }}</td>
+                                            <td>{{ $donation['noOfItem'] }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -330,21 +308,104 @@
             @if ($donate['status'] == 'Pending')
                 <div class="modal fade" id="acceptModal{{ $donate['id'] }}" tabindex="-1"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-confirm modal-dialog-centered">
+                    <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header flex-column">
-                                <div class="icon-box " style="border: 3px solid #1cc88a;">
-                                    <i class="fa-solid fa-check  text-success"></i>
-                                </div>
-                                <h4 class="modal-title w-100" id="exampleModalLabel">Accept this donation order?</h4>
-
+                                <h4 class="modal-title w-100" id="exampleModalLabel">Accept this Donation?</h4>
                             </div>
                             <div class="modal-body">
+                                <div class="form-group row mt-1">
+                                    <div class="form-group col-md-2">
+                                        <p><b>Donation ID:</b></p>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <p name="orderID">{{ $donate['id'] }}</p>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <p><b>Donation Created:</b></p>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <p name="orderDate">
+                                            {{ date('m/d/Y h:i:s', ($donate['donatedAt'] + 28800000) / 1000) }}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group row ">
+                                    <div class="form-group col-md-2">
+                                        <p><b>Donated By:</b></p>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <p name="purchasedName">{{ $donate['contactAddress']['name'] }}</p>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <p><b>No. of Items:</b></p>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <p name="noItems">{{ $donate['noOfItem'] }}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group row ">
+                                    <div class="form-group col-md-2">
+                                        <p><b>Address:</b></p>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <p name="purchasedAdress">{{ $donate['contactAddress']['address'] }}
+                                        </p>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <p><b>Type:</b></p>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <p name="type">{{ $donate['type'] }}</p>
+                                    </div>
+                                </div>
+                                @if ($donate['type'] == 'By Piece')
+                                    <div class="card-body">
+                                        <div class="table-responsive " id="dataTable" role="grid"
+                                            aria-describedby="dataTable_info">
+                                            <table class="table table-hover table-bordered pt-3 display" id="example"
+                                                style="">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Image</th>
+                                                        <th>Category</th>
+                                                        <th>Sex</th>
+                                                        <th>Color</th>
+                                                        <th>Size</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @php
+                                                        $num = 1;
+                                                    @endphp
+                                                    @foreach ($donate['items'] as $item)
+                                                        <tr>
+                                                            <td>{{ $num++ }}</td>
+                                                            <td>
+                                                                <img src="{{ FirebaseHelper::getLink($item['image']) }}"
+                                                                    alt="..." class="img-thumbnail" id="image"
+                                                                    style="width:100px; height:100px;">
+                                                            </td>
+                                                            <td>{{ $item['category'] }}</td>
+                                                            <td>{{ $item['sex'] }}</td>
+                                                            <td>{{ $item['color'] }}</td>
+                                                            <td>{{ $item['size'] }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
-                            <div class="modal-footer justify-content-center">
+                            <div class="modal-footer justify-content-">
                                 <form action="/donation/acceptDonation/{{ $donate['id'] }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-success text-light">Accept</button>
+                                </form>
+                                <form action="/donation/rejectDonation/{{ $donate['id'] }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger text-light">Reject</button>
                                 </form>
                             </div>
                         </div>
@@ -355,19 +416,281 @@
     @endif
 
     <!-- Driver Modal - Modal for Waiting for Assignment-->
-    @foreach ($tasks['data']['task_list'] as $task)
-        @if ($task['status'] == 'created' && $donations != null)
-            @foreach ($donations as $donation)
-                @if ($donation['id'] == $task['order_id'])
-                    <div class="modal fade" id="driverModal{{ $task['task_id'] }}" tabindex="-1"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
-                            <form action="donation/assignDriver/{{ $task['task_id'] }}" method="POST">
-                                @csrf
-                                @method('POST')
+    @if ($tasks != null)
+        @foreach ($tasks['data']['task_list'] as $task)
+            @if ($task['status'] == 'created' && $donations != null)
+                @foreach ($donations as $donation)
+                    @if ($donation['id'] == $task['order_id'])
+                        <div class="modal fade" id="driverModal{{ $task['task_id'] }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <form action="donation/assignDriver/{{ $task['task_id'] }}" method="POST">
+                                    @csrf
+                                    @method('POST')
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Assign Driver</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="embed-responsive">
+                                                <iframe src="{{ $donation['shareUrl'] }}"
+                                                    onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
+                                                    style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
+                                            </div>
+                                            <div class="form-group row mt-1">
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Donation ID:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <p name="orderID">{{ $donation['id'] }}</p>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Donation Created:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <p name="orderDate">
+                                                        {{ date('m/d/Y h:i:s', ($donation['donatedAt'] + 28800000) / 1000) }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ">
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Donated By:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <p name="purchasedName">{{ $donate['contactAddress']['name'] }}</p>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <p><b>No. of Items:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <p name="noItems">{{ $donation['noOfItem'] }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ">
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Address:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <p name="purchasedAdress">{{ $donation['contactAddress']['address'] }}
+                                                    </p>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Type:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <p name="type">{{ $donation['type'] }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row d-none">
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Driver's ID No.:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <input type="text" class="form-control" id="driverID"
+                                                        name="driverID">
+                                                </div>
+                                            </div>
+                                            <div class="card shadow mt-3">
+                                                <div class="card-body">
+                                                    <div class="table-responsive " id="dataTable" role="grid"
+                                                        aria-describedby="dataTable_info">
+                                                        <table class="table table-hover table-bordered pt-3 display driver"
+                                                            id="table" style="">
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th>Code</th>
+                                                                    <th>Name</th>
+                                                                    <th>Status</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @if ($drivers != null)
+                                                                    @foreach ($drivers as $driver)
+                                                                        <tr>
+                                                                            <th class="code">{{ $driver['code'] }}</th>
+                                                                            <th>{{ $driver['firstName'] }}
+                                                                                {{ $driver['middleName'] }}
+                                                                                {{ $driver['lastName'] }}</th>
+                                                                            <th>{{ $driver['status'] }}</th>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                @endif
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" id="btnAssign"
+                                                class="btn btn-primary driver">Assign</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            @endif
+        @endforeach
+    @endif
+
+    <!-- View Modal - In Progress-->
+    @if ($tasks != null)
+        @foreach ($tasks['data']['task_list'] as $task)
+            @if ($task['status'] == 'in_progress' || ($task['status'] == 'assigned' && $donations != null))
+                @foreach ($donations as $donation)
+                    @if ($donation['id'] == $task['order_id'])
+                        <div class="modal fade" id="viewModal{{ $task['task_id'] }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Assign Driver</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">View Order:
+                                            {{ $task['order_id'] }}
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="embed-responsive">
+                                                <iframe src="{{ $donation['shareUrl'] }}"
+                                                    onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
+                                                    style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
+                                            </div>
+                                            <div class="form-group row mt-1">
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Donation ID:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <p name="orderID">{{ $donation['id'] }}</p>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Donation Created:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <p name="orderDate">
+                                                        {{ date('m/d/Y H:i:s', $donation['donatedAt'] / 1000) }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ">
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Donated By:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <p name="purchasedName">{{ $donate['contactAddress']['name'] }}</p>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <p><b>No. of Items:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <p name="noItems">{{ $donate['noOfItem'] }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ">
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Address:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <p name="purchasedAdress">{{ $donation['contactAddress']['address'] }}
+                                                    </p>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Type:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <p name="type">{{ $donation['type'] }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row ">
+                                                <div class="form-group col-md-2">
+                                                    <p><b>Delivery Driver:</b></p>
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                    <p name="deliveryDriver">{{ $donation['pickUpBy'] }}</p>
+                                                </div>
+                                            </div>
+                                            @if ($donation['type'] == 'By Piece')
+                                                <div class="card-body">
+                                                    <div class="table-responsive " id="dataTable" role="grid"
+                                                        aria-describedby="dataTable_info">
+                                                        <table class="table table-hover table-bordered pt-3 display"
+                                                            id="example" style="">
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th>No.</th>
+                                                                    <th>Image</th>
+                                                                    <th>Category</th>
+                                                                    <th>Sex</th>
+                                                                    <th>Color</th>
+                                                                    <th>Size</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @php
+                                                                    $num = 1;
+                                                                @endphp
+                                                                @foreach ($donation['items'] as $item)
+                                                                    <tr>
+                                                                        <td>{{ $num++ }}</td>
+                                                                        <td>
+                                                                            <img src="{{ FirebaseHelper::getLink($item['image']) }}"
+                                                                                alt="..." class="img-thumbnail"
+                                                                                id="image"
+                                                                                style="width:100px; height:100px;">
+                                                                        </td>
+                                                                        <td>{{ $item['category'] }}</td>
+                                                                        <td>{{ $item['sex'] }}</td>
+                                                                        <td>{{ $item['color'] }}</td>
+                                                                        <td>{{ $item['size'] }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </form>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Back</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            @endif
+        @endforeach
+    @endif
+
+    <!-- Edit Donation (As Whole) Modal -Received Donations-->
+    @if ($tasks != null)
+        @foreach ($tasks['data']['task_list'] as $task)
+            @if ($task['status'] == 'completed' && $donations != null)
+                @foreach ($donations as $donation)
+                    @if ($donation['id'] == $task['order_id'] && $donation['checked'] == false)
+                        <div class="modal fade" id="editWholeModal{{ $task['task_id'] }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                @if ($donation['type'] == 'By Piece')
+                                    <form action="donation/qualityCheckedPiece/{{ $donation['id'] }}" method="POST">
+                                        @csrf
+                                        @method('POST')
+                                @else
+                                    <form action="donation/qualityCheckedBulk/{{ $donation['id'] }}" method="POST">
+                                        @csrf
+                                        @method('POST')
+                                @endif
+                                <div class="modal-content">
+                                    <div class="modal-header">
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -398,131 +721,13 @@
                                                 <p><b>Donated By:</b></p>
                                             </div>
                                             <div class="form-group col-md-5">
-                                                <p name="purchasedName">{{ $donate['contactAddress']['name'] }}</p>
+                                                <p name="purchasedName">{{ $donation['contactAddress']['name'] }}</p>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <p><b>No. of Items:</b></p>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <p name="noItems">{{ $donation['noOfItem'] }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row ">
-                                            <div class="form-group col-md-2">
-                                                <p><b>Address:</b></p>
-                                            </div>
-                                            <div class="form-group col-md-5">
-                                                <p name="purchasedAdress">{{ $donation['contactAddress']['address'] }}</p>
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <p><b>Type:</b></p>
-                                            </div>
-                                            <div class="form-group col-md-3">
-                                                <p name="type">{{ $donation['type'] }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row d-none">
-                                            <div class="form-group col-md-2">
-                                                <p><b>Driver's ID No.:</b></p>
-                                            </div>
-                                            <div class="form-group col-md-5">
-                                                <input type="text" class="form-control" id="driverID"
-                                                    name="driverID">
-                                            </div>
-                                        </div>
-                                        <div class="card shadow mt-3">
-                                            <div class="card-body">
-                                                <div class="table-responsive " id="dataTable" role="grid"
-                                                    aria-describedby="dataTable_info">
-                                                    <table class="table table-hover table-bordered pt-3 display"
-                                                        id="table" style="">
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th>Code</th>
-                                                                <th>Name</th>
-                                                                <th>Status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @if ($drivers != null)
-                                                                @foreach ($drivers as $driver)
-                                                                    <tr>
-                                                                        <th>{{ $driver['code'] }}</th>
-                                                                        <th>{{ $driver['firstName'] }}
-                                                                            {{ $driver['middleName'] }}
-                                                                            {{ $driver['lastName'] }}</th>
-                                                                        <th>{{ $driver['status'] }}</th>
-                                                                    </tr>
-                                                                @endforeach
-                                                            @endif
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" id="btnAssign" class="btn btn-primary">Assign</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                @endif
-            @endforeach
-        @endif
-    @endforeach
-
-    <!-- View Modal - In Progress-->
-    @foreach ($tasks['data']['task_list'] as $task)
-        @if ($task['status'] == 'in_progress' && $donations != null)
-            @foreach ($donations as $donation)
-                @if ($donation['id'] == $task['order_id'])
-                    <div class="modal fade" id="viewModal{{ $task['task_id'] }}" tabindex="-1"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">View Order: {{ $task['order_id'] }}
-                                    </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="embed-responsive">
-                                            <iframe src="{{ $donation['shareUrl'] }}"
-                                                onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
-                                                style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
-                                        </div>
-                                        <div class="form-group row mt-1">
-                                            <div class="form-group col-md-2">
-                                                <p><b>Donation ID:</b></p>
-                                            </div>
-                                            <div class="form-group col-md-5">
-                                                <p name="orderID">{{ $donation['id'] }}</p>
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <p><b>Donation Created:</b></p>
-                                            </div>
-                                            <div class="form-group col-md-3">
-                                                <p name="orderDate">
-                                                    {{ date('m/d/Y H:i:s', $donation['donatedAt'] / 1000) }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row ">
-                                            <div class="form-group col-md-2">
-                                                <p><b>Donated By:</b></p>
-                                            </div>
-                                            <div class="form-group col-md-5">
-                                                <p name="purchasedName">{{ $donate['contactAddress']['name'] }}</p>
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <p><b>No. of Items:</b></p>
-                                            </div>
-                                            <div class="form-group col-md-3">
-                                                <p name="noItems">{{ $donate['noOfItem'] }}</p>
                                             </div>
                                         </div>
                                         <div class="form-group row ">
@@ -548,20 +753,26 @@
                                                 <p name="deliveryDriver">{{ $donation['pickUpBy'] }}</p>
                                             </div>
                                         </div>
-                                        @if ($donation['type'] == 'By Piece')
-                                            <div class="card-body">
-                                                <div class="table-responsive " id="dataTable" role="grid"
-                                                    aria-describedby="dataTable_info">
-                                                    <table class="table table-hover table-bordered pt-3 display"
-                                                        id="example" style="">
+                                        <div class="form-group row ">
+                                            <div class="form-group col-md-2">
+                                                <p><b>Received Date:</b></p>
+                                            </div>
+                                            <div class="form-group col-md-5">
+                                                <p name="receivedDate">{{ $task['updated_at'] }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive " id="dataTable" role="grid"
+                                                aria-describedby="dataTable_info">
+                                                @if ($donation['type'] == 'By Piece')
+                                                    <table id="tableModalReceivePiece"
+                                                        class="table table-hover table-bordered pt-3 display">
                                                         <thead class="thead-light">
                                                             <tr>
                                                                 <th>No.</th>
                                                                 <th>Image</th>
                                                                 <th>Category</th>
-                                                                <th>Sex</th>
-                                                                <th>Color</th>
-                                                                <th>Size</th>
+                                                                <th>Status</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -570,139 +781,7 @@
                                                             @endphp
                                                             @foreach ($donation['items'] as $item)
                                                                 <tr>
-                                                                    <td>{{ $num++ }}</td>
-                                                                    <td>
-                                                                        <img src="{{ FirebaseHelper::getLink($item['image']) }}"
-                                                                            alt="..." class="img-thumbnail"
-                                                                            id="image"
-                                                                            style="width:100px; height:100px;">
-                                                                    </td>
-                                                                    <td>{{ $item['category'] }}</td>
-                                                                    <td>{{ $item['sex'] }}</td>
-                                                                    <td>{{ $item['color'] }}</td>
-                                                                    <td>{{ $item['size'] }}</td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    </form>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Back</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-            @endforeach
-        @endif
-    @endforeach
-
-    <!-- Edit Donation (As Whole) Modal -Received Donations-->
-    @foreach ($tasks['data']['task_list'] as $task)
-        @if ($task['status'] == 'completed' && $donations != null)
-            @foreach ($donations as $donation)
-                @if ($donation['id'] == $task['order_id'])
-                    <div class="modal fade" id="editWholeModal{{ $task['task_id'] }}" tabindex="-1"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="embed-responsive">
-                                        <iframe src="{{ $donation['shareUrl'] }}"
-                                            onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
-                                            style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
-                                    </div>
-                                    <div class="form-group row mt-1">
-                                        <div class="form-group col-md-2">
-                                            <p><b>Donation ID:</b></p>
-                                        </div>
-                                        <div class="form-group col-md-5">
-                                            <p name="orderID">{{ $donation['id'] }}</p>
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <p><b>Donation Created:</b></p>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <p name="orderDate">{{ date('m/d/Y H:i:s', $donation['donatedAt'] / 1000) }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row ">
-                                        <div class="form-group col-md-2">
-                                            <p><b>Donated By:</b></p>
-                                        </div>
-                                        <div class="form-group col-md-5">
-                                            <p name="purchasedName">{{ $donation['contactAddress']['name'] }}</p>
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <p><b>No. of Items:</b></p>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <p name="noItems">{{ $donation['noOfItem'] }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row ">
-                                        <div class="form-group col-md-2">
-                                            <p><b>Address:</b></p>
-                                        </div>
-                                        <div class="form-group col-md-5">
-                                            <p name="purchasedAdress">{{ $donation['contactAddress']['address'] }}</p>
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <p><b>Type:</b></p>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <p name="type">{{ $donation['type'] }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row ">
-                                        <div class="form-group col-md-2">
-                                            <p><b>Delivery Driver:</b></p>
-                                        </div>
-                                        <div class="form-group col-md-5">
-                                            <p name="deliveryDriver">{{ $donation['pickUpBy'] }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row ">
-                                        <div class="form-group col-md-2">
-                                            <p><b>Received Date:</b></p>
-                                        </div>
-                                        <div class="form-group col-md-5">
-                                            <p name="receivedDate">{{ $task['updated_at'] }}</p>
-                                        </div>
-                                    </div>
-                                    @if ($donation['type'] == 'By Piece')
-                                        <div class="card-body">
-                                            <div class="table-responsive " id="dataTable" role="grid"
-                                                aria-describedby="dataTable_info">
-                                                <table class="table table-hover table-bordered pt-3 display"
-                                                    id="tableModalReceive" style="">
-                                                    <thead class="thead-light">
-                                                        <tr>
-                                                            <th>No.</th>
-                                                            <th>Image</th>
-                                                            <th>Category</th>
-                                                            <th>Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @php
-                                                            $num = 1;
-                                                        @endphp
-                                                        @if ($donation['type'] == 'By Piece')
-                                                            @foreach ($donation['items'] as $item)
-                                                                <tr>
-                                                                    <td>{{ $num++ }}</td>
+                                                                    <td>{{ $num }}</td>
                                                                     <td>
                                                                         <img src="{{ FirebaseHelper::getLink($item['image']) }}"
                                                                             alt="..." class="img-thumbnail"
@@ -712,40 +791,59 @@
                                                                     <td>{{ $item['category'] }}</td>
                                                                     <td>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio"
-                                                                                name="status" id="radioStatus"
-                                                                                value="Accept">
+                                                                            <input class="form-check-input radio"
+                                                                                type="radio"
+                                                                                name="status{{ $item['id'] }}{{ $num }}"
+                                                                                id="radioStatus" value="Accepted">
                                                                             <label class="form-check-label">Accept</label>
                                                                         </div>
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio"
-                                                                                name="status" id="radioStatus"
-                                                                                value="Reject">
+                                                                            <input class="form-check-input radio"
+                                                                                type="radio"
+                                                                                name="status{{ $item['id'] }}{{ $num++ }}"
+                                                                                id="radioStatus" value="Rejected">
                                                                             <label class="form-check-label">Reject</label>
                                                                         </div>
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
-                                                        @endif
-                                                    </tbody>
-                                                </table>
+                                                        </tbody>
+                                                    </table>
+                                                @else
+                                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
+                                                        <a id="addItem" class="btn btn-primary">Add Item</a>
+                                                    </div>
+                                                    <table id="tableModalReceiveBulk"
+                                                        class="table table-hover table-bordered pt-3 display bulk">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>No.</th>
+                                                                <th>Category</th>
+                                                                <th>Color</th>
+                                                                <th>Sex</th>
+                                                                <th>Size</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                @endif
+
                                             </div>
                                         </div>
-                                    @endif
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary receive">Quality
+                                            Checked</button>
+                                    </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" onclick="test();">Save
-                                        changes</button>
-                                </div>
+                                </form>
                             </div>
                         </div>
-                    </div>
-                @endif
-            @endforeach
-        @endif
-    @endforeach
+                    @endif
+                @endforeach
+            @endif
+        @endforeach
+    @endif
+
 
     <!-- Add Donation (Individual) Modal -Received Donations - By Bulk-->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1169,58 +1267,83 @@
     </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js">
     </script>
-    <!-- DataTables -->
     <script>
         $(document).ready(function() {
+            //Datatables
             $('table.display').DataTable();
-        });
-    </script>
-    <!--Display data from selected row above the table for Driver -->
-    <script>
-        //Variables
-        var table = document.getElementById('table');
-        var btnAssign = document.querySelector('#btnAssign');
 
-        //Initial Value
-        btnAssign.disabled = true;
-
-        for (var i = 1; i < table.rows.length; i++) {
-            table.rows[i].onclick = function() {
-                //Index = this.rowIndex;
-                document.getElementById("driverID").value = this.cells[0].innerHTML;
-            };
-        }
-
-        $(document).ready(function() {
-            var table = $('#table').DataTable();
-
-            $('#table tbody').on('click', 'tr', function() {
+            //Driver Assignment
+            $('button.driver').prop('disabled', true);
+            $('table.driver').on('click', 'tr', function() {
                 if ($(this).hasClass('selected')) {
                     $(this).removeClass('selected');
-                    btnAssign.disabled = true;
+                    $('button.driver').prop('disabled', true);
+                    $('#driverID').val('');
                 } else {
-                    table.$('tr.selected').removeClass('selected');
+                    $('table.driver tr.selected').removeClass('selected');
                     $(this).addClass('selected');
-                    btnAssign.disabled = false;
+                    $('button.driver').prop('disabled', false);
+                    $('#driverID').val($('table.driver tr.selected th.code').text());
                 }
             });
 
-        });
-    </script>
-    <!-- Received Modal -->
-    <script>
-        $(document).ready(function() {
-            var tableModalReceive = document.getElementById('tableModalReceive');
-
-            for (var i = 1; i < tableModalReceive.rows.length; i++) {
-                var nodes = tableModalReceive.rows[i].cells[3].getElementById('tableModalReceive');
-
-                for (let i = 0; i < nodes.length; i++) {
-                    if(nodes[i].nodeName == 'INPUT' && nodes[i].nodeValue != null) {
-                        alert(nodes[i].nodeValue);
+            //Received Donations
+            $('button.receive').prop('disabled', true);
+            //Piece
+            var num = 0;
+            $("input.radio").each(function() {
+                var name = $(this).attr('name');
+                $('input[name=' + name + ']').click(function() {
+                    if ($("input.radio").length - 2 == num) {
+                        $('button.receive').prop('disabled', false);
                     }
-                }
-            }
+                    num++;
+                });
+            });
+            //Bulk
+            var bulk = $('#tableModalReceiveBulk').DataTable();
+            var num = 1;
+            $('#addItem').on('click', function() {
+                $('button.receive').prop('disabled', false);
+
+                bulk.row.add([
+                    num,
+                    `<select class="form-select form-select" name="category` + num + `">
+                        <option selected>Choose Category</option>
+                        <option value="Jacket and Hoodies">Jacket and Hoodies</option>
+                        <option value="Shirts and Blouses">Shirts and Blouses</option>
+                        <option value="Pants and Jeans">Pants and Jeans</option>
+                    </select>`,
+                    `<select class="form-select form-select" name="color` + num + `">
+                        <option selected>Choose Color</option>
+                        <option value="White">White</option>
+                        <option value="Black">Black</option>
+                        <option value="Red">Red</option>
+                        <option value="Orange">Orange</option>
+                        <option value="Yellow">Yellow</option>
+                        <option value="Green">Green</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Violet">Violet</option>
+                    </select>`,
+                    `<select class="form-select form-select" name="sex` + num + `">
+                        <option selected>Choose Sex</option>
+                        <option value="Men">Men</option>
+                        <option value="Women">Women</option>
+                        <option value="Unisex">Unisex</option>
+                    </select>`,
+                    `<select class="form-select form-select" name="size` + num + `">
+                        <option selected>Choose Size</option>
+                        <option value="Extra Small">Extra Small</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                        <option value="Extra Large">Extra Large</option>
+                        <option value="Double Extra Large">Double Extra Large</option>
+                    </select>`,
+                ]).draw(false);
+
+                num++;
+            });
         });
     </script>
 
