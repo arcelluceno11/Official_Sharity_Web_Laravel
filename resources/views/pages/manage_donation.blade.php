@@ -111,7 +111,6 @@
                             <th>Action</th>
                         </tr>
                     <tbody>
-
                     </tbody>
                     </thead>
                 </table>
@@ -120,7 +119,86 @@
     </div>
 
     <!-- Pending Donations Modal -->
-    <div id="pendingModal"></div>
+    <div class="modal fade" id="acceptModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <h4 class="modal-title w-100" id="exampleModalLabel">Accept this Donation?</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row mt-1">
+                        <div class="form-group col-md-2">
+                            <p><b>Donation ID:</b></p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <p id="orderID"></p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <p><b>Donation Created:</b></p>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <p id="orderDate"></p>
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <div class="form-group col-md-2">
+                            <p><b>Donated By:</b></p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <p id="purchasedName"></p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <p><b>No. of Items:</b></p>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <p id="noItems"></p>
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <div class="form-group col-md-2">
+                            <p><b>Address:</b></p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <p id="purchasedAdress"></p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <p><b>Type:</b></p>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <p id="type"></p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+                            <table class="table table-hover table-bordered pt-3 display" id="tablePendingModal"
+                                style="">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Image</th>
+                                        <th>Category</th>
+                                        <th>Sex</th>
+                                        <th>Color</th>
+                                        <th>Size</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-">
+                    <form id="actionAccept" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-success text-light">Accept</button>
+                    </form>
+                    <form id="actionReject" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-danger text-light">Reject</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!--Waiting for Driver Assignment-->
     <div class="card shadow mt-5">
@@ -231,7 +309,8 @@
                                             <td>{{ $task['task_id'] }}</td>
                                             <td>{{ $task['order_id'] }}</td>
                                             <td>{{ date('D d/m/y h:i:s A', strtotime($task['updated_at'])) }}</td>
-                                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            <td><button type="button" class="btn btn-primary btn-sm"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#editWholeModal{{ $task['task_id'] }}">
                                                     <i class="fa-solid fa-pen-to-square"></i>
                                                 </button>
@@ -286,119 +365,6 @@
         </div>
     </div>
 
-    <!-- Accept Modal - Modal for Pending Donation -->
-    @if ($donations != null)
-        @foreach ($donations as $donate)
-            @if ($donate['status'] == 'Pending')
-                <div class="modal fade" id="acceptModal{{ $donate['id'] }}" tabindex="-1"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header flex-column">
-                                <h4 class="modal-title w-100" id="exampleModalLabel">Accept this Donation?</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group row mt-1">
-                                    <div class="form-group col-md-2">
-                                        <p><b>Donation ID:</b></p>
-                                    </div>
-                                    <div class="form-group col-md-5">
-                                        <p name="orderID">{{ $donate['id'] }}</p>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <p><b>Donation Created:</b></p>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <p name="orderDate">
-                                            {{ date('m/d/Y h:i:s', ($donate['donatedAt'] + 28800000) / 1000) }}</p>
-                                    </div>
-                                </div>
-                                <div class="form-group row ">
-                                    <div class="form-group col-md-2">
-                                        <p><b>Donated By:</b></p>
-                                    </div>
-                                    <div class="form-group col-md-5">
-                                        <p name="purchasedName">{{ $donate['contactAddress']['name'] }}</p>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <p><b>No. of Items:</b></p>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <p name="noItems">{{ $donate['noOfItem'] }}</p>
-                                    </div>
-                                </div>
-                                <div class="form-group row ">
-                                    <div class="form-group col-md-2">
-                                        <p><b>Address:</b></p>
-                                    </div>
-                                    <div class="form-group col-md-5">
-                                        <p name="purchasedAdress">{{ $donate['contactAddress']['address'] }}
-                                        </p>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <p><b>Type:</b></p>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <p name="type">{{ $donate['type'] }}</p>
-                                    </div>
-                                </div>
-                                @if ($donate['type'] == 'By Piece')
-                                    <div class="card-body">
-                                        <div class="table-responsive " id="dataTable" role="grid"
-                                            aria-describedby="dataTable_info">
-                                            <table class="table table-hover table-bordered pt-3 display" id="example"
-                                                style="">
-                                                <thead class="thead-light">
-                                                    <tr>
-                                                        <th>No.</th>
-                                                        <th>Image</th>
-                                                        <th>Category</th>
-                                                        <th>Sex</th>
-                                                        <th>Color</th>
-                                                        <th>Size</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @php
-                                                        $num = 1;
-                                                    @endphp
-                                                    @foreach ($donate['items'] as $item)
-                                                        <tr>
-                                                            <td>{{ $num++ }}</td>
-                                                            <td>
-                                                                <img src="{{ FirebaseHelper::getLink($item['image']) }}"
-                                                                    alt="..." class="img-thumbnail" id="image"
-                                                                    style="width:100px; height:100px;">
-                                                            </td>
-                                                            <td>{{ $item['category'] }}</td>
-                                                            <td>{{ $item['sex'] }}</td>
-                                                            <td>{{ $item['color'] }}</td>
-                                                            <td>{{ $item['size'] }}</td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="modal-footer justify-content-">
-                                <form action="/donation/acceptDonation/{{ $donate['id'] }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success text-light">Accept</button>
-                                </form>
-                                <form action="/donation/rejectDonation/{{ $donate['id'] }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger text-light">Reject</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-        @endforeach
-    @endif
-
     <!-- Driver Modal - Modal for Waiting for Assignment-->
     @if ($tasks != null)
         @foreach ($tasks['data']['task_list'] as $task)
@@ -444,7 +410,7 @@
                                                     <p><b>Donated By:</b></p>
                                                 </div>
                                                 <div class="form-group col-md-5">
-                                                    <p name="purchasedName">{{ $donate['contactAddress']['name'] }}</p>
+                                                    <p name="purchasedName">{{ $donation['contactAddress']['name'] }}</p>
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <p><b>No. of Items:</b></p>
@@ -828,420 +794,6 @@
         @endforeach
     @endif
 
-
-    <!-- Add Donation (Individual) Modal -Received Donations - By Bulk-->
-    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-3 text-center">
-                                <div class="col">
-                                    <img src="profile.JPG" alt="..." class="img-thumbnail"
-                                        style="width:250px; height:auto;">
-                                </div>
-                                <div class="col">
-                                    <button type="submit" class="btn btn-success mt-4">
-                                        <input class="form-control form-control-sm" type="file" id="formFileSm"
-                                            onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-9">
-                                <div class="form-group row mt-3">
-                                    <div class="form-group col-md-4">
-                                        <label class="form-label" for="">ID No:</label>
-                                        <input type="text" name="idno" class="form-control item"
-                                            placeholder="1001">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label class="form-label" for="">Donated by:</label>
-                                        <input type="text" name="donatedby" class="form-control item"
-                                            placeholder="1001">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label class="form-label" for="">Donated to:</label>
-                                        <input type="text" name="donatedto" class="form-control item"
-                                            placeholder="1001">
-                                    </div>
-                                </div>
-                                <div class="form-group row mt-3">
-                                    <div class="form-group col-md-4">
-                                        <label class="form-label" for="">Title:</label>
-                                        <input type="text" name="title" class="form-control item"
-                                            placeholder="Gucci Shirt">
-                                    </div>
-                                    <div class="form-group col-md-8">
-                                        <label class="form-label" for="">Description:</label>
-                                        <input type="text" name="description" class="form-control item"
-                                            placeholder="Description">
-                                    </div>
-                                </div>
-                                <div class="form-group row mt-3">
-                                    <div class="form-group col-md-3">
-                                        <label for="inputSex">Category</label>
-                                        <select class="form-select mt-2" aria-label="Default select example"
-                                            name="category">
-                                            <option selected>Choose...</option>
-                                            <option value="1">Category1</option>
-                                            <option value="2">Category2</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="inputSex">Sex</label>
-                                        <select class="form-select mt-2" aria-label="Default select example"
-                                            name="sex">
-                                            <option selected>Choose...</option>
-                                            <option value="1">Male</option>
-                                            <option value="2">Female</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label class="form-label" for="">Color:</label>
-                                        <input type="text" name="red" class="form-control item"
-                                            placeholder="Red">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="inputSex">Size</label>
-                                        <select class="form-select mt-2" aria-label="Default select example"
-                                            name="sex">
-                                            <option selected>Choose...</option>
-                                            <option value="1">Size1</option>
-                                            <option value="2">Size2</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row mt-3 mb-5">
-                                    <div class="form-group col-md-4">
-                                        <label class="form-label" for="">Price:</label>
-                                        <input type="text" name="price" class="form-control item"
-                                            placeholder="PHP 000.00">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputStatus">Status</label>
-                                        <select class="form-select mt-2" aria-label="Default select example"
-                                            name="status">
-                                            <option selected>Choose Status...</option>
-                                            <option value="1">Accepted</option>
-                                            <option value="2">Rejected</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#editWholeModal">Back</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Individual Modal - Received Donations - By Piece -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-3 text-center">
-                                <div class="col">
-                                    <img src="profile.JPG" alt="..." class="img-thumbnail"
-                                        style="width:250px; height:auto;">
-                                </div>
-                                <div class="col">
-                                    <button type="submit" class="btn btn-success mt-4">
-                                        <input class="form-control form-control-sm" type="file" id="formFileSm"
-                                            onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-9">
-                                <div class="form-group row mt-3">
-                                    <div class="form-group col-md-4">
-                                        <label class="form-label" for="">ID No:</label>
-                                        <fieldset disabled>
-                                            <input type="text" name="idno" class="form-control item"
-                                                placeholder="1001">
-                                        </fieldset>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label class="form-label" for="">Donated by:</label>
-                                        <fieldset disabled>
-                                            <input type="text" name="donatedby" class="form-control item"
-                                                placeholder="1001">
-                                        </fieldset>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label class="form-label" for="">Donated to:</label>
-                                        <fieldset disabled>
-                                            <input type="text" name="donatedto" class="form-control item"
-                                                placeholder="1001">
-                                        </fieldset>
-                                    </div>
-                                </div>
-                                <div class="form-group row mt-3">
-                                    <div class="form-group col-md-4">
-                                        <label class="form-label" for="">Title:</label>
-                                        <input type="text" name="title" class="form-control item"
-                                            placeholder="Gucci Shirt">
-                                    </div>
-                                    <div class="form-group col-md-8">
-                                        <label class="form-label" for="">Description:</label>
-                                        <input type="text" name="description" class="form-control item"
-                                            placeholder="Description">
-                                    </div>
-                                </div>
-                                <div class="form-group row mt-3">
-                                    <div class="form-group col-md-3">
-                                        <label for="inputSex">Category</label>
-                                        <select class="form-select mt-2" aria-label="Default select example"
-                                            name="category">
-                                            <option selected>Choose...</option>
-                                            <option value="1">Category1</option>
-                                            <option value="2">Category2</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="inputSex">Sex</label>
-                                        <select class="form-select mt-2" aria-label="Default select example"
-                                            name="sex">
-                                            <option selected>Choose...</option>
-                                            <option value="1">Male</option>
-                                            <option value="2">Female</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label class="form-label" for="">Color:</label>
-                                        <input type="text" name="red" class="form-control item"
-                                            placeholder="Red">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="inputSex">Size</label>
-                                        <select class="form-select mt-2" aria-label="Default select example"
-                                            name="sex">
-                                            <option selected>Choose...</option>
-                                            <option value="1">Size1</option>
-                                            <option value="2">Size2</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row mt-3 mb-5">
-                                    <div class="form-group col-md-4">
-                                        <label class="form-label" for="">Price:</label>
-                                        <input type="text" name="price" class="form-control item"
-                                            placeholder="PHP 000.00">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputStatus">Status</label>
-                                        <select class="form-select mt-2" aria-label="Default select example"
-                                            name="status">
-                                            <option selected>Choose Status...</option>
-                                            <option value="1">Accepted</option>
-                                            <option value="2">Rejected</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#editWholeModal">Back</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- View Complete Modal - Quality-checked Donations-->
-    <div class="modal fade" id="viewCModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">View Order</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="embed-responsive">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d31391.57433512359!2d123.95270045000001!3d10.42579715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1667039419823!5m2!1sen!2sph"
-                                onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'
-                                style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
-                        </div>
-                        <div class="form-group row mt-1">
-                            <div class="form-group col-md-2">
-                                <p><b>Donation ID:</b></p>
-                            </div>
-                            <div class="form-group col-md-5">
-                                <p name="orderID">11900005</p>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <p><b>Donation Created:</b></p>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <p name="orderDate">10/29/22 10:50:59 AM</p>
-                            </div>
-                        </div>
-                        <div class="form-group row ">
-                            <div class="form-group col-md-2">
-                                <p><b>Donated By:</b></p>
-                            </div>
-                            <div class="form-group col-md-5">
-                                <p name="purchasedName">Paul Angelo Soltero</p>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <p><b>No. of Items:</b></p>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <p name="noItems">12 items</p>
-                            </div>
-                        </div>
-                        <div class="form-group row ">
-                            <div class="form-group col-md-2">
-                                <p><b>Address:</b></p>
-                            </div>
-                            <div class="form-group col-md-5">
-                                <p name="purchasedAdress">Brgy. Casili, Consolacion, Cebu 6001, Philippines</p>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <p><b>Type:</b></p>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <p name="type">By Piece</p>
-                            </div>
-                        </div>
-                        <div class="form-group row ">
-                            <div class="form-group col-md-2">
-                                <p><b>Delivery Driver:</b></p>
-                            </div>
-                            <div class="form-group col-md-5">
-                                <p name="deliveryDriver">Arcel Luceno</p>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <p><b>Pickup Date:</b></p>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <p name="pickupDate">10/22/22 10:50:60 AM</p>
-                            </div>
-                        </div>
-                        <div class="form-group row ">
-                            <div class="form-group col-md-2">
-                                <p><b>Received Date:</b></p>
-                            </div>
-                            <div class="form-group col-md-5">
-                                <p name="receivedDate">10/22/22 10:50:60 AM</p>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <p><b>Complete Date:</b></p>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <p name="completeDate">10/22/22 10:50:60 AM</p>
-                            </div>
-                        </div>
-                        <div class="form-group row ">
-                            <div class="form-group col-md-2">
-                                <p><b>Quality-Checked Date:</b></p>
-                            </div>
-                            <div class="form-group col-md-5">
-                                <p name="qualityDate">10/22/22 10:50:60 AM</p>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <p><b>Checked By:</b></p>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <p name="checkedBy">Pamela May Tanedo</p>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive " id="dataTable" role="grid"
-                                aria-describedby="dataTable_info">
-                                <table class="table table-hover table-bordered pt-3 display" id="example"
-                                    style="">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Title</th>
-                                            <th>Category</th>
-                                            <th>Sex</th>
-                                            <th>Color</th>
-                                            <th>Size</th>
-                                            <th>Price</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <th>Versace Shirt</th>
-                                            <td>Top & Blouse</td>
-                                            <td>Unisex</td>
-                                            <td>White</td>
-                                            <td>XL</td>
-                                            <td>PHP 500.00</td>
-                                            <td>Accepted</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <th>Versace Shirt</th>
-                                            <td>Top & Blouse</td>
-                                            <td>Unisex</td>
-                                            <td>White</td>
-                                            <td>XL</td>
-                                            <td>PHP 0.00</td>
-                                            <td>Rejected</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-xmark"></i>
-                    </div>
-                    <h4 class="modal-title w-100" id="exampleModalLabel">Are you sure?</h4>
-
-                </div>
-                <div class="modal-body">
-                    <p>Do you really want to delete these records? This process cannot be undone.</p>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 @stop
 
 <!-- Scripts -->
@@ -1334,6 +886,7 @@
         //Initialize Firebase
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js';
         import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js';
+        import { setImage } from './js/firebasehelper.js';
         const firebaseConfig = {
             apiKey: "AIzaSyDrQnBzhOFfjrIqmOUabkt14wvx-LVnzug",
             authDomain: "sharity-f983e.firebaseapp.com",
@@ -1347,16 +900,19 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        //Donations
+        //Read Donations
         const donations = ref(database, 'Donations/');
         onValue(donations, (snapshot) => {
+            //Data
             const data = snapshot.val();
 
+            //Initialize Tables
             var tablePending = $('#tablePending').DataTable();
             tablePending.clear().draw();
 
+            //Tables
             for (var key in data) {
-
+                //Pending Table
                 if(data[key]['status'] == 'Pending'){
                     tablePending.row.add([
                         data[key]['id'],
@@ -1364,15 +920,64 @@
                         data[key]['contactAddress']['address'],
                         data[key]['noOfItem'],
                         data[key]['type'],
-                        `<button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#acceptModal`+ data[key]['id'] +`">
+                        `<button type="button" class="btnPendingModal btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#acceptModal">
                                                 <i class="fa-solid fa-check text-light"></i>
                         </button>
                         `
-                    ]).draw(false);
+                    ]).node().id = data[key]['id'];
+                    tablePending.draw(false);
                 }
-
             }
+
+            //Pending Modal
+            $('.btnPendingModal').click(function(){
+                var x = $(this).closest('tr').attr('id');
+
+                for (var key in data) {
+                    if(data[key]['id'] == x){
+                        ////Date Format
+                        var dateFormat = new Date(data[key]['donatedAt']);
+
+                        //Assign Values
+                        $('#orderID').text(data[key]['id']);
+                        $('#orderDate').text(dateFormat.toLocaleDateString() + ' ' + dateFormat.toLocaleTimeString());
+                        $('#purchasedName').text(data[key]['contactAddress']['name']);
+                        $('#noItems').text(data[key]['noOfItem']);
+                        $('#purchasedAdress').text(data[key]['contactAddress']['address']);
+                        $('#type').text(data[key]['type']);
+
+                        //Item Table
+                        var tablePendingModal = $('#tablePendingModal').DataTable();
+                        tablePendingModal.clear().draw();
+                        for(var i = 0; i < data[key]['noOfItem']; i++ ){
+                            //Item Image
+                            setImage(data[key]['items'][i]['id'], data[key]['items'][i]['image']);
+
+                            //Table Row
+                            tablePendingModal.row.add([
+                                data[key]['items'][i]['id'] + 1,
+                                '<img id="'+ data[key]['items'][i]['id'] + '" class="img-thumbnail" id="image" style="width:100px; height:100px;">',
+                                data[key]['items'][i]['category'],
+                                data[key]['items'][i]['sex'],
+                                data[key]['items'][i]['color'],
+                                data[key]['items'][i]['size'],
+                            ]).node().id = data[key]['id'];
+                            tablePendingModal.draw(false);
+                        }
+
+                        //Modal Action
+                        $('#actionAccept').attr('action', '/donation/acceptDonation/' + data[key]['id']);
+                        $('#actionReject').attr('action', '/donation/rejectDonation/' + data[key]['id']);
+                    }
+                }
+            });
+
         });
+
+        //Modals
+
+
+
     </script>
 
 
