@@ -100,7 +100,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-hover table-bordered pt-3 display" id="example" style="">
+                <table class="table table-hover table-bordered pt-3 display" id="tablePending" style="">
                     <thead class="thead-light">
                         <tr>
                             <th>Donation ID</th>
@@ -110,33 +110,17 @@
                             <th>Type</th>
                             <th>Action</th>
                         </tr>
-                    </thead>
                     <tbody>
-                        @if ($donations == null)
-                            <td class="text-center" colspan="6">No Data!</td>
-                        @else
-                            @foreach ($donations as $donate)
-                                @if ($donate['status'] == 'Pending')
-                                    <tr>
-                                        <td>{{ $donate['id'] }}</td>
-                                        <td>{{ $donate['contactAddress']['name'] }}</td>
-                                        <td>{{ $donate['contactAddress']['address'] }}</td>
-                                        <td>{{ $donate['noOfItem'] }}</td>
-                                        <td>{{ $donate['type'] }}</td>
-                                        <td><button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#acceptModal{{ $donate['id'] }}">
-                                                <i class="fa-solid fa-check text-light"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        @endif
+
                     </tbody>
+                    </thead>
                 </table>
             </div>
         </div>
     </div>
+
+    <!-- Pending Donations Modal -->
+    <div id="pendingModal"></div>
 
     <!--Waiting for Driver Assignment-->
     <div class="card shadow mt-5">
@@ -684,10 +668,10 @@
                                     <form action="donation/qualityCheckedPiece/{{ $donation['id'] }}" method="POST">
                                         @csrf
                                         @method('POST')
-                                @else
-                                    <form action="donation/qualityCheckedBulk/{{ $donation['id'] }}" method="POST">
-                                        @csrf
-                                        @method('POST')
+                                    @else
+                                        <form action="donation/qualityCheckedBulk/{{ $donation['id'] }}" method="POST">
+                                            @csrf
+                                            @method('POST')
                                 @endif
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -1344,6 +1328,50 @@
 
                 num++;
             });
+        });
+    </script>
+    <script type="module">
+        //Initialize Firebase
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js';
+        import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js';
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrQnBzhOFfjrIqmOUabkt14wvx-LVnzug",
+            authDomain: "sharity-f983e.firebaseapp.com",
+            databaseURL: "https://sharity-f983e-default-rtdb.firebaseio.com",
+            projectId: "sharity-f983e",
+            storageBucket: "sharity-f983e.appspot.com",
+            messagingSenderId: "599803730946",
+            appId: "1:599803730946:web:e7ebe55992577653831b1b",
+            measurementId: "G-2NTKV2NYYB"
+        };
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        //Donations
+        const donations = ref(database, 'Donations/');
+        onValue(donations, (snapshot) => {
+            const data = snapshot.val();
+
+            var tablePending = $('#tablePending').DataTable();
+            tablePending.clear().draw();
+
+            for (var key in data) {
+
+                if(data[key]['status'] == 'Pending'){
+                    tablePending.row.add([
+                        data[key]['id'],
+                        data[key]['contactAddress']['name'],
+                        data[key]['contactAddress']['address'],
+                        data[key]['noOfItem'],
+                        data[key]['type'],
+                        `<button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#acceptModal`+ data[key]['id'] +`">
+                                                <i class="fa-solid fa-check text-light"></i>
+                        </button>
+                        `
+                    ]).draw(false);
+                }
+
+            }
         });
     </script>
 
