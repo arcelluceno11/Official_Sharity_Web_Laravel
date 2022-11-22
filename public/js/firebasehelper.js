@@ -17,6 +17,6 @@ const storage = getStorage(app);
 export function setImage(itemID, imageLink) {
     getDownloadURL(ref(storage, imageLink))
         .then((url) => {
-            $('#'+itemID).attr('src', url);
+            $('#image'+itemID).attr('src', url);
         });
 }

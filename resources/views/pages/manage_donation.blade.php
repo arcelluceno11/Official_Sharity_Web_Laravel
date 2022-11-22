@@ -200,6 +200,21 @@
         </div>
     </div>
 
+    <!-- Pending Donations Toast -->
+    <div class="toast-container">
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="toastPending" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Donations</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    A New Donation Order Placed!
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--Waiting for Driver Assignment-->
     <div class="card shadow mt-5">
         <div class="card-header py-3">
@@ -268,7 +283,8 @@
                                             <td>{{ $task['order_id'] }}</td>
                                             <td>{{ $task['status'] }}</td>
                                             <td>{{ date('D d/m/y h:i:s A', strtotime($task['updated_at'])) }}</td>
-                                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            <td><button type="button" class="btn btn-primary btn-sm"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#viewModal{{ $task['task_id'] }}">
                                                     <i class="fa-sharp fa-solid fa-eye"></i>
                                                 </button>
@@ -926,6 +942,9 @@
                         `
                     ]).node().id = data[key]['id'];
                     tablePending.draw(false);
+
+                    //Show Toast
+                    new bootstrap.Toast($('#toastPending')).show();
                 }
             }
 
@@ -947,22 +966,25 @@
                         $('#type').text(data[key]['type']);
 
                         //Item Table
-                        var tablePendingModal = $('#tablePendingModal').DataTable();
-                        tablePendingModal.clear().draw();
-                        for(var i = 0; i < data[key]['noOfItem']; i++ ){
-                            //Item Image
-                            setImage(data[key]['items'][i]['id'], data[key]['items'][i]['image']);
+                        if(data[key]['type'] == 'By Piece'){
+                            var tablePendingModal = $('#tablePendingModal').DataTable();
+                            tablePendingModal.clear().draw();
 
-                            //Table Row
-                            tablePendingModal.row.add([
-                                data[key]['items'][i]['id'] + 1,
-                                '<img id="'+ data[key]['items'][i]['id'] + '" class="img-thumbnail" id="image" style="width:100px; height:100px;">',
-                                data[key]['items'][i]['category'],
-                                data[key]['items'][i]['sex'],
-                                data[key]['items'][i]['color'],
-                                data[key]['items'][i]['size'],
-                            ]).node().id = data[key]['id'];
-                            tablePendingModal.draw(false);
+                            for(var i = 0; i < data[key]['items'].length; i++ ){
+                                //Item Image
+                                setImage(data[key]['items'][i]['id'], data[key]['items'][i]['image']);
+
+                                //Table Row
+                                tablePendingModal.row.add([
+                                    data[key]['items'][i]['id'] + 1,
+                                    '<img id="image'+ data[key]['items'][i]['id'] + '" class="img-thumbnail" id="image" style="width:100px; height:100px;">',
+                                    data[key]['items'][i]['category'],
+                                    data[key]['items'][i]['sex'],
+                                    data[key]['items'][i]['color'],
+                                    data[key]['items'][i]['size'],
+                                ]).node().id = data[key]['items'][i]['id'];
+                                tablePendingModal.draw(false);
+                            }
                         }
 
                         //Modal Action
