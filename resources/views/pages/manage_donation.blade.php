@@ -928,6 +928,7 @@
 
             //Tables
             for (var key in data) {
+
                 //Pending Table
                 if(data[key]['status'] == 'Pending'){
                     tablePending.row.add([
