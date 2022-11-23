@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Helpers\FirebaseHelper;
 
-class TestController extends Controller
+class ControllerName extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +13,7 @@ class TestController extends Controller
      */
     public function index()
     {
-        $database = app('firebase.database');
-        $test = $database->getReference('Test')->getValue();
-
-        return view('pages.test', [
-            'test' => $test,
-        ]);
+        //
     }
 
     /**
@@ -41,18 +34,7 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
-        $database = app('firebase.database');
-        $ID = $database->getReference('Test')->push()->getKey();
-
-        $data = [
-            'ID' => $ID,
-            'firstname' => $request->input('firstname'),
-            'lastname' => $request->input('lastname')
-        ];
-
-        $database->getReference('Test/'.$ID)->set($data);
-
-        return redirect('test');
+        //
     }
 
     /**
@@ -86,17 +68,7 @@ class TestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $database = app('firebase.database');
-
-        $data = [
-            'ID' => $id,
-            'firstname' => $request->input('firstname'),
-            'lastname' => $request->input('lastname')
-        ];
-
-        $database->getReference('Test/'.$id)->set($data);
-
-        return redirect('test');
+        //
     }
 
     /**
@@ -107,9 +79,6 @@ class TestController extends Controller
      */
     public function destroy($id)
     {
-        $database = app('firebase.database');
-        $database->getReference('Test/'.$id)->set(null);
-
-        return redirect('test');
+        //
     }
 }

@@ -36,7 +36,16 @@ Route::get('/', function () {
 Route::resource('/test', TestController::class);
 Route::resource('/admin', AdminController::class);
 Route::resource('/charity', CharityController::class);
+
+//Donation Controller
 Route::resource('/donation', DonationController::class);
+Route::post('/donation/acceptDonation/{id}', [DonationController::class, 'acceptDonation']);
+Route::post('/donation/rejectDonation/{id}', [DonationController::class, 'rejectDonation']);
+Route::post('/donation/assignDriver/{taskid}', [DonationController::class, 'assignDriver']);
+Route::post('/donation/qualityCheckedPiece/{id}', [DonationController::class, 'qualityCheckedPiece']);
+Route::post('/donation/qualityCheckedBulk/{id}', [DonationController::class, 'qualityCheckedBulk']);
+
+
 Route::resource('/donor', DonorController::class);
 Route::resource('/driver', DriverController::class);
 Route::resource('/purchase', PurchaseController::class);
