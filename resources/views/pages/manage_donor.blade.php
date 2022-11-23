@@ -112,295 +112,248 @@
 
 <!-- Content -->
 @section('content')
+
+    <!--Data Table-->
     <div class="card shadow">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Manage Donor/Shopper Accounts</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-hover table-bordered pt-3" id="example" style="">
+                <table class="table table-hover table-bordered pt-3 display" id="example" style="">
                     <thead class="thead-light">
                         <tr>
+
                             <th>No.</th>
-                            <th>Username</th>
+                            <th style="width:100px;">ID</th>
                             <th>Email Address</th>
-                            <th>Full Name</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>arcelPet</td>
-                            <td>arcel@gmail.com</td>
-                            <td>Arcel V. Luceno</td>
-                            <td>Unverified</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>pamPet</td>
-                            <td>pamela.may@gmail.com</td>
-                            <td>Pamela May Z. Tanedo</td>
-                            <td>Verified</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>paulPet</td>
-                            <td>paul.angelo@gmail.com</td>
-                            <td>Paul Angelo F. Soltero</td>
-                            <td>Unverified</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        @if ($manage_donor == null)
+                            <tr>
+                                <td class="text-center" colspan="3">No Data!</td>
+                            </tr>
+                        @else
+                            @php
+                                $i = 1;
+                            @endphp
+                            @foreach ($manage_donor as $item)
+                                <tr>
+                                    <td>{{ $i++ }}</td>
+                                    <td>{{ $item['id'] }}</td>
+                                    <td>{{ $item['email'] }}</td>
+                                    <td>{{ $item['firstName'] }}</td>
+                                    <td>{{ $item['lastName'] }}</td>
+                                    <td>{{ $item['status'] }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#viewModal{{ $item['id'] }}">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle"
-                                id="image" style="width:auto; height:200px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;">
-                                <input class="form-control" type="file" id="formFile"
-                                    onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
-                            </button>
-                        </div>
+    <div class="card-body">
+        <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+            <table class="table table-hover table-bordered pt-3 display" id="example" style="">
+                <thead class="thead-light">
+                    <tr>
 
-
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">First Name:</label>
-                                <input type="text" name="fname" class="form-control item" placeholder="Arcel">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Middle Name:</label>
-                                <input type="text" name="mname" class="form-control item" placeholder="V">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Last Name:</label>
-                                <input type="text" name="lname" class="form-control item" placeholder="Luceno">
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Username:</label>
-                                <input type="text" name="username" class="form-control item" placeholder="petLover">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Phone number:</label>
-                                <input type="tel" name="phonenumber" class="form-control item"
-                                    placeholder="+639 XX XXX XXXX">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="inputSex">Sex</label>
-                                <select class="form-select mt-2" aria-label="Default select example" name="sex">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Date of Birth:</label>
-                                <input type="date" name="dob" class="form-control item">
-                            </div>
-
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-10">
-                                <label for="inputAddress">Address</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"
-                                    name="address">
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="inputStatus">Status</label>
-                                <fieldset disabled>
-                                    <input type="text" class="form-control" id="inputStatus" placeholder="Unverified"
-                                        name="status">
-                                </fieldset>
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3 mb-5">
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Email Address:</label>
-                                <input type="email" name="email" class="form-control item"
-                                    placeholder="arcel@gmail.com">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Password:</label>
-                                <input type="password" name="password" class="form-control item">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Registration Date:</label>
-                                <fieldset disabled>
-                                    <input type="datetime-local" name="dateofReg" class="form-control item">
-                                </fieldset>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
+                        <th>No.</th>
+                        <th>Address</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if ($manage_contact == null)
+                        <tr>
+                            <td class="text-center" colspan="3">No Data!</td>
+                        </tr>
+                    @else
+                        @php
+                            $i = 1;
+                        @endphp
+                        @foreach ($manage_contact as $contact)
+                            <tr>
+                                <td>{{ $i++ }}</td>
+                                <td>{{ $contact['address'] }}</td>
+                                <td>{{ $contact['name'] }}</td>
+                                <td>{{ $contact['phone'] }}</td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle" id="image" style="width:auto; height:200px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;">
-                                <input class="form-control" type="file" id="formFile" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
-                            </button>
+    <!--Modal-->
+    @if ($manage_donor == null)
+    @else
+        @foreach ($manage_donor as $item)
+            <!-- Modal Body -->
+            <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+            <div class="modal fade" id="viewModal{{ $item['id'] }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">View Account</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+                        <form action="donor/{{ $item['id'] }}" method="POST">
+                            <div class="modal-body">
+                                @csrf
+                                @method('PUT')
+                                <div class="text-center">
+                                    <img src="{{ asset('profile.JPG') }}" alt="..."
+                                        class="img-thumbnail rounded-circle" id="image"
+                                        style="width:auto; height:200px;">
+                                </div>
+                                <div class="form-group row mt-5">
+                                    <div class="form-group col-md-4">
+                                        <label class="form-label" for="">First Name:</label>
+                                        <input type="text" name="firstName" id="firstName"
+                                            value="{{ $item['firstName'] }}" class="form-control item" disabled readonly>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="form-label" for="">Last Name:</label>
+                                        <input type="text" name="lastName" id="lastName"
+                                            value="{{ $item['lastName'] }}" class="form-control item" disabled readonly>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="inputSex">Sex</label>
+                                        <select class="form-select mt-2"disabled readonly>
+                                            <option value="Male"
+                                                @php if($item['sex'] == 'Male') echo 'selected = "selected"'; @endphp>
+                                                Male
+                                            </option>
+                                            <option value="Female"
+                                                @php if($item['sex'] == 'Female') echo 'selected = "selected"'; @endphp>
+                                                Female
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row mt-3">
+                                    <div class="form-group col-md-5">
+                                        <label class="form-label" for="">Email Address:</label>
+                                        <input type="text" name="email" id="email" value="{{ $item['email'] }}"
+                                            class="form-control item" disabled readonly>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="form-label" for="">Contact Number:</label>
+                                        <input type="tel" name="phone" id="phone" value="{{ $item['phone'] }}"
+                                            class="form-control item" disabled readonly>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="form-label" for="">Date of Birth:</label>
+                                        <input type="date" name="dob" id="dob" value="{{ $item['dob'] }}"
+                                            class="form-control item" disabled readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group row mt-3">
+                                    <div class="form-group col-md-4">
+                                        <label class="form-label" for="">Date of Registration:</label>
+                                        <input type="datetime-local" name="dor" id="dor"
+                                            value="{{ $item['dor'] }}" class="form-control item" disabled readonly>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="form-label" for="">Status:</label>
+                                        <input type="text" name="status" id="status"
+                                            value="{{ $item['status'] }}" class="form-control item" disabled readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Data Table - Contact Address-->
+                            <div class="card-body">
+                                <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+                                    <table class="table table-hover table-bordered pt-3 display" id="example" style="">
+                                        <thead class="thead-light">
+                                            <tr>
+
+                                                <th>No.</th>
+                                                <th>Address</th>
+                                                <th>Name</th>
+                                                <th>Phone Number</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($manage_contact as $contact )
+                                                @if($contact['ownerID'] == $item['id'])
+                                                    <tr>
+                                                        <td>{{ $i++ }}</td>
+                                                        <td>{{ $contact['address'] }}</td>
+                                                        <td>{{ $contact['name'] }}</td>
+                                                        <td>{{ $contact['phone'] }}</td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
 
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">First Name:</label>
-                                <input type="text" name="fname" class="form-control item" placeholder="Arcel">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Middle Name:</label>
-                                <input type="text" name="mname" class="form-control item" placeholder="V">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Last Name:</label>
-                                <input type="text" name="lname" class="form-control item" placeholder="Luceno">
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Username:</label>
-                                <input type="text" name="username" class="form-control item" placeholder="petLover">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Phone number:</label>
-                                <input type="tel" name="phonenumber" class="form-control item"
-                                    placeholder="+639 XX XXX XXXX">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="inputSex">Sex</label>
-                                <select class="form-select mt-2" aria-label="Default select example" name="sex">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Date of Birth:</label>
-                                <input type="date" name="dob" class="form-control item">
-                            </div>
-
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-10">
-                                <label for="inputAddress">Address</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"
-                                    name="address">
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="inputStatus">Status</label>
-                                <fieldset disabled>
-                                    <input type="text" class="form-control" id="inputStatus" placeholder="Unverified"
-                                        name="status">
-                                </fieldset>
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3 mb-5">
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Email Address:</label>
-                                <input type="email" name="email" class="form-control item"
-                                    placeholder="arcel@gmail.com">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Password:</label>
-                                <input type="password" name="password" class="form-control item">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Registration Date:</label>
-                                <fieldset disabled>
-                                    <input type="datetime-local" name="dateofReg" class="form-control item">
-                                </fieldset>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        @endforeach
+    @endif
 
     <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-xmark"></i>
-                    </div>
-                    <h4 class="modal-title w-100" id="exampleModalLabel">Are you sure?</h4>
+    @if ($manage_donor == null)
+    @else
+        @foreach ($manage_donor as $item)
+            <!-- Modal Body -->
+            <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+            <div class="modal fade" id="deleteModal{{ $item['id'] }}" tabindex="-1"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-confirm modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header flex-column">
+                            <div class="icon-box">
+                                <i class="fa-solid fa-xmark"></i>
+                            </div>
+                            <h4 class="modal-title w-100" id="exampleModalLabel">Are you sure?</h4>
+                        </div>
 
-                </div>
-                <div class="modal-body">
-                    <p>Do you really want to delete these records? This process cannot be undone.</p>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                        <div class="modal-body">
+                            <p>Do you really want to delete these records? This process cannot be undone.</p>
+                        </div>
+
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                            <!--Virtual Delete-->
+                            <form action="donor/{{ $item['id'] }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        @endforeach
+    @endif
 @stop
 
 <!-- Scripts -->
@@ -411,9 +364,9 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js">
     </script>
 
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-        });
-    </script>
+<script>
+    $(document).ready(function() {
+        $('table.display').DataTable();
+    });
+</script>
 @stop

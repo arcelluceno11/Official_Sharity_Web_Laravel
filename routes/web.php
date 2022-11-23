@@ -11,6 +11,13 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 
+use App\Http\Controllers\CharityListController;
+use App\Http\Controllers\DonorListController;
+use App\Http\Controllers\OrderListController;
+use App\Http\Controllers\TransactionListController;
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\SalesController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,7 +30,7 @@ use App\Http\Controllers\TransactionController;
 */
 
 Route::get('/', function () {
-    return redirect('test');
+    return redirect('donor');
 });
 
 Route::resource('/test', TestController::class);
@@ -35,3 +42,10 @@ Route::resource('/driver', DriverController::class);
 Route::resource('/purchase', PurchaseController::class);
 Route::resource('/product', ProductController::class);
 Route::resource('/transaction', TransactionController::class);
+
+Route::resource('/charitylist', CharityListController::class);
+Route::resource('/donorshopperlist', DonorListController::class);
+Route::resource('/orderlist', OrderListController::class);
+Route::resource('/transactionlist', TransactionListController::class);
+Route::resource('/history', HistoryController::class);
+Route::resource('/sales', SalesController::class);

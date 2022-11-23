@@ -1,12 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Helpers\FirebaseHelper;
 
 use Illuminate\Http\Request;
 
-class DonorController extends Controller
+class TransactionListController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,14 +13,7 @@ class DonorController extends Controller
      */
     public function index()
     {
-        $database = app('firebase.database');
-        $manage_donor = $database->getReference('User/DonorShopper')->getValue();
-        $manage_contact = $database->getReference('ContactAddresses')->getValue();
-
-        return view('pages.manage_donor', [
-            'manage_donor' => $manage_donor,
-            'manage_contact' => $manage_contact
-        ]);
+        return view('pages.report_list_transaction');
     }
 
     /**
@@ -43,7 +34,7 @@ class DonorController extends Controller
      */
     public function store(Request $request)
     {
-
+        //
     }
 
     /**
@@ -77,7 +68,7 @@ class DonorController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        //
     }
 
     /**
@@ -88,22 +79,6 @@ class DonorController extends Controller
      */
     public function destroy($id)
     {
-        /*Physical Delete
-        $database = app('firebase.database');
-        $database->getReference('User/DonorShopper/'.$id)->set(null);
-
-        return redirect('manage_donor');
-        */
-
-        /*
-        $database = app('firebase.database');
-
-        $data = [
-            'status' => 'Inactive'
-        ];
-
-        $database->getReference('User/DonorShopper/'.$id)->update($data);
-
-        return redirect('donor');*/
+        //
     }
 }

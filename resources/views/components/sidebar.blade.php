@@ -41,14 +41,14 @@
                             <span>List</span></a>
                         <div id="collapseReportsList" class="collapse">
                             <div class="bg-white py-2 collapse-inner rounded">
-                                <a class="collapse-item" href="">Charity</a>
-                                <a class="collapse-item" href="">Donor/Shopper</a>
-                                <a class="collapse-item" href="">Order</a>
-                                <a class="collapse-item" href="">Transaction</a>
+                                <a class="collapse-item" href="charitylist">Charity</a>
+                                <a class="collapse-item" href="donorshopperlist">Donor/Shopper</a>
+                                <a class="collapse-item" href="orderlist">Order</a>
+                                <a class="collapse-item" href="transactionlist">Transaction</a>
                             </div>
                         </div>
-                        <a class="collapse-item" href="">History</a>
-                        <a class="collapse-item" href="">Sales</a>
+                        <a class="collapse-item" href="history">History</a>
+                        <a class="collapse-item" href="sales">Sales</a>
                     </div>
                 </div>
             </li>
