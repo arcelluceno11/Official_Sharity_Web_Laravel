@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\FirebaseHelper;
+use App\Http\Helpers\TeliverHelper;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
@@ -80,5 +82,46 @@ class PurchaseController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function acceptPurchase($id)
+    {
+        //Create Task
+        $database = app('firebase.database');
+        $purchase = $database->getReference('Purchases/' . $id)->getValue();
+
+        //Create Task
+        $task = TeliverHelper::createPickupTask(
+            $purchase['id'],
+            $purchase['purchaseBy'],
+            $purchase['contactAddress']['longitude'],
+            $purchase['contactAddress']['latitude'],
+            $purchase['contactAddress']['name'],
+            $purchase['contactAddress']['address'],
+            $purchase['contactAddress']['phone']
+        );
+        $tracking = TeliverHelper::getTrackingUrlTask($task['data']['task']['task_id']);
+
+        //Update Product
+        foreach ($purchase['products'] as $product) {
+            $database->getReference('Products/' . $product['id'] . '/status')->set('Sold');
+        }
+
+        //Update Donation
+        $database->getReference('Purchases/' . $id . '/status')->set('Accepted');
+        $database->getReference('Purchases/' . $id . '/shareUrl')->set($tracking['data']['webUrl']);
+
+        //Send Notification to Donor
+        FirebaseHelper::sendNotification(
+            $purchase['purchaseBy'],
+            FirebaseHelper::buildNotification("Order is Accepted", "Order: " . $purchase['id'], null),
+            [
+                'status' => 'Accepted',
+                'purchaseID' => $purchase['id']
+            ],
+            "ic_baseline_lightbulb_circle_24"
+        );
+
+        return redirect('purchase');
     }
 }

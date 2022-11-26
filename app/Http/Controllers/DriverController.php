@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Helpers\FirebaseHelper;
+use App\Http\Helpers\TeliverHelper;
 
 class DriverController extends Controller
 {
@@ -43,18 +44,9 @@ class DriverController extends Controller
         //Unique Code
         $id = sprintf("%06d", rand(1, 100000));
 
-        //Create driver with Firebase Auth
-        $auth = app('firebase.auth');
-        $driverAuth = [
-            'uid' => $id,
-            'email' => $request->input('email'),
-            'emailVerified' => false,
-            'password' => 'secretPassword',
-            'displayName' => $request->input('fname').' '.$request->input('mname').' '.$request->input('lname'),
-            'disabled' => false,
-        ];
-        $auth->createUser($driverAuth);
-        $auth->sendEmailVerificationLink($request->input('email'));
+        //Create Teliver Driver
+        $fullName = $request->input('fname').' '.$request->input('mname').' '.$request->input('lname');
+        TeliverHelper::createDriver($id, $fullName, $request->input('phone'), $request->input('email'));
 
         //Add driver to Realtime Database
         $database = app('firebase.database');
