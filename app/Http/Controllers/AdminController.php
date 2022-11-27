@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Helpers\FirebaseHelper;
+use Error;
 
 class AdminController extends Controller
 {
@@ -13,6 +15,10 @@ class AdminController extends Controller
      */
     public function index()
     {
+        if(!session()->has('adminID')){
+            return redirect('/login')->withErrors(['msg' => 'Whoops! Login First.']);
+        }
+
         return view('pages.manage_admin');
     }
 
@@ -34,7 +40,40 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'photo' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        //Initialzie Realtime Database
+        $database = app('firebase.database');
+
+        //Check if Email Exist
+        $admins = $database->getReference('Admins')->getValue();
+        if ($admins != null) {
+            foreach ($admins as $x) {
+                if ($x['email'] == $request->input('email')) {
+                    return back()->withErrors(['emailExist' => 'Email is already taken.']);
+                }
+            }
+        }
+
+        //Add Admin to Realtime Database
+        $id = sprintf("%08d", rand(1, floor(microtime(true) * 1000)));
+        $admin = [
+            'id' => $id,
+            'photo' => FirebaseHelper::uploadFile($request->file('photo'), 'Admins/' . $id),
+            'name' => $request->input('firstname') . ' ' . $request->input('lastname'),
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+            'updatedBy' => session('adminID')
+        ];
+        $database->getReference('Admins/' . $id)->set($admin);
+
+        return redirect('admin')->withSuccess('Successfully Added.');
     }
 
     /**
@@ -68,7 +107,29 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validate = $request->validate([
+            'photo' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        //Initialzie Realtime Database
+        $database = app('firebase.database');
+
+        //Update Admin
+        $admin = [
+            'id' => $id,
+            'photo' => FirebaseHelper::uploadFile($request->file('photo'), 'Admins/' . $id),
+            'name' => $request->input('firstname') . ' ' . $request->input('lastname'),
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+            'updatedBy' => session('adminID')
+        ];
+        $database->getReference('Admins/' . $id)->set($admin);
+
+        return redirect('admin')->withSuccess('Successfully Updated.');
     }
 
     /**
@@ -79,6 +140,12 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //Initialzie Realtime Database
+        $database = app('firebase.database');
+
+        //Delete Admin
+        $database->getReference('Admins/' . $id)->set(null);
+
+        return redirect('admin')->withSuccess('Successfully Deleted.');
     }
 }
