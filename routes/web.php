@@ -16,6 +16,7 @@ use App\Http\Controllers\DonorListController;
 use App\Http\Controllers\OrderListController;
 use App\Http\Controllers\TransactionListController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalesController;
 
 /*
@@ -30,7 +31,7 @@ use App\Http\Controllers\SalesController;
 */
 
 Route::get('/', function () {
-    return redirect('/login');
+    return redirect('/profile');
 });
 
 
@@ -39,7 +40,10 @@ Route::middleware(['preventBackHistory'])->group(function () {
     //Login Controller
     Route::resource('/login', LoginController::class);
     Route::post('/login/signIn', [LoginController::class, 'signIn']);
-    
+
+    //Profile
+    Route::resource('/profile',ProfileController::class);
+
     //Donation Controller
     Route::resource('/donation', DonationController::class);
     Route::post('/donation/acceptDonation/{id}', [DonationController::class, 'acceptDonation']);
