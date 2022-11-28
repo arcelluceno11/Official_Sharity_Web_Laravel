@@ -10,7 +10,7 @@
                         <img id="imageAdmin" class="border rounded-circle img-profile" />
                     </a>
                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                        <a class="dropdown-item" href="admin">
+                        <a class="dropdown-item" href="profile">
                             <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
                             Profile
                         </a>
