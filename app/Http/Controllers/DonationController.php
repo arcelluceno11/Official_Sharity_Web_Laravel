@@ -15,6 +15,10 @@ class DonationController extends Controller
      */
     public function index()
     {
+        if(!session()->has('adminID')){
+            return redirect('/login')->withErrors(['msg' => 'Whoops! Login First.']);
+        }
+
         //Get all the donations in Realtime Database
         $database = app('firebase.database');
         $donations = $database->getReference('Donations')->getValue();
@@ -182,7 +186,6 @@ class DonationController extends Controller
         $items = $database->getReference('Donations/' . $id . '/items')->getValue();
         $donation = $database->getReference('Donations/' . $id)->getValue();
 
-
         $num = 1;
         foreach ($items as $item) {
             //Update Donation Item Status
@@ -195,7 +198,7 @@ class DonationController extends Controller
                     'id' => $key,
                     'category' => $item['category'],
                     'color' => $item['color'],
-                    'image' => $item['image'],
+                    'image' => $item['charityDetails'],
                     'sex' => $item['sex'],
                     'size' => $item['size'],
                     'donatedBy' => $donation['donatedBy'],
@@ -230,7 +233,7 @@ class DonationController extends Controller
                 'id' => $key,
                 'category' => $request->input('category' . $num),
                 'color' => $request->input('color' . $num),
-                'image' => "none",
+                'image' => FirebaseHelper::uploadFile($request->file('photo'.$num), 'Drivers/'.$key),
                 'sex' => $request->input('sex' . $num),
                 'size' => $request->input('size' . $num),
                 'donatedBy' => $donation['donatedBy'],

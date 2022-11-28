@@ -14,9 +14,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
-export function setImage(itemID, imageLink) {
-    getDownloadURL(ref(storage, imageLink))
+export function setImage(itemID, image) {
+    getDownloadURL(ref(storage, image))
         .then((url) => {
-            $('#image'+itemID).attr('src', url);
+            $('#image' + itemID).attr('src', url);
+        });
+}
+
+export function setLink(id, link) {
+    getDownloadURL(ref(storage, link))
+        .then((url) => {
+            $(id).attr('href', url);
         });
 }

@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CharityController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DonorController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
@@ -30,31 +30,38 @@ use App\Http\Controllers\SalesController;
 */
 
 Route::get('/', function () {
-    return redirect('donor');
+    return redirect('/login');
 });
 
-Route::resource('/test', TestController::class);
-Route::resource('/admin', AdminController::class);
-Route::resource('/charity', CharityController::class);
 
-//Donation Controller
-Route::resource('/donation', DonationController::class);
-Route::post('/donation/acceptDonation/{id}', [DonationController::class, 'acceptDonation']);
-Route::post('/donation/rejectDonation/{id}', [DonationController::class, 'rejectDonation']);
-Route::post('/donation/assignDriver/{taskid}', [DonationController::class, 'assignDriver']);
-Route::post('/donation/qualityCheckedPiece/{id}', [DonationController::class, 'qualityCheckedPiece']);
-Route::post('/donation/qualityCheckedBulk/{id}', [DonationController::class, 'qualityCheckedBulk']);
+Route::middleware(['preventBackHistory'])->group(function () {
 
+    //Login Controller
+    Route::resource('/login', LoginController::class);
+    Route::post('/login/signIn', [LoginController::class, 'signIn']);
+    
+    //Donation Controller
+    Route::resource('/donation', DonationController::class);
+    Route::post('/donation/acceptDonation/{id}', [DonationController::class, 'acceptDonation']);
+    Route::post('/donation/rejectDonation/{id}', [DonationController::class, 'rejectDonation']);
+    Route::post('/donation/assignDriver/{taskid}', [DonationController::class, 'assignDriver']);
+    Route::post('/donation/qualityCheckedPiece/{id}', [DonationController::class, 'qualityCheckedPiece']);
+    Route::post('/donation/qualityCheckedBulk/{id}', [DonationController::class, 'qualityCheckedBulk']);
 
-Route::resource('/donor', DonorController::class);
-Route::resource('/driver', DriverController::class);
-Route::resource('/purchase', PurchaseController::class);
-Route::resource('/product', ProductController::class);
-Route::resource('/transaction', TransactionController::class);
+    //Purchase Controller
+    Route::resource('/purchase', PurchaseController::class);
+    Route::post('/purchase/acceptPurchase/{id}', [PurchaseController::class, 'acceptPurchase']);
 
-Route::resource('/charitylist', CharityListController::class);
-Route::resource('/donorshopperlist', DonorListController::class);
-Route::resource('/orderlist', OrderListController::class);
-Route::resource('/transactionlist', TransactionListController::class);
-Route::resource('/history', HistoryController::class);
-Route::resource('/sales', SalesController::class);
+    Route::resource('/admin', AdminController::class);
+    Route::resource('/charity', CharityController::class);
+    Route::resource('/donor', DonorController::class);
+    Route::resource('/driver', DriverController::class);
+    Route::resource('/product', ProductController::class);
+    Route::resource('/transaction', TransactionController::class);
+    Route::resource('/sales', SalesController::class);
+    Route::resource('/history', HistoryController::class);
+    Route::resource('/charitylist', CharityListController::class);
+    Route::resource('/donorshopperlist', DonorListController::class);
+    Route::resource('/orderlist', OrderListController::class);
+    Route::resource('/transactionlist', TransactionListController::class);
+});

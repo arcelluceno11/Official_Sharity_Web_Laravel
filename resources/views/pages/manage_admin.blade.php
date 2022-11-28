@@ -112,6 +112,19 @@
 
 <!-- Content -->
 @section('content')
+
+    @if ($errors->any())
+        <div class="alert alert-warning" role="alert">
+            Failed: Please check inputs
+        </div>
+    @enderror
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @enderror
+
+    <!-- Admin Table -->
     <div class="card shadow">
         <div class="card-header py-3">
             <div class="row">
@@ -129,261 +142,152 @@
         </div>
         <div class="card-body">
             <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-hover table-bordered pt-3" id="example" style="">
+                <table class="table table-hover table-bordered pt-3" id="tableAdmins" style="">
                     <thead class="thead-light">
                         <tr>
-                            <th>No.</th>
-                            <th>Username</th>
+                            <th>ID</th>
                             <th>Email Address</th>
                             <th>Full Name</th>
-                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>arcelPet</td>
-                            <td>arcel@gmail.com</td>
-                            <td>Arcel V. Luceno</td>
-                            <td>Unverified</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>pamPet</td>
-                            <td>pamela.may@gmail.com</td>
-                            <td>Pamela May Z. Tanedo</td>
-                            <td>Verified</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>paulPet</td>
-                            <td>paul.angelo@gmail.com</td>
-                            <td>Paul Angelo F. Soltero</td>
-                            <td>Unverified</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Add Modal -->
+    <!-- Admin Add Modal -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
+            <form action="admin" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Account</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
                         <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle" id="image" style="width:auto; height:200px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;" >
-                                <input class="form-control" type="file" id="formFile" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
+                            <img src="{{ asset('image-holder.png') }}" alt="..."
+                                class="img-thumbnail rounded-circle" id="image" style="width:150px; height:150px;">
+                            <button class="btn btn-success" style="margin-left:50px;">
+                                <input class="form-control" type="file" id="formFile" name="photo"
+                                    onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
                             </button>
+                            @error('photo')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-
                         <div class="form-group row mt-3">
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">First Name:</label>
-                                <input type="text" name="fname" class="form-control item" placeholder="Arcel">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Middle Name:</label>
-                                <input type="text" name="mname" class="form-control item" placeholder="V">
+                                <input type="text" name="firstname" class="form-control item">
+                                @error('firstname')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Last Name:</label>
-                                <input type="text" name="lname" class="form-control item" placeholder="Luceno">
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Username:</label>
-                                <input type="text" name="username" class="form-control item" placeholder="petLover">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Phone number:</label>
-                                <input type="tel" name="phonenumber" class="form-control item"
-                                    placeholder="+639 XX XXX XXXX">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="inputSex">Sex</label>
-                                <select class="form-select mt-2" aria-label="Default select example" name="sex">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Date of Birth:</label>
-                                <input type="date" name="dob" class="form-control item">
-                            </div>
-
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-10">
-                                <label for="inputAddress">Address</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"
-                                    name="address">
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="inputStatus">Status</label>
-                                <fieldset disabled>
-                                    <input type="text" class="form-control" id="inputStatus" placeholder="Unverified"
-                                        name="status">
-                                </fieldset>
+                                <input type="text" name="lastname" class="form-control item">
+                                @error('lastname')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
                         <div class="form-group row mt-3 mb-5">
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Email Address:</label>
-                                <input type="email" name="email" class="form-control item"
-                                    placeholder="arcel@gmail.com">
+                                <input type="email" name="email" class="form-control item">
+                                @error('email')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                                @error('emailExist')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Password:</label>
                                 <input type="password" name="password" class="form-control item">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Registration Date:</label>
-                                <fieldset disabled>
-                                    <input type="datetime-local" name="dateofReg" class="form-control item">
-                                </fieldset>
+                                @error('password')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
+            <form id="actionEdit" method="POST" enctype="multipart/form-data">
+                @method('PUT')
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Admin</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
                         <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle" id="image" style="width:auto; height:200px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;">
-                                <input class="form-control" type="file" id="formFile" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
+                            <img src="{{ asset('image-holder.png') }}" alt="..."
+                                class="img-thumbnail rounded-circle" id="imageEditAdmin"
+                                style="width:150px; height:150px;">
+                            <button class="btn btn-success" style="margin-left:50px;">
+                                <input class="form-control" type="file" id="formFile" name="photo"
+                                    onchange="document.getElementById('imageEditAdmin').src = window.URL.createObjectURL(this.files[0])">
                             </button>
+                            @error('photo')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-
-                        <div class="form-group row mt-3">
+                        <div class="form-group row mt-3 text-center">
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">First Name:</label>
-                                <input type="text" name="fname" class="form-control item" placeholder="Arcel">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Middle Name:</label>
-                                <input type="text" name="mname" class="form-control item" placeholder="V">
+                                <input id="editFirstName" type="text" name="firstname" class="form-control item">
+                                @error('firstname')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Last Name:</label>
-                                <input type="text" name="lname" class="form-control item" placeholder="Luceno">
+                                <input id="editLastName" type="text" name="lastname" class="form-control item">
+                                @error('lastname')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Username:</label>
-                                <input type="text" name="username" class="form-control item" placeholder="petLover">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Phone number:</label>
-                                <input type="tel" name="phonenumber" class="form-control item"
-                                    placeholder="+639 XX XXX XXXX">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="inputSex">Sex</label>
-                                <select class="form-select mt-2" aria-label="Default select example" name="sex">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Date of Birth:</label>
-                                <input type="date" name="dob" class="form-control item">
-                            </div>
-
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-10">
-                                <label for="inputAddress">Address</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"
-                                    name="address">
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="inputStatus">Status</label>
-                                <fieldset disabled>
-                                    <input type="text" class="form-control" id="inputStatus" placeholder="Unverified"
-                                        name="status">
-                                </fieldset>
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3 mb-5">
+                        <div class="form-group row mt-3 mb-5 text-center">
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Email Address:</label>
-                                <input type="email" name="email" class="form-control item"
-                                    placeholder="arcel@gmail.com">
+                                <input id="editEmail" type="email" name="email" class="form-control item">
+                                @error('email')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                                @error('emailExist')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Password:</label>
-                                <input type="password" name="password" class="form-control item">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Registration Date:</label>
-                                <fieldset disabled>
-                                    <input type="datetime-local" name="dateofReg" class="form-control item">
-                                </fieldset>
+                                <input id="editPassword" type="password" name="password" class="form-control item">
+                                @error('password')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -396,14 +300,16 @@
                         <i class="fa-solid fa-xmark"></i>
                     </div>
                     <h4 class="modal-title w-100" id="exampleModalLabel">Are you sure?</h4>
-
                 </div>
                 <div class="modal-body">
                     <p>Do you really want to delete these records? This process cannot be undone.</p>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <form id="actionDelete" method="POST">
+                        @method('DELETE')
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -413,12 +319,105 @@
 <!-- Scripts -->
 @section('scripts')
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js">
+    </script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js">
+    </script>
     <script>
         $(document).ready(function() {
-            $('#example').DataTable();
+            $('#tableAdmins').DataTable();
+        });
+    </script>
+    <script type="module">
+        //Initialize Firebase
+        import {
+            initializeApp
+        } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js';
+        import {
+            getDatabase,
+            ref,
+            onValue
+        } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js';
+        import {
+            setImage
+        } from './js/firebasehelper.js';
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrQnBzhOFfjrIqmOUabkt14wvx-LVnzug",
+            authDomain: "sharity-f983e.firebaseapp.com",
+            databaseURL: "https://sharity-f983e-default-rtdb.firebaseio.com",
+            projectId: "sharity-f983e",
+            storageBucket: "sharity-f983e.appspot.com",
+            messagingSenderId: "599803730946",
+            appId: "1:599803730946:web:e7ebe55992577653831b1b",
+            measurementId: "G-2NTKV2NYYB"
+        };
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        //Initialize Table
+        var tableAdmins = $('#tableAdmins').DataTable();
+
+        const admins = ref(database, 'Admins/');
+        onValue(admins, (snapshot) => {
+            //Data
+            const data = snapshot.val();
+
+            //Clear Table
+            tableAdmins.clear().draw();
+
+            //Tables
+            for (var key in data) {
+
+                //Admin
+                tableAdmins.row.add([
+                    data[key]['id'],
+                    data[key]['email'],
+                    data[key]['name'],
+                    `
+                    <button type="button" class="editModal btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </button>
+                    <button type="button" class="deleteModal btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                         <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                    `
+                ]).node().id = data[key]['id'];
+                tableAdmins.draw(false);
+            }
+
+            //Edit Modal
+            $(document).on('click', '.editModal', function() {
+                var x = $(this).closest('tr').attr('id');
+
+                for (var key in data) {
+                    if (data[key]['id'] == x) {
+                        var name = data[key]['name'].split(/[ ]+/);
+
+                        //Assign Values
+                        setImage('EditAdmin', data[key]['photo']);
+                        $('#editFirstName').val(name[0]);
+                        $('#editLastName').val(name[1]);
+                        $('#editEmail').val(data[key]['email']);
+                        $('#editPassword').val(data[key]['password']);
+
+                        //Modal Action
+                        $('#actionEdit').attr('action', 'admin/' + data[key]['id']);
+                    }
+                }
+            });
+
+            //Delete Modal
+            $(document).on('click', '.deleteModal', function() {
+                var x = $(this).closest('tr').attr('id');
+
+                for (var key in data) {
+                    if (data[key]['id'] == x) {
+
+                        //Modal Action
+                        $('#actionDelete').attr('action', 'admin/' + data[key]['id']);
+                    }
+                }
+            });
         });
     </script>
 @stop
