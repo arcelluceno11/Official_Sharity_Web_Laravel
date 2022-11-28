@@ -13,7 +13,15 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return view('pages.manage_transaction');
+        $database = app('firebase.database');
+        $manage_transaction = $database->getReference('Transaction')->getValue();
+        $manage_purchase = $database->getReference('Purchases')->getValue();
+
+        return view('pages.manage_transaction', [
+            'manage_transaction' => $manage_transaction,
+            'manage_purchase' => $manage_purchase
+        ]);
+
     }
 
     /**

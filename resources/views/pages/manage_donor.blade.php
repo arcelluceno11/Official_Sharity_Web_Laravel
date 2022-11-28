@@ -112,295 +112,123 @@
 
 <!-- Content -->
 @section('content')
+
+    <!--Data Table-->
     <div class="card shadow">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Manage Donor/Shopper Accounts</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-hover table-bordered pt-3" id="example" style="">
+                <table class="table table-hover table-bordered pt-3 display" id="tableDonorShopper" style="">
                     <thead class="thead-light">
                         <tr>
-                            <th>No.</th>
-                            <th>Username</th>
+                            <th style="width:100px;">ID</th>
                             <th>Email Address</th>
-                            <th>Full Name</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th>Action</th>
                         </tr>
-                    </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>arcelPet</td>
-                            <td>arcel@gmail.com</td>
-                            <td>Arcel V. Luceno</td>
-                            <td>Unverified</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>pamPet</td>
-                            <td>pamela.may@gmail.com</td>
-                            <td>Pamela May Z. Tanedo</td>
-                            <td>Verified</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>paulPet</td>
-                            <td>paul.angelo@gmail.com</td>
-                            <td>Paul Angelo F. Soltero</td>
-                            <td>Unverified</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
                     </tbody>
+                    </thead>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!--Modal-->
+    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Account</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">View Account</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle"
-                                id="image" style="width:auto; height:200px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;">
-                                <input class="form-control" type="file" id="formFile"
-                                    onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
-                            </button>
-                        </div>
-
-
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">First Name:</label>
-                                <input type="text" name="fname" class="form-control item" placeholder="Arcel">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Middle Name:</label>
-                                <input type="text" name="mname" class="form-control item" placeholder="V">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Last Name:</label>
-                                <input type="text" name="lname" class="form-control item" placeholder="Luceno">
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Username:</label>
-                                <input type="text" name="username" class="form-control item" placeholder="petLover">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Phone number:</label>
-                                <input type="tel" name="phonenumber" class="form-control item"
-                                    placeholder="+639 XX XXX XXXX">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="inputSex">Sex</label>
-                                <select class="form-select mt-2" aria-label="Default select example" name="sex">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Date of Birth:</label>
-                                <input type="date" name="dob" class="form-control item">
-                            </div>
-
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-10">
-                                <label for="inputAddress">Address</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"
-                                    name="address">
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="inputStatus">Status</label>
-                                <fieldset disabled>
-                                    <input type="text" class="form-control" id="inputStatus" placeholder="Unverified"
-                                        name="status">
-                                </fieldset>
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3 mb-5">
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Email Address:</label>
-                                <input type="email" name="email" class="form-control item"
-                                    placeholder="arcel@gmail.com">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Password:</label>
-                                <input type="password" name="password" class="form-control item">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Registration Date:</label>
-                                <fieldset disabled>
-                                    <input type="datetime-local" name="dateofReg" class="form-control item">
-                                </fieldset>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle" id="image" style="width:auto; height:200px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;">
-                                <input class="form-control" type="file" id="formFile" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
-                            </button>
-                        </div>
-
-
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">First Name:</label>
-                                <input type="text" name="fname" class="form-control item" placeholder="Arcel">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Middle Name:</label>
-                                <input type="text" name="mname" class="form-control item" placeholder="V">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Last Name:</label>
-                                <input type="text" name="lname" class="form-control item" placeholder="Luceno">
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Username:</label>
-                                <input type="text" name="username" class="form-control item" placeholder="petLover">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Phone number:</label>
-                                <input type="tel" name="phonenumber" class="form-control item"
-                                    placeholder="+639 XX XXX XXXX">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="inputSex">Sex</label>
-                                <select class="form-select mt-2" aria-label="Default select example" name="sex">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Date of Birth:</label>
-                                <input type="date" name="dob" class="form-control item">
-                            </div>
-
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-10">
-                                <label for="inputAddress">Address</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"
-                                    name="address">
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="inputStatus">Status</label>
-                                <fieldset disabled>
-                                    <input type="text" class="form-control" id="inputStatus" placeholder="Unverified"
-                                        name="status">
-                                </fieldset>
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3 mb-5">
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Email Address:</label>
-                                <input type="email" name="email" class="form-control item"
-                                    placeholder="arcel@gmail.com">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Password:</label>
-                                <input type="password" name="password" class="form-control item">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Registration Date:</label>
-                                <fieldset disabled>
-                                    <input type="datetime-local" name="dateofReg" class="form-control item">
-                                </fieldset>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-xmark"></i>
+                    <div class="text-center">
+                        <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle"
+                            id="image" style="width:auto; height:200px;">
                     </div>
-                    <h4 class="modal-title w-100" id="exampleModalLabel">Are you sure?</h4>
+                    <div class="form-group row mt-5">
 
+                        <div class="form-group col-md-4">
+                            <label class="form-label" for="">First Name:</label>
+                            <input type="text" name="firstName" id="firstName" class="form-control item" disabled
+                                readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="form-label" for="">Last Name:</label>
+                            <input type="text" name="lastName" id="lastName" class="form-control item" disabled
+                                readonly>
+                        </div>
+                        <div class="form-group col-md-4 ">
+                            <label for="inputSex">Sex</label>
+                            <input type="text" name="sex" id="sex" class="form-control item mt-2" disabled
+                                readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <div class="form-group col-md-5">
+                            <label class="form-label" for="">Email Address:</label>
+                            <input type="text" name="email" id="email" class="form-control item" disabled readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="form-label" for="">Contact Number:</label>
+                            <input type="tel" name="phone" id="phone" class="form-control item" disabled readonly>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="form-label" for="">Date of Birth:</label>
+                            <input type="text" name="dob" id="dob" class="form-control item" disabled readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <div class="form-group col-md-3">
+                            <label class="form-label" for="">Status:</label>
+                            <input type="text" name="status" id="status" class="form-control item" disabled readonly>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <p>Do you really want to delete these records? This process cannot be undone.</p>
+
+                <!--Data Table - Contact Address-->
+                <div class="card-body">
+                    <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+                        <table class="table table-hover table-bordered pt-3 display" id="tableDonorShopperModal"
+                            style="">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Address</th>
+                                    <th>Name</th>
+                                    <th>Phone Number</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!--Toast-->
+    <div class="toast-container">
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="toastDonorShopper" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Donors and Shoppers</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    The Donor/Shopper Table was refreshed!
+                </div>
+            </div>
+        </div>
+    </div>
+
 @stop
 
 <!-- Scripts -->
@@ -412,8 +240,108 @@
     </script>
 
     <script>
+        //Datatables
         $(document).ready(function() {
-            $('#example').DataTable();
+            $('table.display').DataTable();
         });
+    </script>
+
+    <script type="module">
+    //Initialize Firebase
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js';
+    import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js';
+    import { setImage } from './js/firebasehelper.js';
+    const firebaseConfig = {
+        apiKey: "AIzaSyDrQnBzhOFfjrIqmOUabkt14wvx-LVnzug",
+        authDomain: "sharity-f983e.firebaseapp.com",
+        databaseURL: "https://sharity-f983e-default-rtdb.firebaseio.com",
+        projectId: "sharity-f983e",
+        storageBucket: "sharity-f983e.appspot.com",
+        messagingSenderId: "599803730946",
+        appId: "1:599803730946:web:e7ebe55992577653831b1b",
+        measurementId: "G-2NTKV2NYYB"
+    };
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    //Read DonorShopper
+    const donors = ref(database, 'User/DonorShopper/');
+    onValue(donors, (snapshot) => {
+        //Data
+        const data = snapshot.val();
+
+        //Initialize Tables
+        var tableDonorShopper = $('#tableDonorShopper').DataTable();
+        tableDonorShopper.clear().draw();
+
+        //Tables
+        for (var key in data) {
+
+            tableDonorShopper.row.add([
+                data[key]['id'],
+                data[key]['email'],
+                data[key]['firstName'],
+                data[key]['lastName'],
+                data[key]['status'],
+                `
+                <button type="button" class="btnDonorShopperModal btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+                `
+            ]).node().id = data[key]['id'];
+            tableDonorShopper.draw(false);
+
+            //Show Toast
+            new bootstrap.Toast($('#toastDonorShopper')).show();
+        }
+
+        //Modals
+        $('.btnDonorShopperModal').click(function(){
+            var x = $(this).closest('tr').attr('id');
+
+            for(var key in data){
+                if (data[key]['id'] == x) {
+
+                    //Assign Values
+                    $('#firstName').val(data[key]['firstName']);
+                    $('#lastName').val(data[key]['lastName']);
+                    $('#sex').val(data[key]['sex']);
+                    $('#email').val(data[key]['email']);
+                    $('#phone').val(data[key]['phone']);
+                    $('#dob').val(data[key]['dob']);
+                    $('#sex').val(data[key]['sex']);
+                    $('#status').val(data[key]['status']);
+
+                    const addresses = ref(database, 'ContactAddresses/');
+                    onValue(addresses, (snapshot) => {
+
+                        //Data
+                        const dataAddress = snapshot.val();
+
+                        var tableDonorShopperModal = $('#tableDonorShopperModal').DataTable();
+                        tableDonorShopperModal.clear().draw();
+                        var i = 1;
+
+                        for(var key in dataAddress)
+                        {
+                            if(dataAddress[key]['ownerID'] == x){
+                                tableDonorShopperModal.row.add([
+                                    i++,
+                                    dataAddress[key]['address'],
+                                    dataAddress[key]['name'],
+                                    dataAddress[key]['phone']
+                                ]).node().id = dataAddress[key]['ownerID'];
+                                tableDonorShopperModal.draw(false);
+                            }
+                        }
+                    })
+
+
+                }
+            }
+        })
+    });
+
+
     </script>
 @stop

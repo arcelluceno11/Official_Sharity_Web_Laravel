@@ -11,6 +11,13 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 
+use App\Http\Controllers\CharityListController;
+use App\Http\Controllers\DonorListController;
+use App\Http\Controllers\OrderListController;
+use App\Http\Controllers\TransactionListController;
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\SalesController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,7 +39,7 @@ Route::middleware(['preventBackHistory'])->group(function () {
     //Login Controller
     Route::resource('/login', LoginController::class);
     Route::post('/login/signIn', [LoginController::class, 'signIn']);
-
+    
     //Donation Controller
     Route::resource('/donation', DonationController::class);
     Route::post('/donation/acceptDonation/{id}', [DonationController::class, 'acceptDonation']);
@@ -51,4 +58,10 @@ Route::middleware(['preventBackHistory'])->group(function () {
     Route::resource('/driver', DriverController::class);
     Route::resource('/product', ProductController::class);
     Route::resource('/transaction', TransactionController::class);
+    Route::resource('/sales', SalesController::class);
+    Route::resource('/history', HistoryController::class);
+    Route::resource('/charitylist', CharityListController::class);
+    Route::resource('/donorshopperlist', DonorListController::class);
+    Route::resource('/orderlist', OrderListController::class);
+    Route::resource('/transactionlist', TransactionListController::class);
 });
