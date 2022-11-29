@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\FirebaseHelper;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -13,15 +14,11 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $database = app('firebase.database');
-        $manage_transaction = $database->getReference('Transaction')->getValue();
-        $manage_purchase = $database->getReference('Purchases')->getValue();
+        if (!session()->has('adminID')) {
+            return redirect('/login')->withErrors(['msg' => 'Whoops! Login First.']);
+        }
 
-        return view('pages.manage_transaction', [
-            'manage_transaction' => $manage_transaction,
-            'manage_purchase' => $manage_purchase
-        ]);
-
+        return view('pages.manage_transaction');
     }
 
     /**
@@ -42,7 +39,55 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Unique ID
+        $random = sprintf("%03d", rand(1, 100));
+        $date = date('mdy');
+        $id = 'T' . $date . $random;
+
+        $database = app('firebase.database');
+        $charity = $database->getReference('Charities')->getValue();
+
+        foreach($charity as $x)
+        {
+            if($x['id'] == $request->input('charityID')) {
+
+                //Check if Requested Amount is bigger than Current Amount
+                if($request->input('remittedAmount') > $x['transactionDetails']['nonRemitted']) {
+                    return redirect('transaction')->withErrors(['msg' => 'Remitted Amount is bigger than the current amount of the Charity! Try Again.']);
+                    break;
+                }
+            }
+        }
+
+        $transaction = [
+            'id' => $id,
+            'charityID' => $request->input('charityID'),
+            'remittedAmount' => $request->input('remittedAmount'),
+            'remittedBy' => session('adminID'),
+            'remittedDate' => round(microtime(true) * 1000),
+            'remittedProof' => FirebaseHelper::uploadFile($request->file('photoProof'), 'Transaction/' . $id)
+        ];
+        $database->getReference('Transaction/' . $id)->set($transaction);
+
+        foreach($charity as $x)
+        {
+            if($x['id'] == $request->input('charityID')) {
+
+                $newAmount = round((double)$x['transactionDetails']['nonRemitted'] - $request->input('remittedAmount'));
+                $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/nonRemitted/')->set(round((double)$newAmount));
+
+                if($x['transactionDetails']['remitted'] != null) {
+                    $newRemittedAmnt = round((double)$x['transactionDetails']['remitted'] + $request->input('remittedAmount'));
+                    $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/remitted/')->set(round((double)$newRemittedAmnt));
+                }
+                else{
+                    $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/remitted/')->set(round((double)$request->input('remittedAmount')));
+                }
+
+            }
+        }
+
+        return redirect('transaction')->withSuccess('Successfully Created');
     }
 
     /**
