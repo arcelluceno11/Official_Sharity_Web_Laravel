@@ -74,7 +74,10 @@ class TransactionController extends Controller
             if($x['id'] == $request->input('charityID')) {
 
                 $newAmount = $x['transactionDetails']['nonRemitted'] - $request->input('remittedAmount');
+                $newRemittedAmnt = $x['transactionDetails']['remitted'] + $request->input('remittedAmount');
                 $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/nonRemitted/')->set(round((float)$newAmount, 2));
+                $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/remitted/')->set(round((float)$newRemittedAmnt, 2));
+
             }
         }
 
