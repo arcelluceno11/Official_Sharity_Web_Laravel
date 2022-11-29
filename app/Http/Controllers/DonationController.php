@@ -134,7 +134,7 @@ class DonationController extends Controller
             "ic_baseline_lightbulb_circle_24"
         );
 
-        return redirect('donation');
+        return redirect('donation')->withSuccess('Successfully Accepted.');
     }
 
     public function rejectDonation($id)
@@ -144,7 +144,7 @@ class DonationController extends Controller
         $database = app('firebase.database');
         $database->getReference('Donations/' . $id . '/status')->set('Rejected');
 
-        return redirect('donation');
+        return redirect('donation')->withSuccess('Successfully Rejected.');
     }
 
     public function assignDriver(Request $request, $taskid)
@@ -176,7 +176,7 @@ class DonationController extends Controller
             "ic_baseline_lightbulb_circle_24"
         );
 
-        return redirect('donation');
+        return redirect('donation')->withSuccess('Successfully Assigned.');
     }
 
     public function qualityCheckedPiece(Request $request, $id)
@@ -217,7 +217,7 @@ class DonationController extends Controller
         //Update Check
         $database->getReference('Donations/' . $id . '/checked')->set(true);
 
-        return redirect('donation');
+        return redirect('donation')->withSuccess('Successfully Quality Checked.');
     }
 
     public function qualityCheckedBulk(Request $request, $id)
@@ -251,6 +251,6 @@ class DonationController extends Controller
         //Update Check
         $database->getReference('Donations/' . $id . '/checked')->set(true);
 
-        return redirect('donation');
+        return redirect('donation')->withSuccess('Successfully Quality Checked.');
     }
 }

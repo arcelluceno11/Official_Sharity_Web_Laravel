@@ -93,6 +93,11 @@
 <!-- Content -->
 @section('content')
 
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @enderror
     <!--Pending Donations-->
     <div class="card shadow">
         <div class="card-header py-3">
