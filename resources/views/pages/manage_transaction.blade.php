@@ -1,7 +1,12 @@
+@php
+    use App\Http\Helpers\FirebaseHelper;
+@endphp
+
+
 @extends('layouts.index')
 
 <!-- Page Title -->
-@section('title', 'Manage Transaction')
+@section('title', 'Manage Donor')
 
 <!-- Styles -->
 @section('styles')
@@ -113,6 +118,17 @@
 <!-- Content -->
 @section('content')
 
+    @if ($errors->any())
+        <div class="alert alert-warning" role="alert">
+            {{ $errors->first() }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @enderror
+
     <!--Non-Remittable-->
     <div class="card shadow">
         <div class="card-header py-3">
@@ -120,67 +136,16 @@
         </div>
         <div class="card-body">
             <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-hover table-bordered pt-3 display" id="example" style="">
+                <table class="table table-hover table-bordered pt-3 display" id="tableNonRemittable" style="">
                     <thead class="thead-light">
                         <tr>
-                            <th>No.</th>
-                            <th>ID No.</th>
+                            <th style="width:30px;">No.</th>
                             <th>Charity Name</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Action</th>
+                            <th style="width:150px;">Current Money</th>
                         </tr>
-                    </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <th>10011</th>
-                            <td>Missionary of Children - Cebu City Chapter</td>
-                            <td>PHP 9,890.00</td>
-                            <td>10/22/22 10:00 AM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <th>10012</th>
-                            <td>Bukas Palad Foundation Inc.</td>
-                            <td>PHP 5,000.00</td>
-                            <td>10/30/22 1:00 PM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <th>10013</th>
-                            <td>Youth for Youth Foundation</td>
-                            <td>PHP 7,000.00</td>
-                            <td>10/22/22 10:30 AM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
                     </tbody>
+                    </thead>
                 </table>
             </div>
         </div>
@@ -195,67 +160,17 @@
         </div>
         <div class="card-body">
             <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-hover table-bordered pt-3 display" id="example" style="">
+                <table class="table table-hover table-bordered pt-3 display" id="tableRemittable" style="">
                     <thead class="thead-light">
                         <tr>
-                            <th>No.</th>
-                            <th>ID No.</th>
+                            <th style="width:30px;">No.</th>
                             <th>Charity Name</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Action</th>
+                            <th style="width:150px;">Current Money</th>
+                            <th style="width:50px;">Action</th>
                         </tr>
-                    </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <th>10011</th>
-                            <td>Missionary of Children - Cebu City Chapter</td>
-                            <td>PHP 12,890.00</td>
-                            <td>10/22/22 10:00 AM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <th>10012</th>
-                            <td>Bukas Palad Foundation Inc.</td>
-                            <td>PHP 13,000.00</td>
-                            <td>10/30/22 1:00 PM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <th>10013</th>
-                            <td>Youth for Youth Foundation</td>
-                            <td>PHP 20,000.00</td>
-                            <td>10/22/22 10:30 AM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
                     </tbody>
+                    </thead>
                 </table>
             </div>
         </div>
@@ -270,259 +185,131 @@
         </div>
         <div class="card-body">
             <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-hover table-bordered pt-3 display" id="example" style="">
+                <table class="table table-hover table-bordered pt-3 display" id="tableRemitted" style="">
                     <thead class="thead-light">
                         <tr>
-                            <th>No.</th>
-                            <th>ID No.</th>
+                            <th style="width:30px;">No.</th>
                             <th>Charity Name</th>
                             <th>Amount</th>
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
-                    </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <th>10011</th>
-                            <td>Missionary of Children - Cebu City Chapter</td>
-                            <td>PHP 12,890.00</td>
-                            <td>10/22/22 10:00 AM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <th>10012</th>
-                            <td>Bukas Palad Foundation Inc.</td>
-                            <td>PHP 13,000.00</td>
-                            <td>10/30/22 1:00 PM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <th>10013</th>
-                            <td>Youth for Youth Foundation</td>
-                            <td>PHP 20,000.00</td>
-                            <td>10/22/22 10:30 AM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
                     </tbody>
+                    </thead>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <!--Remittable Modal-->
+    <div class="modal fade" id="remitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">View Account</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form>
+                <form id="createTransaction" action="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
                         <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail"
-                                style="width:500px; height:300px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;">Add Photo</button>
+                            <img src="{{ asset('defaultImage.png') }}" alt="..." id="imageProof"
+                                class="image img-thumbnail " style="width:500px; height:300px; object-fit: cover;">
+                            <button type="button" class="btn btn-success" style="margin-left:50px;">
+                                <input class="form-control" type="file" id="formFile" name="photoProof"
+                                    onchange="document.getElementById('imageProof').src = window.URL.createObjectURL(this.files[0])"
+                                    required>
+                            </button>
                         </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col">
-                                <fieldset disabled>
+                        <div class="form-group row mt-5">
+                            <div class="form-group row ">
+                                <div class="form-group col d-none">
+                                    <label class="form-label " for="">Charity ID:</label>
+                                    <input type="text" name="charityID" id="charityID" class="form-control item"
+                                        readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="form-group col-md-8">
                                     <label class="form-label" for="">Charity Name:</label>
-                                    <input type="text" name="amount" class="form-control item"
-                                        placeholder="Bukas Palad Inc.">
-                                </fieldset>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-3">
-                                <fieldset disabled>
+                                    <input type="text" name="charityName" id="charityName" class="form-control item"
+                                        readonly>
+                                </div>
+                                <div class="form-group col-md-4">
                                     <label class="form-label" for="">Remitted Amount:</label>
-                                    <input type="text" name="amount" class="form-control item"
-                                        placeholder="PHP 9,999.00">
-                                </fieldset>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Processed by:</label>
-                                <input type="text" name="admin" class="form-control item"
-                                    placeholder="Pamela May Tañedo">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Remitted Date:</label>
-                                <input type="date" name="estDate" class="form-control item">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="inputSex">Status</label>
-                                <select class="form-select" aria-label="Default select example" name="sex">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Status1</option>
-                                    <option value="2">Status2</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-4">
-                                <label for="inputBankName">Bank Name</label>
-                                <fieldset disabled>
-                                    <select class="form-select mt-2" aria-label="Default select example" name="bankName">
-                                        <option selected>Choose...</option>
-                                        <option value="1">Banco de Oro Inc. (BDO)</option>
-                                        <option value="2">UnionBank</option>
-                                        <option value="3">RCBC</option>
-                                        <option value="4">Landbank Philippines</option>
-                                    </select>
-                                </fieldset>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Account Number:</label>
-                                <fieldset disabled>
-                                    <input type="number" name="dob" class="form-control item" maxlength="12">
-                                </fieldset>
+                                    <input type="number" name="remittedAmount"
+                                        class="remittedAmount form-control item" required>
+                                </div>
                             </div>
 
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-target="#editWholeModal"
-                        data-bs-toggle="modal">Back</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Transaction</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail"
-                                style="width:500px; height:300px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;">Add Photo</button>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col">
-                                <fieldset disabled>
-                                    <label class="form-label" for="">Charity Name:</label>
-                                    <input type="text" name="amount" class="form-control item"
-                                        placeholder="Bukas Palad Inc.">
-                                </fieldset>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-3">
-                                <fieldset disabled>
-                                    <label class="form-label" for="">Remitted Amount:</label>
-                                    <input type="text" name="amount" class="form-control item"
-                                        placeholder="PHP 9,999.00">
-                                </fieldset>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Processed by:</label>
-                                <input type="text" name="admin" class="form-control item"
-                                    placeholder="Pamela May Tañedo">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label class="form-label" for="">Remitted Date:</label>
-                                <input type="date" name="estDate" class="form-control item">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="inputSex">Status</label>
-                                <select class="form-select" aria-label="Default select example" name="sex">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Status1</option>
-                                    <option value="2">Status2</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-4">
-                                <label for="inputBankName">Bank Name</label>
-                                <fieldset disabled>
-                                    <select class="form-select mt-2" aria-label="Default select example" name="bankName">
-                                        <option selected>Choose...</option>
-                                        <option value="1">Banco de Oro Inc. (BDO)</option>
-                                        <option value="2">UnionBank</option>
-                                        <option value="3">RCBC</option>
-                                        <option value="4">Landbank Philippines</option>
-                                    </select>
-                                </fieldset>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Account Number:</label>
-                                <fieldset disabled>
-                                    <input type="number" name="dob" class="form-control item" maxlength="12">
-                                </fieldset>
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-target="#editWholeModal"
-                        data-bs-toggle="modal">Back</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-confirm modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-xmark"></i>
                     </div>
-                    <h4 class="modal-title w-100" id="exampleModalLabel">Are you sure?</h4>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create Transaction</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    <!-- View Remitted Modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">View Transaction</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Do you really want to delete these records? This process cannot be undone.</p>
+                    <div class="form-group row">
+                        <div class="form-group col-md-6">
+                            <div class="text-center">
+                                <img alt="..." class="viewImage img-thumbnail" id="imageView"
+                                    style="width:500px; height:300px; object-fit: cover;">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div class="form-group row mt-3">
+                                <div class="form-group col-md">
+                                    <label class="form-label" for="">Charity Name:</label>
+                                    <input type="text" name="charityName" class="charityName form-control item"
+                                        readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-3">
+                                <div class="form-group col-md-6">
+                                    <label class="form-label" for="">Remitted Amount:</label>
+                                    <input type="text" name="remittedAmount"
+                                        class="remittedAmount form-control item" readonly>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label class="form-label" for="">Remitted Date:</label>
+                                    <input type="text" name="remittedDate" class="remittedDate form-control item"
+                                        readonly>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-3">
+                                <div class="form-group col-md">
+                                    <label class="form-label" for="">Processed by:</label>
+                                    <input type="text" name="adminName" class="adminName form-control item"
+                                        readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
+
 @stop
 
 <!-- Scripts -->
@@ -534,8 +321,173 @@
     </script>
 
     <script>
+        //Datatables
         $(document).ready(function() {
             $('table.display').DataTable();
         });
+    </script>
+
+    <script type="module">
+    //Initialize Firebase
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js';
+    import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js';
+    import { setImage } from './js/firebasehelper.js';
+    const firebaseConfig = {
+        apiKey: "AIzaSyDrQnBzhOFfjrIqmOUabkt14wvx-LVnzug",
+        authDomain: "sharity-f983e.firebaseapp.com",
+        databaseURL: "https://sharity-f983e-default-rtdb.firebaseio.com",
+        projectId: "sharity-f983e",
+        storageBucket: "sharity-f983e.appspot.com",
+        messagingSenderId: "599803730946",
+        appId: "1:599803730946:web:e7ebe55992577653831b1b",
+        measurementId: "G-2NTKV2NYYB"
+    };
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        //Read Charity Remitted
+        var resultCharities;
+        const charity = ref(database, 'Charities/');
+        onValue(charity, (snapshot) => {
+            const data = snapshot.val();
+
+            resultCharities = data;
+        });
+
+        //Read Admin
+        var resultAdmins;
+        const admin = ref(database, 'Admins/');
+        onValue(admin, (snapshot) => {
+            const data = snapshot.val();
+
+            resultAdmins = data;
+        });
+
+        //Read Charities
+        const charities = ref(database, 'Charities/');
+        onValue(charities, (snapshot) => {
+
+        //Data
+        const data = snapshot.val();
+
+        //Initialize Tables
+        var tableRemittable = $('#tableRemittable').DataTable();
+        var tableNonRemittable = $('#tableNonRemittable').DataTable();
+        tableNonRemittable.clear().draw();
+        tableRemittable.clear().draw();
+
+        //Tables
+        for (var key in data) {
+
+            var i=1, j=1;
+
+            if(data[key]['charityDetails'] != null && data[key]['transactionDetails'] != null)
+            {
+                //Check if Current Money of the Charity is less than 10000
+                if(data[key]['transactionDetails']['nonRemitted'] < 10000) {
+                    tableNonRemittable.row.add([
+                    i++,
+                    data[key]['charityDetails']['charityName'],
+                    'PHP ' + (data[key]['transactionDetails']['nonRemitted']).toLocaleString('en-US')
+                    ]).node().id = data[key]['id'];
+                    tableNonRemittable.draw(false);
+                }
+                else {
+                    tableRemittable.row.add([
+                        j++,
+                        data[key]['charityDetails']['charityName'],
+                        'PHP ' + (data[key]['transactionDetails']['nonRemitted']).toLocaleString('en-US'),
+                        `
+                        <button type="button" class="btnRemitModal btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#remitModal">
+                            <i class="fa-regular fa-pen-to-square"></i>
+                        </button>
+                        `
+                    ]).node().id = data[key]['id'];
+                    tableRemittable.draw(false);
+                }
+
+            }
+        }
+
+        //Modals
+        $('.btnRemitModal').click(function(){
+            var x = $(this).closest('tr').attr('id');
+
+            for(var key in data){
+                if (data[key]['id'] == x) {
+
+                    //Assign Values
+                    $('#charityID').val(data[key]['id']);
+                    $('#charityName').val(data[key]['charityDetails']['charityName']);
+
+                    //ModalAction
+                    $('createTransaction').attr('action','transaction/' + data[key]['id']);
+                }
+            }
+        });
+    });
+
+    //Read Charities
+    const transaction = ref(database, 'Transaction/');
+    onValue(transaction, (snapshot) => {
+
+        //Data
+        const data = snapshot.val();
+
+        //Initialize Tables
+        var tableRemitted = $('#tableRemitted').DataTable();
+        tableRemitted.clear().draw();
+
+        //Tables
+        for (var key in data) {
+            var k = 1;
+            for (var keyCharities in resultCharities)
+            {
+                if(resultCharities[keyCharities]['id'] == data[key]['charityID'])
+                {
+                    tableRemitted.row.add([
+                        k++,
+                        resultCharities[keyCharities]['charityDetails']['charityName'],
+                        'PHP ' + (data[key]['remittedAmount']).toLocaleString('en-US'),
+                        'hello',
+                        `
+                        <button type="button" class="btnViewModal btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal">
+                        <i class="fa-solid fa-eye"></i>
+                        </button>
+                        `
+                    ]).node().id = data[key]['id'];
+                    tableRemitted.draw(false);
+                }
+            }
+        }
+
+        //Modals
+        $('.btnViewModal').click(function(){
+            var x = $(this).closest('tr').attr('id');
+
+            for(var key in data){
+                for (var keyCharities in resultCharities)
+                {
+                    for(var keyAdmins in resultAdmins)
+                    {
+                        if(resultCharities[keyCharities]['id'] == data[key]['charityID'])
+                        {
+                            const remitted = new Date(data[key]['remittedDate']);
+
+                            $('.charityName').val(resultCharities[keyCharities]['charityDetails']['charityName']);
+                            ($('.remittedAmount').val('PHP ' + data[key]['remittedAmount'])).toLocaleString('en-US');
+                            $('.remittedDate').val(remitted.toLocaleString('en-US'));
+                            $('.adminName').val(resultAdmins[keyAdmins]['name']);
+                            $('.viewImage').text(data[key]['remittedProof']);
+
+                            setImage('View', data[key]['remittedProof']);
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+
     </script>
 @stop
