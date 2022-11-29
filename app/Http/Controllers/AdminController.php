@@ -40,14 +40,6 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $request->validate([
-            'photo' => 'required',
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-        ]);
-
         //Initialzie Realtime Database
         $database = app('firebase.database');
 
