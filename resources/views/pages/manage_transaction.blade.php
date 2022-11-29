@@ -440,16 +440,19 @@
 
         //Tables
         for (var key in data) {
-            var k = 1;
+
             for (var keyCharities in resultCharities)
             {
+                var k = 1;
                 if(resultCharities[keyCharities]['id'] == data[key]['charityID'])
                 {
+                    const remitted = new Date(data[key]['remittedDate']);
+
                     tableRemitted.row.add([
                         k++,
                         resultCharities[keyCharities]['charityDetails']['charityName'],
                         'PHP ' + (data[key]['remittedAmount']).toLocaleString('en-US'),
-                        'hello',
+                        remitted.toLocaleString('en-us'),
                         `
                         <button type="button" class="btnViewModal btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal">
                         <i class="fa-solid fa-eye"></i>

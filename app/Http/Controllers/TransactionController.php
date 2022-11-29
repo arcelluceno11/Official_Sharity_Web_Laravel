@@ -73,10 +73,16 @@ class TransactionController extends Controller
         {
             if($x['id'] == $request->input('charityID')) {
 
-                $newAmount = $x['transactionDetails']['nonRemitted'] - $request->input('remittedAmount');
-                $newRemittedAmnt = $x['transactionDetails']['remitted'] + $request->input('remittedAmount');
-                $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/nonRemitted/')->set(round((double)$newAmount, 2));
-                $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/remitted/')->set(round((double)$newRemittedAmnt, 2));
+                $newAmount = round((double)$x['transactionDetails']['nonRemitted'] - $request->input('remittedAmount'));
+                $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/nonRemitted/')->set(round((double)$newAmount));
+
+                if($x['transactionDetails']['remitted'] != null) {
+                    $newRemittedAmnt = round((double)$x['transactionDetails']['remitted'] + $request->input('remittedAmount'));
+                    $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/remitted/')->set(round((double)$newRemittedAmnt));
+                }
+                else{
+                    $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/remitted/')->set(round((double)$request->input('remittedAmount')));
+                }
 
             }
         }
