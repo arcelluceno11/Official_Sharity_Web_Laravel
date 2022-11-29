@@ -31,7 +31,7 @@ use App\Http\Controllers\SalesController;
 */
 
 Route::get('/', function () {
-    return redirect('/profile');
+    return redirect('/login');
 });
 
 

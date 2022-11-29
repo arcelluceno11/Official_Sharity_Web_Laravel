@@ -115,7 +115,7 @@
 
     @if ($errors->any())
         <div class="alert alert-warning" role="alert">
-            Failed: Please check inputs
+            Failed: Email already taken.
         </div>
     @enderror
     @if (session('success'))
@@ -169,48 +169,33 @@
                     <div class="modal-body">
                         <div class="text-center">
                             <img src="{{ asset('image-holder.png') }}" alt="..."
-                                class="img-thumbnail rounded-circle" id="image" style="width:150px; height:150px;">
+                                class="img-thumbnail rounded-circle" id="image" style="width:150px; height:150px;  object-fit: cover; object-position: center;">
                             <button class="btn btn-success" style="margin-left:50px;">
                                 <input class="form-control" type="file" id="formFile" name="photo"
-                                    onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
-                            </button>
-                            @error('photo')
-                                <small class="form-text text-danger">{{ $message }}</small>
-                            @enderror
+                                    onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])" required>
+                            </button>r
                         </div>
                         <div class="form-group row mt-3">
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">First Name:</label>
-                                <input type="text" name="firstname" class="form-control item">
-                                @error('firstname')
-                                    <small class="form-text text-danger">{{ $message }}</small>
-                                @enderror
+                                <input type="text" name="firstname" class="form-control item" required>
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Last Name:</label>
-                                <input type="text" name="lastname" class="form-control item">
-                                @error('lastname')
-                                    <small class="form-text text-danger">{{ $message }}</small>
-                                @enderror
+                                <input type="text" name="lastname" class="form-control item" required>
                             </div>
                         </div>
                         <div class="form-group row mt-3 mb-5">
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Email Address:</label>
-                                <input type="email" name="email" class="form-control item">
-                                @error('email')
-                                    <small class="form-text text-danger">{{ $message }}</small>
-                                @enderror
+                                <input type="email" name="email" class="form-control item" required>
                                 @error('emailExist')
                                     <small class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Password:</label>
-                                <input type="password" name="password" class="form-control item">
-                                @error('password')
-                                    <small class="form-text text-danger">{{ $message }}</small>
-                                @enderror
+                                <input type="password" name="password" class="form-control item" required>
                             </div>
                         </div>
                     </div>
@@ -238,7 +223,7 @@
                         <div class="text-center">
                             <img src="{{ asset('image-holder.png') }}" alt="..."
                                 class="img-thumbnail rounded-circle" id="imageEditAdmin"
-                                style="width:150px; height:150px;">
+                                style="width:150px; height:150px;  object-fit: cover; object-position: center;">
                             <button class="btn btn-success" style="margin-left:50px;">
                                 <input class="form-control" type="file" id="formFile" name="photo"
                                     onchange="document.getElementById('imageEditAdmin').src = window.URL.createObjectURL(this.files[0])">
@@ -354,6 +339,9 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
+        //Get Current Admin ID Logged In
+        var adminID = '{{ Session::get('adminID') }}';
+
         //Initialize Table
         var tableAdmins = $('#tableAdmins').DataTable();
 
@@ -369,7 +357,8 @@
             for (var key in data) {
 
                 //Admin
-                tableAdmins.row.add([
+                if(data[key]['id'] != adminID){
+                    tableAdmins.row.add([
                     data[key]['id'],
                     data[key]['email'],
                     data[key]['name'],
@@ -383,6 +372,8 @@
                     `
                 ]).node().id = data[key]['id'];
                 tableAdmins.draw(false);
+                }
+
             }
 
             //Edit Modal

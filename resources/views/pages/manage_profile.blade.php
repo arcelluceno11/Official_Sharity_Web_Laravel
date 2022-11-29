@@ -10,62 +10,90 @@
 
 <!-- Content -->
 @section('content')
+    @php
+        use App\Http\Helpers\FirebaseHelper;
+
+        $fullName = explode(' ', $admin['name']);
+    @endphp
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @enderror
     <div class="container-fluid align-middle">
         <h3 class="text-dark mb-4 mt-5">Profile</h3>
         <div class="row mb-3">
             <div class="col-lg-4">
                 <div class="card mb-3">
-                    <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4"
-                            src="assets/img/dogs/image2.jpeg" width="160" height="160">
-                        <div class="mb-3"><button class="btn btn-primary btn-sm" type="button">Change Photo</button>
+                    <div class="card-body text-center shadow">
+                        <img id="profilePhoto" class="rounded-circle mb-3 mt-4"
+                            src="{{ FirebaseHelper::getLink($admin['photo']) }}"
+                            style="width:150px; height:150px;  object-fit: cover; object-position: center;">
+                        <div class="mb-3">
+                            <input class="form-control" type="file" id="formFile" name="photo"
+                                onchange="document.getElementById('profilePhoto').src = window.URL.createObjectURL(this.files[0])">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-8">
                 <div class="row">
-                    <div class="col">
-                        <div class="card shadow mb-3">
-                            <div class="card-body">
-                                <form class="p-3">
+                    <form action="profile/{{ $admin['id'] }}" method="POST" enctype="multipart/form-data">
+                        @method('PUT')
+                        @csrf
+                        <div class="col">
+                            <div class="card shadow mb-3">
+                                <div class="card-body">
                                     <div class="row">
                                         <div class="col">
-                                            <div class="mb-3"><label class="form-label"
-                                                    for="username"><strong>Username</strong></label><input
-                                                    class="form-control" type="text" id="username"
-                                                    placeholder="user.name" name="username" required></div>
+                                            <div class="mb-3"><label class="form-label" for="email">
+                                                    <strong>Email</strong></label>
+                                                <input class="form-control" type="email" id="email"
+                                                    placeholder="Email" name="email" value="{{ $admin['email'] }}"
+                                                    required>
+                                            </div>
                                         </div>
                                         <div class="col">
-                                            <div class="mb-3"><label class="form-label" for="email"><strong>Email
-                                                        Address</strong></label><input class="form-control" type="email"
-                                                    id="email" placeholder="user@example.com" name="email" required></div>
+                                            <div class="mb-3"><label class="form-label" for="password">
+                                                    <strong>Password</strong></label>
+                                                <input class="form-control" type="password" id="password"
+                                                    placeholder="Password" name="password"
+                                                    value="{{ $admin['password'] }}" required>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col">
-                                            <div class="mb-3"><label class="form-label" for="first_name"><strong>First
-                                                        Name</strong></label><input class="form-control" type="text"
-                                                    id="first_name" placeholder="John" name="first_name" required></div>
+                                            <div class="mb-3"><label class="form-label" for="firstName">
+                                                    <strong>First Name</strong></label>
+                                                <input class="form-control" type="text" id="firstName"
+                                                    placeholder="First Name" name="firstName"
+                                                    value="{{ $fullName[0] }}" required>
+                                            </div>
                                         </div>
                                         <div class="col">
-                                            <div class="mb-3"><label class="form-label" for="last_name"><strong>Last
-                                                        Name</strong></label><input class="form-control" type="text"
-                                                    id="last_name" placeholder="Doe" name="last_name" required></div>
+                                            <div class="mb-3"><label class="form-label" for="lastName">
+                                                    <strong>Last Name</strong></label>
+                                                <input class="form-control" type="text" id="lastName"
+                                                    placeholder="Last Name" name="lastName"
+                                                    value="{{ $fullName[1] }}" required>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Save
-                                            Settings</button></div>
-                                </form>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-row-reverse">
+                                <button class="btn btn-primary btn-sm" type="submit">Save Settings</button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    @stop
+@stop
 
-    <!-- Scripts -->
-    @section('scripts')
+<!-- Scripts -->
+@section('scripts')
 
-    @stop
+@stop

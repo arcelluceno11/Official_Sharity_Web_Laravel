@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\FirebaseHelper;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -13,7 +14,17 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return view('pages.manage_profile');
+        if(!session()->has('adminID')){
+            return redirect('/login')->withErrors(['msg' => 'Whoops! Login First.']);
+        }
+
+        //Get all the donations in Realtime Database
+        $database = app('firebase.database');
+        $admin = $database->getReference('Admins/'.session('adminID'))->getValue();
+
+        return view('pages.manage_profile', [
+            'admin' => $admin
+        ]);
     }
 
     /**
@@ -68,7 +79,30 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //Initialzie Realtime Database
+        $database = app('firebase.database');
+
+        if($request->file('photo') != null){
+            $admin = [
+                'id' => $id,
+                'photo' => FirebaseHelper::uploadFile($request->file('photo'), 'Admins/' . $id),
+                'name' => $request->input('firstName') . ' ' . $request->input('lastName'),
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
+                'updatedBy' => session('adminID')
+            ];
+        } else {
+            $admin = [
+                'id' => $id,
+                'name' => $request->input('firstName') . ' ' . $request->input('lastName'),
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
+                'updatedBy' => session('adminID')
+            ];
+        }
+        $database->getReference('Admins/' . $id)->update($admin);
+
+        return redirect('profile')->withSuccess('Successfully Updated');
     }
 
     /**
