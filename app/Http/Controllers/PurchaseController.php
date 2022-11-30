@@ -95,7 +95,7 @@ class PurchaseController extends Controller
         $purchase = $database->getReference('Purchases/' . $id)->getValue();
 
         //Create Task
-        $task = TeliverHelper::createPickupTask(
+        $task = TeliverHelper::createDropTask(
             $purchase['id'],
             $purchase['purchaseBy'],
             $purchase['contactAddress']['longitude'],
