@@ -55,6 +55,9 @@ Route::middleware(['preventBackHistory'])->group(function () {
     //Purchase Controller
     Route::resource('/purchase', PurchaseController::class);
     Route::post('/purchase/acceptPurchase/{id}', [PurchaseController::class, 'acceptPurchase']);
+    Route::post('/purchase/rejectPurchase/{id}', [PurchaseController::class, 'rejectDonation']);
+    Route::post('/purchase/assignDriver/{taskid}', [PurchaseController::class, 'assignDriver']);
+
 
     Route::resource('/admin', AdminController::class);
     Route::resource('/charity', CharityController::class);
