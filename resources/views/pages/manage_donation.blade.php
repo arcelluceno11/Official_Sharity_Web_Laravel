@@ -277,7 +277,8 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+                        <div class="table-responsive " id="dataTable" role="grid"
+                            aria-describedby="dataTable_info">
                             <table class="table table-hover table-bordered pt-3 display" id="tablePendingModal"
                                 style="">
                                 <thead class="thead-light">
@@ -309,7 +310,8 @@
     </div>
 
     <!-- Accepted Donations Modal -->
-    <div class="modal fade" id="acceptedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="acceptedModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <form id="assignedDriver" method="POST">
                 @csrf
@@ -317,7 +319,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Assign Driver</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="embed-responsive">
@@ -379,8 +382,8 @@
                             <div class="card-body">
                                 <div class="table-responsive " id="dataTable" role="grid"
                                     aria-describedby="dataTable_info">
-                                    <table class="table table-hover table-bordered pt-3 display" id="tableAcceptedModal"
-                                        style="">
+                                    <table class="table table-hover table-bordered pt-3 display"
+                                        id="tableAcceptedModal" style="">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>Code</th>
@@ -402,7 +405,8 @@
     </div>
 
     <!-- In Progress Donations Modal -->
-    <div class="modal fade" id="inProgressModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="inProgressModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -493,14 +497,16 @@
     </div>
 
     <!-- Received Donations Modal-->
-    <div class="modal fade" id="receivedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="receivedModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <form id="receiveAction" method="POST" enctype="multipart/form-data">
                 @csrf
                 <!-- <form action="donation/qualityCheckedBulk/" method="POST"> -->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="embed-responsive">
@@ -565,7 +571,8 @@
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
                                     <a id="receivedAddItem" class="btn btn-primary">Add Item</a>
                                 </div>
-                                <table id="tableReceiveModalPiece" class="table table-hover table-bordered pt-3 display">
+                                <table id="tableReceiveModalPiece"
+                                    class="table table-hover table-bordered pt-3 display">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>No.</th>
@@ -574,7 +581,8 @@
                                         </tr>
                                     </thead>
                                 </table>
-                                <table id="tableReceiveModalBulk" class="table table-hover table-bordered pt-3 display">
+                                <table id="tableReceiveModalBulk"
+                                    class="table table-hover table-bordered pt-3 display">
                                     <thead class="thead-light">
                                         <tr>
                                             <th>Image</th>
@@ -698,14 +706,22 @@
                         success: function(responseData) {
                             tableAccepted.clear().draw();
                             for (var task in responseData['data']['task_list']) {
-                                if(responseData['data']['task_list'][task]['status'] == 'created'){
+                                if (responseData['data']['task_list'][task]['status'] == 'created') {
                                     for (var key in data) {
-                                        if (data[key]['id'] == responseData['data']['task_list'][task]['order_id']){
+                                        if (data[key]['id'] == responseData['data']['task_list'][task][
+                                                'order_id'
+                                            ]) {
                                             //Modal Action
                                             tableAccepted.row.add([
-                                                responseData['data']['task_list'][task]['task_id'],
-                                                responseData['data']['task_list'][task]['order_id'],
-                                                responseData['data']['task_list'][task]['updated_at'],
+                                                responseData['data']['task_list'][task][
+                                                    'task_id'
+                                                ],
+                                                responseData['data']['task_list'][task][
+                                                    'order_id'
+                                                ],
+                                                responseData['data']['task_list'][task][
+                                                    'updated_at'
+                                                ],
                                                 `<button type="button" class="acceptedModal btn btn-primary btn-sm" data-bs-toggle="modal"
                                                             data-bs-target="#acceptedModal">
                                                             <i class="fa-solid fa-truck"></i>
@@ -742,21 +758,38 @@
                                 if ((responseData['data']['task_list'][task]['status'] ==
                                         'in_progress') ||
                                     (responseData['data']['task_list'][task]['status'] == 'assigned')) {
-                                    tableInProgress.row.add([
-                                        responseData['data']['task_list'][task]['task_id'],
-                                        responseData['data']['task_list'][task]['order_id'],
-                                        data[key]['status'],
-                                        responseData['data']['task_list'][task]['updated_at'],
-                                        `<button type="button" class="inProgressModal btn btn-primary btn-sm"
+
+                                    for (var key in data) {
+                                        if (data[key]['id'] == responseData['data']['task_list'][task][
+                                                'order_id'
+                                            ] && (data[key]['status'] == 'Assigned' || data[key][
+                                                'status'
+                                            ] == 'Picked Up' || data[key][
+                                                'status'
+                                            ] == 'On the Way')) {
+                                            tableInProgress.row.add([
+                                                responseData['data']['task_list'][task][
+                                                    'task_id'
+                                                ],
+                                                responseData['data']['task_list'][task][
+                                                    'order_id'
+                                                ],
+                                                data[key]['status'],
+                                                responseData['data']['task_list'][task][
+                                                    'updated_at'
+                                                ],
+                                                `<button type="button" class="inProgressModal btn btn-primary btn-sm"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#inProgressModal">
                                                     <i class="fa-sharp fa-solid fa-eye"></i>
                                             </button>
                                         `
-                                    ]).node().id = responseData['data']['task_list'][task][
-                                        'order_id'
-                                    ];
-                                    tableInProgress.draw(false);
+                                            ]).node().id = responseData['data']['task_list'][task][
+                                                'order_id'
+                                            ];
+                                            tableInProgress.draw(false);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -774,14 +807,22 @@
                         success: function(responseData) {
                             tableReceived.clear().draw();
                             for (var task in responseData['data']['task_list']) {
-                                if(responseData['data']['task_list'][task]['status'] == 'completed'){
+                                if (responseData['data']['task_list'][task]['status'] == 'completed') {
                                     for (var key in data) {
-                                        if (data[key]['id'] == responseData['data']['task_list'][task]['order_id'] && data[key]['checked'] == false){
+                                        if (data[key]['id'] == responseData['data']['task_list'][task][
+                                                'order_id'
+                                            ] && data[key]['checked'] == false && data[key]['status'] == 'Complete') {
                                             tableReceived.row.add([
-                                            responseData['data']['task_list'][task]['task_id'],
-                                            responseData['data']['task_list'][task]['order_id'],
-                                            responseData['data']['task_list'][task]['updated_at'],
-                                            `<button type="button" class="receivedModal btn btn-primary btn-sm"
+                                                responseData['data']['task_list'][task][
+                                                    'task_id'
+                                                ],
+                                                responseData['data']['task_list'][task][
+                                                    'order_id'
+                                                ],
+                                                responseData['data']['task_list'][task][
+                                                    'updated_at'
+                                                ],
+                                                `<button type="button" class="receivedModal btn btn-primary btn-sm"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#receivedModal">
                                                         <i class="fa-solid fa-pen-to-square"></i>
@@ -905,12 +946,16 @@
                             dataType: 'json',
                             success: function(responseData) {
                                 for (var task in responseData['data']['task_list']) {
-                                    if(responseData['data']['task_list'][task]['status'] == 'created'){
+                                    if (responseData['data']['task_list'][task]['status'] ==
+                                        'created') {
                                         for (var key in data) {
-                                            if (data[key]['id'] == responseData['data']['task_list'][task]['order_id']){
+                                            if (data[key]['id'] == responseData['data'][
+                                                    'task_list'
+                                                ][task]['order_id']) {
                                                 //Modal Action
                                                 $('#assignedDriver').attr('action',
-                                                    'donation/assignDriver/' + responseData['data'][
+                                                    'donation/assignDriver/' + responseData[
+                                                        'data'][
                                                         'task_list'
                                                     ][task]['task_id']);
                                             }
@@ -975,6 +1020,9 @@
 
                 var x = $(this).closest('tr').attr('id');
 
+                //Initialize Button Quality Checked
+                $('button.receive').prop('disabled', true);
+
                 for (var key in data) {
                     if (data[key]['id'] == x) {
                         ////Date Format
@@ -1031,7 +1079,6 @@
 
                             //Quality Checked Button
                             var num = 1;
-                            $('button.receive').prop('disabled', true);
                             $("input.radio").each(function() {
                                 var name = $(this).attr('name');
 
@@ -1118,10 +1165,10 @@
                             });
 
 
-                            $('#tableReceiveModalBulk tbody').on( 'click', 'button.delete', function () {
-                                tableReceiveModalBulk.row( $(this).parents('tr')).remove().draw();
+                            $('#tableReceiveModalBulk tbody').on('click', 'button.delete', function() {
+                                tableReceiveModalBulk.row($(this).parents('tr')).remove().draw();
 
-                                if(tableReceiveModalBulk.data().rows().count() == 0){
+                                if (tableReceiveModalBulk.data().rows().count() == 0) {
                                     $('button.receive').prop('disabled', true);
                                 }
                             });
