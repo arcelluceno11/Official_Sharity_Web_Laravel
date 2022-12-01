@@ -1,3 +1,7 @@
+@php
+    use App\Http\Helpers\FirebaseHelper;
+@endphp
+
 @extends('layouts.index')
 
 <!-- Page Title -->
@@ -113,6 +117,12 @@
 <!-- Content -->
 @section('content')
 
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session()->get('success') }}
+        </div>
+    @enderror
+
     <!--Pending Applications-->
     <div class="card shadow">
         <div class="card-header py-3">
@@ -120,433 +130,434 @@
                 <div class="col align-self-center">
                     <h6 class="m-0 font-weight-bold text-primary">Pending Charity Applications</h6>
                 </div>
-
-                <div class="col text-end">
-                    <button type="button" class="btn btn-primary btn-sm float-right" data-bs-toggle="modal"
-                        data-bs-target="#addModal">
-                        <i class="fa-solid fa-user-plus"></i><span class="ms-2"> Register New Charity
-                    </button>
-                </div>
             </div>
         </div>
         <div class="card-body">
             <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-hover table-bordered pt-3 display" id="example" style="">
+                <table class="table table-hover table-bordered pt-3 display" id="tablePending" style="">
                     <thead class="thead-light">
                         <tr>
-                            <th>No.</th>
-                            <th>Charity Name</th>
+                            <th>ID</th>
+                            <th>Contact Name</th>
+                            <th>Number</th>
                             <th>Email</th>
-                            <th>Appt. Date</th>
-                            <th>Action</th>
+                            <th>Appointment Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td style="text-align:center;">1</td>
-                            <td>Missionary of Children - Cebu City Chapter</td>
-                            <td>moc.cebucity@gmail.com</td>
-                            <td>10/22/22 10:00 AM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;">2</td>
-                            <td>Bukas Palad Foundation Inc.</td>
-                            <td>bukaspalad@gmail.com</td>
-                            <td>10/30/22 1:00 PM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;">3</td>
-                            <td>Youth for Youth Foundation</td>
-                            <td>u4u.foundation@gmail.com</td>
-                            <td>10/22/22 10:30 AM</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!--Accepted Charities-->
+    <!--Appointments Today-->
     <div class="card shadow mt-5">
         <div class="card-header py-3">
             <div class="row">
-                <h6 class="m-0 font-weight-bold text-primary">Manage Charity Accounts</h6>
+                <div class="col align-self-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Appointments Today</h6>
+                </div>
             </div>
         </div>
         <div class="card-body">
             <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-hover table-bordered pt-3 display" id="example" style="">
+                <table class="table table-hover table-bordered pt-3 display" id="tableAppointment" style="">
                     <thead class="thead-light">
                         <tr>
-                            <th>No.</th>
-                            <th>Charity Name</th>
+                            <th>ID</th>
+                            <th>Contact Name</th>
+                            <th>Number</th>
                             <th>Email</th>
-                            <th>Est. Date</th>
+                            <th>Appointment Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td style="text-align:center;">1</td>
-                            <td>Missionary of Children - Cebu City Chapter</td>
-                            <td>moc.cebucity@gmail.com</td>
-                            <td>January 2010</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;">2</td>
-                            <td>Bukas Palad Foundation Inc.</td>
-                            <td>bukaspalad@gmail.com</td>
-                            <td>October 2001</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:center;">3</td>
-                            <td>Youth for Youth Foundation</td>
-                            <td>u4u.foundation@gmail.com</td>
-                            <td>July 2022</td>
-                            <td><button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    <i class="fa-regular fa-pen-to-square"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Add Modal -->
-    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Register New Charity</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!--Listed Charity-->
+    <div class="card shadow mt-5">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col align-self-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Listed Charity</h6>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle" id="image" style="width:200px; height:200px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;">
-                                <input class="form-control" type="file" id="formFile" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
-                            </button>
-                        </div>
-
-                        <div class="form-group row mt-3">
-                            <div class="form-group col">
-                                <label class="form-label" for="">Charity Name</label>
-                                <input type="text" name="charityName" class="form-control item"
-                                    placeholder="Missionary of Childern - Cebu City Chapter">
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Contact Person:</label>
-                                <input type="text" name="contactName" class="form-control item"
-                                    placeholder="Arcel V. Luceno">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Phone number:</label>
-                                <input type="tel" name="phonenumber" class="form-control item"
-                                    placeholder="+639 XX XXX XXXX">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Established Date:</label>
-                                <input type="date" name="estDate" class="form-control item">
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col">
-                                <label for="inputAddress">Address</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"
-                                    name="address">
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-4">
-                                <label for="inputCategory">Category</label>
-                                <select class="form-select mt-2" aria-label="Default select example" name="category">
-                                    <option selected>Choose Category...</option>
-                                    <option value="1">Animals</option>
-                                    <option value="2">Arts and Culture</option>
-                                    <option value="3">Community Development</option>
-                                    <option value="4">Education</option>
-                                    <option value="5">Enviromental</option>
-                                    <option value="6">Health</option>
-                                    <option value="7">Human</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="inputBankName">Bank Name</label>
-                                <fieldset disabled>
-                                    <select class="form-select mt-2" aria-label="Default select example" name="bankName">
-                                        <option selected>Choose...</option>
-                                        <option value="1">Banco de Oro Inc. (BDO)</option>
-                                        <option value="2">UnionBank</option>
-                                        <option value="3">RCBC</option>
-                                        <option value="4">Landbank Philippines</option>
-                                    </select>
-                                </fieldset>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Account Number:</label>
-                                <fieldset disabled>
-                                    <input type="number" name="dob" class="form-control item" maxlength="12">
-                                </fieldset>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group row mt-3">
-                            <div class="form-group col">
-                                <div class="mb-3">
-                                    <label for="formFile" class="form-label">Documents:</label>
-                                    <input class="form-control" type="file" id="formFile">
-                                  </div>
-                            </div>
-                            <div class="form-group col">
-                                <label class="form-label" for="">Appointment Date:</label>
-                                <input type="datetime-local" name="apptDate" class="form-control item">
-                            </div>
-                            <div class="form-group col">
-                                <label class="form-label" for="">Status:</label>
-                                <select class="form-select" aria-label="Default select example" name="status">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Pending</option>
-                                    <option value="2">Verified</option>
-                                </select>
-
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3 mb-5">
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Email Address:</label>
-                                <input type="email" name="email" class="form-control item"
-                                    placeholder="arcel@gmail.com">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Password:</label>
-                                <input type="password" name="password" class="form-control item">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Status:</label>
-                                        <select class="form-select" aria-label="Default select example" name="status">
-                                            <option selected>Choose...</option>
-                                            <option value="1">Pending</option>
-                                            <option value="2">Verified</option>
-                                        </select>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table table-hover table-bordered pt-3 display" id="tableListed" style="">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Charity Name</th>
+                            <th>Category</th>
+                            <th>Account Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!--Edit Appointed Charity-->
+    <div class="modal fade" id="editModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Charity</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="text-center">
-                            <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle" id="image" style="width:auto; height:200px;">
-                            <button type="submit" class="btn btn-success" style="margin-left:50px;">
-                                <input class="form-control" type="file" id="formFile" onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
-                            </button>
-                        </div>
-
+                <form id="editCharity" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
                         <div class="form-group row mt-3">
+                            <div class="text-center">
+                                <img src="{{ asset('profile.JPG') }}" alt="..."
+                                    class="img-thumbnail rounded-circle" id="charityPhoto"
+                                    style="width:auto; height:200px;">
+                                <button type="button" class="btn btn-success" style="margin-left:50px;">
+                                    <input class="form-control" type="file" id="formFile" name="charityPhoto"
+                                        onchange="document.getElementById('charityPhoto').src = window.URL.createObjectURL(this.files[0])">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group row mt-3">
+                            <h5>Charity Details</h5>
                             <div class="form-group col">
                                 <label class="form-label" for="">Charity Name</label>
-                                <input type="text" name="charityName" class="form-control item"
-                                    placeholder="Missionary of Childern - Cebu City Chapter">
+                                <input type="text" name="charityName" class="form-control item" required>
                             </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Contact Person:</label>
-                                <input type="text" name="contactName" class="form-control item"
-                                    placeholder="Arcel V. Luceno">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Phone number:</label>
-                                <input type="tel" name="phonenumber" class="form-control item"
-                                    placeholder="+639 XX XXX XXXX">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label class="form-label" for="">Established Date:</label>
-                                <input type="date" name="estDate" class="form-control item">
-                            </div>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <div class="form-group col">
-                                <label for="inputAddress">Address</label>
-                                <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"
-                                    name="address">
+                            <div class="form-group col-md-6">
+                                <label class="form-label" for="">Description</label>
+                                <input type="text" name="charityDescription" class="form-control item" required>
                             </div>
                         </div>
                         <div class="form-group row mt-3">
                             <div class="form-group col-md-4">
                                 <label for="inputCategory">Category</label>
-                                <select class="form-select mt-2" aria-label="Default select example" name="category">
-                                    <option selected>Choose Category...</option>
-                                    <option value="1">Animals</option>
-                                    <option value="2">Arts and Culture</option>
-                                    <option value="3">Community Development</option>
-                                    <option value="4">Education</option>
-                                    <option value="5">Enviromental</option>
-                                    <option value="6">Health</option>
-                                    <option value="7">Human</option>
+                                <select class="form-select mt-2" aria-label="Default select example"
+                                    name="charityCategory" required>
+                                    <option value="">Choose Category...</option>
+                                    <option value="Animals">Animals</option>
+                                    <option value="Arts and Culture">Arts and Culture</option>
+                                    <option value="Community Development">Community Development</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Environmental">Enviromental</option>
+                                    <option value="Health">Health</option>
+                                    <option value="Human">Human</option>
                                 </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Established Date:</label>
+                                <input type="date" name="charityEst" class="form-control item" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label" for="formFile">Documents:</label>
+                                    <input class="form-control" type="file" id="formFile"
+                                        name="charityDocuments"
+                                        onchange="document.getElementById('charityDocuments').src = window.URL.createObjectURL(this.files[0])"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mt-3">
+                            <div class="form-group col">
+                                <label for="inputAddress">Address</label>
+                                <input type="text" class="form-control" id="inputAddress" name="charityAddress"
+                                    required>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row mt-3">
+                            <h5>Bank Details</h5>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Bank Number:</label>
+                                <input type="number" name="bankNumber" class="form-control item" maxlength="12"
+                                    required>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="inputBankName">Bank Name</label>
-                                <fieldset disabled>
-                                    <select class="form-select mt-2" aria-label="Default select example" name="bankName">
-                                        <option selected>Choose...</option>
-                                        <option value="1">Banco de Oro Inc. (BDO)</option>
-                                        <option value="2">UnionBank</option>
-                                        <option value="3">RCBC</option>
-                                        <option value="4">Landbank Philippines</option>
-                                    </select>
-                                </fieldset>
+                                <select class="form-select mt-2" aria-label="Default select example" name="bankName"
+                                    required>
+                                    <option value="">Choose...</option>
+                                    <option value="Banco de Oro Inc">Banco de Oro Inc. (BDO)</option>
+                                    <option value="Union Bank">UnionBank</option>
+                                    <option value="RCBC">RCBC</option>
+                                    <option value="Landbank Philippines">Landbank Philippines</option>
+                                </select>
                             </div>
                             <div class="form-group col-md-4">
-                                <label class="form-label" for="">Account Number:</label>
-                                <fieldset disabled>
-                                    <input type="number" name="dob" class="form-control item" maxlength="12">
-                                </fieldset>
+                                <label class="form-label" for="">Bank Account Name:</label>
+                                <input type="text" name="bankAccountName" class="form-control item" required>
                             </div>
                         </div>
-
-
                         <div class="form-group row mt-3">
-                            <div class="form-group col">
-                                <div class="mb-3">
-                                    <label for="formFile" class="form-label">Documents:</label>
-                                    <input class="form-control" type="file" id="formFile">
-                                  </div>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Bank Phone Number:</label>
+                                <input type="text" name="bankPhone" class="form-control item" required>
                             </div>
-                            <div class="form-group col">
-                                <label class="form-label" for="">Established Date:</label>
-                                <input type="month" name="apptDate" class="form-control item">
-                            </div>
-                            <div class="form-group col">
-                                <label class="form-label" for="">Status:</label>
-                                <select class="form-select" aria-label="Default select example" name="status">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Pending</option>
-                                    <option value="2">Verified</option>
-                                </select>
-
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Bank Email:</label>
+                                <input type="email" name="bankEmail" class="form-control item" required>
                             </div>
                         </div>
-                        <div class="form-group row mt-3 mb-5">
+                        <hr>
+                        <div class="form-group row mt-3">
+                            <h5>Account Details</h5>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Account Email:</label>
+                                <input type="email" name="accountEmail" class="form-control item" required>
+                                @error('emailExist')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row mt-3">
+                            <h5>Application Details</h5>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Name:</label>
+                                <input type="text" name="applicationName" class="form-control item"
+                                    id="editapplicationName" readonly>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Phone number:</label>
+                                <input type="text" name="applicationPhone" class="form-control item"
+                                    id="editapplicationPhone" readonly>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Email:</label>
+                                <input type="email" name="applicationEmail" class="form-control item"
+                                    id="editapplicationEmail" readonly>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row mt-3">
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Application Date:</label>
+                                <input type="text" name="applicationDate" class="form-control item"
+                                    id="editapplicationDate" readonly>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Status:</label>
+                                <input type="text" name="status" class="form-control item" id="editstatus"
+                                    readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer mt-3">
+                        <button type="button" class="btn btn-secondary" data-bs-target="#editWholeModal"
+                            data-bs-toggle="modal">Back</button>
+                        <button type="submit" class="btn btn-primary">Listed</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reschedule Modal-->
+    <div class="modal fade" id="reschedModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="reschedCharity" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="form-group row mt-3">
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Contact Person:</label>
+                                <input type="text" name="applicationName" class="form-control item"
+                                    id="reschedapplicationName" readonly>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Phone number:</label>
+                                <input type="text" name="applicationPhone" class="form-control item"
+                                    id="reschedapplicationPhone" readonly>
+                            </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Email Address:</label>
-                                <input type="email" name="email" class="form-control item"
-                                    placeholder="arcel@gmail.com">
+                                <input type="email" name="applicationEmail" class="form-control item"
+                                    id="reschedapplicationEmail" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row mt-3">
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Appointment Date:</label>
+                                <input type="text" name="" class="form-control item"
+                                    id="reschedapplicationDate" readonly>
                             </div>
                             <div class="form-group col-md-4">
-                                <label class="form-label" for="">Password:</label>
-                                <input type="password" name="password" class="form-control item">
+                                <label class="form-label" for="">New Appointment Date:</label>
+                                <input type="date" name="applicationDate" id="date"
+                                    class="form-control item">
                             </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-target="#editWholeModal"
+                            data-bs-toggle="modal">Back</button>
+                        <button type="submit" class="btn btn-primary">Reschedule</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--Manage Listed Charity-->
+    <div class="modal fade" id="editListedModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="listedCharity" method="POST">
+                    <div class="modal-body">
+                        @csrf
+                        @method('POST')
+                        <div class="text-center">
+                            <img alt="..." class="img-thumbnail rounded-circle" id="imagelisted"
+                                style="width:300px; height:200px;">
+                        </div>
+                        <div class="form-group row mt-3">
+                            <h5>Charity Details</h5>
+                            <div class="form-group col">
+                                <label class="form-label" for="">Charity Name</label>
+                                <input type="text" name="charityName" class="form-control item"
+                                    id="listedcharityName">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="form-label" for="">Description</label>
+                                <input type="text" name="charityDescription" class="form-control item"
+                                    id="listedcharityDescription">
+                            </div>
+                        </div>
+                        <div class="form-group row mt-3">
+                            <div class="form-group col-md-3">
+                                <label for="inputCategory">Category</label>
+                                <input type="text" name="charityCategory" class="form-control item"
+                                    id="listedcharityCategory" readonly>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label class="form-label" for="">Established Date:</label>
+                                <input type="text" name="charityEst" class="form-control item"
+                                    id="listedcharityEst" readonly>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="form-label" for="inputAddress">Address</label>
+                                <input type="text" name="charityAddress" class="form-control item"
+                                    id="listedcharityAddress" readonly>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row mt-3">
+                            <h5>Bank Details</h5>
+                            <div class="form-group col-md-4">
+                                <label for="inputBankName">Bank Name</label>
+                                <input type="text" name="bankName" class="form-control item" id="listedbankName"
+                                    readonly>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Bank Number:</label>
+                                <input type="number" name="bankNumber" class="form-control item"
+                                    id="listedbankNumber" maxlength="12" readonly>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Account Name:</label>
+                                <input type="text" name="bankAccountName" class="form-control item"
+                                    id="listedbankAccountName" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row mt-3">
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Bank Phone Number:</label>
+                                <input type="text" name="bankPhone" class="form-control item"
+                                    id="listedbankPhone" readonly>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Bank Email:</label>
+                                <input type="text" name="bankEmail" class="form-control item"
+                                    id="listedbankEmail" readonly>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row mt-3">
+                            <h5>Account Details:</h5>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Email Address:</label>
+                                <input type="email" name="accountEmail" class="form-control item"
+                                    id="listedaccountEmail" readonly>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row mt-3">
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Registration Date:</label>
-                                <fieldset disabled>
-                                    <input type="datetime-local" name="dateofReg" class="form-control item">
-                                </fieldset>
+                                <input type="text" name="listedAt" class="form-control item" id="listedAt"
+                                    readonly>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="form-label" for="">Status:</label>
+                                <select class="form-select" aria-label="Default select example" name="status"
+                                    id="listedstatus" required>
+                                    <option value="Listed">Listed</option>
+                                    <option value="Disabled">Disabled</option>
+                                </select>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-target="#editWholeModal"
+                            data-bs-toggle="modal">Back</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!--Remove Charity-->
+    <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-confirm modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header flex-column">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-xmark"></i>
+                <form id="removeCharity" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <div class="modal-header flex-column">
+                        <div class="icon-box">
+                            <i class="fa-solid fa-xmark"></i>
+                        </div>
+                        <h4 class="modal-title w-100" id="exampleModalLabel">Are you sure?</h4>
                     </div>
-                    <h4 class="modal-title w-100" id="exampleModalLabel">Are you sure?</h4>
-
-                </div>
-                <div class="modal-body">
-                    <p>Do you really want to delete these records? This process cannot be undone.</p>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </div>
+                    <div class="modal-body">
+                        <p>Do you really want to remove this Application? </p>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Yes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
 @stop
 
 <!-- Scripts -->
@@ -556,10 +567,184 @@
     </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js">
     </script>
-
     <script>
         $(document).ready(function() {
             $('table.display').DataTable();
         });
     </script>
+    <script type="module">
+        //Initialize Firebase
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js';
+        import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js';
+        import { setImage } from './js/firebasehelper.js';
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrQnBzhOFfjrIqmOUabkt14wvx-LVnzug",
+            authDomain: "sharity-f983e.firebaseapp.com",
+            databaseURL: "https://sharity-f983e-default-rtdb.firebaseio.com",
+            projectId: "sharity-f983e",
+            storageBucket: "sharity-f983e.appspot.com",
+            messagingSenderId: "599803730946",
+            appId: "1:599803730946:web:e7ebe55992577653831b1b",
+            measurementId: "G-2NTKV2NYYB"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        //Read Products
+        const charities = ref(database, 'Charities/');
+        onValue(charities, (snapshot) => {
+            //Data
+            const data = snapshot.val();
+
+            //Pending Table
+            var tablePending = $('#tablePending').DataTable();
+            tablePending.clear().draw();
+            //Tables
+            for (var key in data) {
+                const appt = new Date(data[key]['applicationDetails']['applicationDate']);
+                const datetoday = new Date();
+                //Pending Table
+                if(data[key]['status'] == 'Pending' && appt.toLocaleDateString('en-US') != datetoday.toLocaleDateString('en-US')){
+                    tablePending.row.add([
+                        data[key]['id'],
+                        data[key]['applicationDetails']['applicationName'],
+                        data[key]['applicationDetails']['applicationPhone'],
+                        data[key]['applicationDetails']['applicationEmail'],
+                        appt.toLocaleDateString('en-US'),
+                    ]).node().id = data[key]['id'];
+                    tablePending.draw(false);
+                }
+            }
+
+            //Appointment Table
+            var tableAppointment = $('#tableAppointment').DataTable();
+            tableAppointment.clear().draw();
+            //Tables
+            for (var key in data) {
+                const appt = new Date(data[key]['applicationDetails']['applicationDate']);
+                const datetoday = new Date();
+                //Pending Table
+                if(data[key]['status'] == 'Pending' && appt.toLocaleDateString('en-US') == datetoday.toLocaleDateString('en-US')){
+                    tableAppointment.row.add([
+                        data[key]['id'],
+                        data[key]['applicationDetails']['applicationName'],
+                        data[key]['applicationDetails']['applicationPhone'],
+                        data[key]['applicationDetails']['applicationEmail'],
+                        appt.toLocaleDateString('en-US'),
+                        `<button type="button" class="btnEditModal btn btn-primary btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editModal">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                            </button>
+                                            <button type="button" class="btnReschedModal btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#reschedModal">
+                                                <i class="fa-solid fa-calendar"></i>
+                                            </button>
+                                            <button type="button" class="btnRemoveModal btn btn-success btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#removeModal">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>`
+
+                    ]).node().id = data[key]['id'];
+                    tableAppointment.draw(false);
+                }
+            }
+
+            $('.btnEditModal').click(function(){
+                var x = $(this).closest('tr').attr('id');
+                for (var key in data) {
+                    if(data[key]['id'] == x){
+
+                        const listed = new Date(data[key]['applicationDetails']['applicationDate']);
+                        //Assign Values
+                        $('#editapplicationName').val(data[key]['applicationDetails']['applicationName']);
+                        $('#editapplicationEmail').val(data[key]['applicationDetails']['applicationEmail']);
+                        $('#editapplicationPhone').val(data[key]['applicationDetails']['applicationPhone']);
+                        $('#editapplicationDate').val(listed.toLocaleDateString('en-US'));
+                        $('#editstatus').val(data[key]['status']);
+                        //Modal Action
+                        $('#editCharity').attr('action', 'charity/' + data[key]['id']);
+                    }
+                }
+            });
+
+            //New Appointment Modal
+            $('.btnReschedModal').click(function(){
+                var x = $(this).closest('tr').attr('id');
+                for (var key in data) {
+                    if(data[key]['id'] == x){
+
+                        const listed = new Date(data[key]['applicationDetails']['applicationDate']);
+                        //Assign Values
+                        $('#reschedapplicationName').val(data[key]['applicationDetails']['applicationName']);
+                        $('#reschedapplicationEmail').val(data[key]['applicationDetails']['applicationEmail']);
+                        $('#reschedapplicationPhone').val(data[key]['applicationDetails']['applicationPhone']);
+                        $('#reschedapplicationDate').val(listed.toLocaleDateString('en-US'));
+                        //Modal Action
+                        $('#reschedCharity').attr('action', 'charity/editApptDate/' + data[key]['id']);
+                    }
+                }
+            });
+
+            //Remove Modal
+            $('.btnRemoveModal').click(function(){
+                var x = $(this).closest('tr').attr('id');
+                for (var key in data) {
+                    if(data[key]['id'] == x){
+
+                        $('#removeCharity').attr('action', 'charity/' + data[key]['id']);
+                    }
+                }
+            });
+
+            //Listed Table
+            var tableListed = $('#tableListed').DataTable();
+            tableListed.clear().draw();
+            //Tables
+            for (var key in data) {
+                if(data[key]['status'] == 'Listed'){
+                    tableListed.row.add([
+                        data[key]['id'],
+                        data[key]['charityDetails']['charityName'],
+                        data[key]['charityDetails']['charityCategory'],
+                        data[key]['accountDetails']['accountEmail'],
+                        `<button type="button" class="btnListedModal btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editListedModal">
+                            <i class="fa-regular fa-pen-to-square"></i></button>`
+                    ]).node().id = data[key]['id'];
+                    tableListed.draw(false);
+                }
+            }
+            $('.btnListedModal').click(function(){
+                var x = $(this).closest('tr').attr('id');
+                for (var key in data) {
+                    if(data[key]['id'] == x){
+
+                        const listed = new Date(data[key]['listedAt']);
+                        //Assign Values
+                        //Charity Details
+                        $('.listedID').val(data[key]['id']);
+                        setImage('listed', data[key]['charityDetails']['charityPhoto']);
+                        $('#listedcharityName').val(data[key]['charityDetails']['charityName']);
+                        $('#listedcharityDescription').val(data[key]['charityDetails']['charityDescription']);
+                        $('#listedcharityCategory').val(data[key]['charityDetails']['charityCategory']);
+                        $('#listedcharityEst').val(data[key]['charityDetails']['charityEst']);
+                        $('#listedcharityAddress').val(data[key]['charityDetails']['charityAddress']);
+                        //Bank Details
+                        $('#listedbankName').val(data[key]['bankDetails']['bankName']);
+                        $('#listedbankNumber').val(data[key]['bankDetails']['bankNumber']);
+                        $('#listedbankAccountName').val(data[key]['bankDetails']['bankAccountName']);
+                        $('#listedbankEmail').val(data[key]['bankDetails']['bankEmail']);
+                        $('#listedbankPhone').val(data[key]['bankDetails']['bankPhone']);
+                        //Account Details
+                        $('#listedaccountEmail').val(data[key]['accountDetails']['accountEmail']);
+                        //Status
+                        $('#listedAt').val(listed.toLocaleDateString('en-US'));
+                        $('#listedstatus').val(data[key]['status']);
+                        //Modal Action
+                        $('#listedCharity').attr('action', 'charity/editListed/' + data[key]['id']);
+                    }
+                }
+            });
+        });
+
+        </script>
 @stop
