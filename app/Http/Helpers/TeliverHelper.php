@@ -2,6 +2,8 @@
 
 namespace App\Http\Helpers;
 
+use Error;
+
 class TeliverHelper
 {
 
@@ -50,7 +52,7 @@ class TeliverHelper
         ]);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, '{
-            "pickup": {
+            "drop": {
                 "lnglat": [
                     ' . $long . ',
                     ' . $lat . '
@@ -69,6 +71,8 @@ class TeliverHelper
 
         // execute!
         $response = curl_exec($ch);
+
+        error_log($response);
 
         // close the connection, release resources used
         curl_close($ch);
