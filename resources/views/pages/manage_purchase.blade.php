@@ -690,14 +690,15 @@
                             for (var task in responseData['data']['task_list']) {
                                 if ((responseData['data']['task_list'][task]['status'] ==
                                         'in_progress') ||
-                                    (responseData['data']['task_list'][task]['status'] == 'assigned')) {
+                                    (responseData['data']['task_list'][task]['status'] == 'assigned') ||
+                                    (responseData['data']['task_list'][task]['status'] == 'completed')) {
                                     for (var key in data) {
                                         if (data[key]['id'] == responseData['data']['task_list'][task][
                                                 'order_id'
-                                            ] && data[key]['status'] == 'Assigned' || data[key][
+                                            ] && (data[key]['status'] == 'Assigned' || data[key][
                                                 'status'] == 'Delivered' || data[key][
                                                 'status'
-                                            ] == 'On the Way') {
+                                            ] == 'On the Way')) {
                                             tableInProgress.row.add([
                                                 responseData['data']['task_list'][task][
                                                     'task_id'
