@@ -58,6 +58,10 @@ Route::middleware(['preventBackHistory'])->group(function () {
     Route::post('/purchase/rejectPurchase/{id}', [PurchaseController::class, 'rejectDonation']);
     Route::post('/purchase/assignDriver/{taskid}', [PurchaseController::class, 'assignDriver']);
 
+    //Charity Controller
+    Route::put('/charity/editApptDate/{id}', [CharityController::class, 'editApptDate']);
+    Route::post('/charity/editListed/{id}', [CharityController::class, 'editListed']);
+    Route::get('send-mail', [CharityController::class, 'update']);
 
     Route::resource('/admin', AdminController::class);
     Route::resource('/charity', CharityController::class);

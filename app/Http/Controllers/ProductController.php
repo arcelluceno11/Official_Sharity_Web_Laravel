@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Helpers\FirebaseHelper;
 
 class ProductController extends Controller
 {
@@ -13,7 +15,26 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('pages.manage_product');
+        if(!session()->has('adminID')){
+            return redirect('/login')->withErrors(['msg' => 'Whoops! Login First.']);
+        }
+
+        $database = app('firebase.database');
+
+
+        $product= $database->getReference('Products')->getValue();
+        $purchase=$database->getReference('Purchases')->getValue();
+        $charities=$database->getReference('Charities')->getValue();
+        $donor=$database->getReference('User/DonorShopper')->getValue();
+
+
+        return view('pages.manage_product', [
+            'product' => $product,
+            'purchase' => $purchase,
+            'charity' => $charities,
+            'donor' => $donor,
+
+        ]);
     }
 
     /**
@@ -34,7 +55,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -68,7 +89,51 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $database = app('firebase.database');
+
+        //Check if input image is null
+        if($request->file('image') == null)
+        {
+            $data =[
+
+                'price' => round((double)$request->input('price'),2),
+                'listedAt' => round(microtime(true) * 1000),
+                'status' => 'Listed',
+                'category' => $request->input('category'),
+                'size' => $request->input('size'),
+                'color' => $request->input('color'),
+                'sex' => $request->input('sex'),
+                'listedBy' => session('adminID'),
+            ];
+        }
+        else
+        {
+            $data =[
+                'image' => FirebaseHelper::uploadFile($request->file('image'), 'Products/'.$request->input('id')),
+                'price' => round((double)$request->input('price'),2),
+                'listedAt' => round(microtime(true) * 1000),
+                'status' => 'Listed',
+                'category' => $request->input('category'),
+                'size' => $request->input('size'),
+                'color' => $request->input('color'),
+                'sex' => $request->input('sex'),
+                'listedBy' => session('adminID'),
+            ];
+        }
+
+        $database->getReference('Products/'.$id)->update($data);
+
+        //Send notification to Shoppers
+        FirebaseHelper::sendNotification(
+            'Shoppers',
+            FirebaseHelper::buildNotification("New Product Listed!!", "Tap here", null),
+            [
+            ],
+            "ic_baseline_lightbulb_circle_24"
+        );
+
+
+        return redirect('product')->withSuccess('Successfully Listed.');
     }
 
     /**
@@ -79,6 +144,5 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
     }
 }
