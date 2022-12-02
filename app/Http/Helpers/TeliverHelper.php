@@ -2,8 +2,6 @@
 
 namespace App\Http\Helpers;
 
-use Error;
-
 class TeliverHelper
 {
 
