@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Helpers\FirebaseHelper;
 use App\Http\Helpers\TeliverHelper;
+use App\Mail\DriverMail;
+use Illuminate\Support\Facades\Mail;
 
 class DriverController extends Controller
 {
@@ -65,6 +67,14 @@ class DriverController extends Controller
             'registeredAt' => date("Y-m-d h:i:s"),
         ];
         $database->getReference('Drivers/'.$id)->set($driver);
+
+        //Send an Email to Driver
+        $mailData = [
+            'title' => 'Mail from Sharity',
+            'lname' => $request->input('lname'),
+            'code' => $id,
+        ];
+        Mail::to($request->input('email'))->send(new DriverMail($mailData));
 
         return redirect('driver');
     }

@@ -311,8 +311,6 @@
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="">Middle Name:</label>
-                                        <input type="text" name="mname" value="{{ $driver['middleName'] }}"
-                                            class="form-control item" placeholder="Middle Name">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="">Last Name:</label>
