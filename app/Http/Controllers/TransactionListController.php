@@ -13,6 +13,9 @@ class TransactionListController extends Controller
      */
     public function index()
     {
+        if(!session()->has('adminID')){
+            return redirect('/login')->withErrors(['msg' => 'Whoops! Login First.']);
+        }
         return view('pages.report_list_transaction');
     }
 

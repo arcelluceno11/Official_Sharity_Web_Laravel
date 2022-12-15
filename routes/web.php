@@ -13,7 +13,6 @@ use App\Http\Controllers\TransactionController;
 
 use App\Http\Controllers\CharityListController;
 use App\Http\Controllers\DonorListController;
-use App\Http\Controllers\OrderListController;
 use App\Http\Controllers\TransactionListController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ProfileController;
@@ -63,6 +62,9 @@ Route::middleware(['preventBackHistory'])->group(function () {
     Route::post('/charity/editListed/{id}', [CharityController::class, 'editListed']);
     Route::get('send-mail', [CharityController::class, 'update']);
 
+    //Driver Controller
+    Route::get('send-mail', [DriverController::class, 'store']);
+
     Route::resource('/admin', AdminController::class);
     Route::resource('/charity', CharityController::class);
     Route::resource('/donor', DonorController::class);
@@ -73,6 +75,5 @@ Route::middleware(['preventBackHistory'])->group(function () {
     Route::resource('/history', HistoryController::class);
     Route::resource('/charitylist', CharityListController::class);
     Route::resource('/donorshopperlist', DonorListController::class);
-    Route::resource('/orderlist', OrderListController::class);
     Route::resource('/transactionlist', TransactionListController::class);
 });
