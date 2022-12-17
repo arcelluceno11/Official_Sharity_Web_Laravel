@@ -253,7 +253,7 @@
                                     <option value="Arts and Culture">Arts and Culture</option>
                                     <option value="Community Development">Community Development</option>
                                     <option value="Education">Education</option>
-                                    <option value="Environmental">Enviromental</option>
+                                    <option value="Environmental">Environmental</option>
                                     <option value="Health">Health</option>
                                     <option value="Human">Human</option>
                                 </select>
@@ -470,9 +470,9 @@
                         <div class="form-group row mt-3">
                             <h5>Bank Details</h5>
                             <div class="form-group col-md-4">
-                                <label for="inputBankName">Bank Name</label>
-                                <input type="text" name="bankName" class="form-control item" id="listedbankName"
-                                    readonly>
+                                <label class="form-label" for="">Bank Name:</label>
+                                <input type="text" name="bankName" class="form-control item"
+                                    id="listedbankName" readonly>
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Bank Number:</label>
@@ -604,7 +604,7 @@
                 const appt = new Date(data[key]['applicationDetails']['applicationDate']);
                 const datetoday = new Date();
                 //Pending Table
-                if(data[key]['status'] == 'Pending' && appt.toLocaleDateString('en-US') != datetoday.toLocaleDateString('en-US')){
+                if(data[key]['status'] == 'Pending' && appt.toLocaleDateString('en-US') != datetoday.toLocaleDateString('en-US') ){
                     tablePending.row.add([
                         data[key]['id'],
                         data[key]['applicationDetails']['applicationName'],

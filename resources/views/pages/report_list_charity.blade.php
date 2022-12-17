@@ -8,15 +8,22 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
     <style>
     </style>
 @stop
 
 <!-- Content -->
 @section('content')
-        <!--Total Numbers-->
+    @if (session('success'))
+    <div class="alert alert-success" role="alert">
+        {{ session()->get('success') }}
+    </div>
+    @enderror
+    <!--Total Numbers-->
+    <div class="numberCharity">
         <div class="d-sm-flex justify-content-between align-items-center mb-4">
-            <h3 class="text-dark mb-0">Charities</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <h3 class="text-dark mb-0">Charities</h3>
         </div>
         <div class="row">
             <div class="col-md-6 col-xl-4 mb-4">
@@ -24,8 +31,9 @@
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
-                                <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Total Number of Charities</span></div>
-                                <div class="text-dark fw-bold h5 mb-0"><span>102</span></div>
+                                <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Total Number of
+                                        Charities</span></div>
+                                <div id="totalCharity" class="text-dark fw-bold h5 mb-0"></div>
                             </div>
                         </div>
                     </div>
@@ -36,8 +44,9 @@
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
-                                <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Total Number of Charities (This Month)</span></div>
-                                <div class="text-dark fw-bold h5 mb-0"><span>12</span></div>
+                                <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Total Number of
+                                        Charities (This Month)</span></div>
+                                <div id="totalCharityMonth" class="totalCharityMonth text-dark fw-bold h5 mb-0"></div>
                             </div>
                         </div>
                     </div>
@@ -48,10 +57,11 @@
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
-                                <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>Total Number of Charities (This Year)</span></div>
+                                <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>Total Number of Charities
+                                        (This Year)</span></div>
                                 <div class="row g-0 align-items-center">
                                     <div class="col-auto">
-                                        <div class="text-dark fw-bold h5 mb-0 me-3"><span>12</span></div>
+                                        <div id="totalCharityYear" class="totalCharityYear text-dark fw-bold h5 mb-0 me-3"></div>
                                     </div>
                                 </div>
                             </div>
@@ -60,76 +70,62 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <!--Chart-->
-        <div class="row">
-            <div class="col-lg-6 col-xl-6">
-                <div class="card shadow mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h6 class="text-primary fw-bold m-0">Monthly Graph</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-area"><canvas id="monthlyGraph" height="320" style="display: block; width: 572px; height: 320px;" width="572"></canvas></div>
-                    </div>
+    <!--Chart-->
+    <div class="row">
+        <div class="col-lg-6 col-xl-6">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary fw-bold m-0">Monthly Graph</h6>
                 </div>
-            </div>
-            <div class="col-lg-6 col-xl-6">
-                <div class="card shadow mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h6 class="text-primary fw-bold m-0">Annually Graph</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-area"><canvas id="annuallyGraph" height="320" style="display: block; width: 572px; height: 320px;" width="572"></canvas></div>
-                    </div>
+                <div class="card-body">
+                    <div class="chart-area"><canvas id="monthlyGraph" height="320"
+                            style="display: block; width: 572px; height: 320px;" width="572"></canvas></div>
                 </div>
             </div>
         </div>
-
-        <!--DataList of Charity-->
-        <div class="card shadow">
-            <div class="card-header py-3">
-                <div class="row">
-                    <div class="col align-self-center">
-                        <h6 class="m-0 font-weight-bold text-primary">Datalist of Charities</h6>
-                    </div>
-
+        <div class="col-lg-6 col-xl-6">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary fw-bold m-0">Annually Graph</h6>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <table class="table table-hover table-bordered pt-3 display" id="example" style="">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>No.</th>
-                                <th>Charity Name</th>
-                                <th>Email</th>
-                                <th>Appt. Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="text-align:center;">1</td>
-                                <td>Missionary of Children - Cebu City Chapter</td>
-                                <td>moc.cebucity@gmail.com</td>
-                                <td>10/22/22 10:00 AM</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:center;">2</td>
-                                <td>Bukas Palad Foundation Inc.</td>
-                                <td>bukaspalad@gmail.com</td>
-                                <td>10/30/22 1:00 PM</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:center;">3</td>
-                                <td>Youth for Youth Foundation</td>
-                                <td>u4u.foundation@gmail.com</td>
-                                <td>10/22/22 10:30 AM</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="card-body">
+                    <div class="chart-area"><canvas id="annuallyGraph" height="320"
+                            style="display: block; width: 572px; height: 320px;" width="572"></canvas></div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!--DataList of Charity-->
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col align-self-center">
+                    <h6 class="m-0 font-weight-bold text-primary">List of Charities</h6>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table table-hover table-bordered pt-3 display" id="listCharity" style="">
+
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID.</th>
+                            <th>Charity Name</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 @stop
 
 <!-- Scripts -->
@@ -142,84 +138,264 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-
-     <!--Annually Graph-->
-     <script>
-        const labels = [
-          '2022',
-          '2023',
-          '2024',
-          '2025',
-          '2026',
-          '2027',
-        ];
-
-        const data = {
-          labels: labels,
-          datasets: [{
-            label: 'My First dataset',
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [25, 0, 0, 0, 0, 0, 0],
-          }]
-        };
-
-        const config = {
-          type: 'line',
-          data: data,
-          options: {}
-        };
-      </script>
-
-    <script>
-        const anuallyGraph = new Chart(
-        document.getElementById('annuallyGraph'),
-        config
-        );
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js">
+    </script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js">
+    </script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js">
+    </script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js">
     </script>
 
-<!--Monthly Graph-->
+    <!--Export-->
     <script>
-        const ctx = document.getElementById('monthlyGraph').getContext('2d');
-        const monthlyGraph = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+        //Datatables
+        $(document).ready(function() {
+            $('table.display').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        });
+    </script>
+
+    <!--Total and List-->
+    <script type="module">
+        //Initialize Firebase
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js';
+        import { getDatabase, ref, onValue } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js';
+        import { setImage } from './js/firebasehelper.js';
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrQnBzhOFfjrIqmOUabkt14wvx-LVnzug",
+            authDomain: "sharity-f983e.firebaseapp.com",
+            databaseURL: "https://sharity-f983e-default-rtdb.firebaseio.com",
+            projectId: "sharity-f983e",
+            storageBucket: "sharity-f983e.appspot.com",
+            messagingSenderId: "599803730946",
+            appId: "1:599803730946:web:e7ebe55992577653831b1b",
+            measurementId: "G-2NTKV2NYYB"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        //Read Charities
+        const charities = ref(database, 'Charities/');
+
+
+        onValue(charities, (snapshot) => {
+            //Data
+            const data = snapshot.val();
+
+            //Totals
+            var totalcharity=0, totalmonth=0, totalyear=0;;
+            var charityMonth = new Date();
+            var newcharityMonth = charityMonth.getMonth();
+            var newcharityYear = charityMonth.getFullYear();
+
+            for(var key in data)
+            {
+                if(data[key]['status'] != 'Pending'){
+                    totalcharity++;
+                }
+                document.getElementById("totalCharity").innerHTML = totalcharity;
+
+                //Get Monthly
+                var listedDate = new Date(data[key]['listedAt']);
+                var newlistedMonth = listedDate.getMonth();
+                if(data[key]['status'] != 'Pending' && newcharityMonth == newlistedMonth){
+                    totalmonth++;
+                }
+                document.getElementById("totalCharityMonth").innerHTML = totalmonth;
+
+                //Get Annually
+                var listedDateYear = new Date(data[key]['listedAt']);
+                var newlistedYear = listedDate.getFullYear();
+                if(data[key]['status'] != 'Pending' && newcharityYear == newlistedYear){
+                    totalyear++;
+                }
+                document.getElementById("totalCharityYear").innerHTML = totalyear;
+
+            }
+
+            //Monthly Graph Condition
+            var janMonth=0, febMonth=0,marMonth=0,aprMonth=0,mayMonth=0,junMonth=0,julMonth=0,augMonth=0,septMonth=0,octMonth=0,novMonth=0,decMonth=0;
+            for(var key in data)
+            {
+                var dateMonth = new Date(data[key]['listedAt']);
+                var newdateMonth = dateMonth.getMonth()+1;
+
+                if(data[key]['status'] == 'Listed'){
+
+                    switch(newdateMonth)
+                    {
+                        case 1:
+                            janMonth++;
+                            break;
+                        case 2:
+                            febMonth++;
+                            break;
+                        case 3:
+                            marMonth++;
+                            break;
+                        case 4:
+                            aprMonth++;
+                            break;
+                        case 5:
+                            mayMonth++;
+                            break;
+                        case 6:
+                            junMonth++;
+                            break;
+                        case 7:
+                            julMonth++;
+                            break;
+                        case 8:
+                            augMonth++;
+                            break;
+                        case 9:
+                            septMonth++;
+                            break;
+                        case 10:
+                            octMonth++;
+                            break;
+                        case 11:
+                            novMonth++;
+                            break;
+                        default:
+                            decMonth++;
+                            break
                     }
                 }
             }
-        });
-        </script>
 
-    <script>
-        $(document).ready(function() {
-            $('table.display').DataTable();
+            //Monthly Graph
+            const barchart = document.getElementById('monthlyGraph').getContext('2d');
+            const monthlyGraph = new Chart(barchart, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: '#',
+                        data: [janMonth, febMonth, marMonth, aprMonth, mayMonth, junMonth, julMonth,augMonth,septMonth,octMonth,novMonth,decMonth],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+
+            //Annually
+            var year2022=0, year2023=0,year2024=0,year2025=0,year2026=0;
+            for(var key in data)
+            {
+                var dateYear = new Date(data[key]['listedAt']);
+                var newdateYear = dateYear.getFullYear();
+
+                if(data[key]['status'] == 'Listed'){
+
+                    switch(newdateYear)
+                    {
+                        case 2022:
+                            year2022++;
+                            break;
+                        case 2023:
+                            year2023++;
+                            break;
+                        case 2024:
+                            year2024++;
+                            break;
+                        case 2025:
+                            year2025++;
+                            break;
+                        case 2026:
+                            year2026++;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            const linechart = document.getElementById('annuallyGraph').getContext('2d');
+            const annuallyGraph = new Chart(linechart, {
+                type: 'line',
+                data: {
+                    labels: ['2022', '2023', '2024', '2025', '2026'],
+                    datasets: [{
+                        label: '#',
+                        data: [year2022, year2023, year2024, year2025, year2026],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            //List Table
+            var listCharity = $('#listCharity').DataTable();
+            listCharity.clear().draw();
+
+            for (var key in data) {
+                //List Table
+                if(data[key]['status'] != 'Pending'){
+                    listCharity.row.add([
+                        data[key]['id'],
+                        data[key]['charityDetails']['charityName'],
+                        data[key]['charityDetails']['charityCategory'],
+                        data[key]['status'],
+                    ]).node().id = data[key]['id'];
+                    listCharity.draw(false);
+                }
+            }
         });
+
     </script>
 @stop

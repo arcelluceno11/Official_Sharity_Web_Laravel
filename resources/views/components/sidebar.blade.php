@@ -43,7 +43,6 @@
                             <div class="bg-white py-2 collapse-inner rounded">
                                 <a class="collapse-item" href="charitylist">Charity</a>
                                 <a class="collapse-item" href="donorshopperlist">Donor/Shopper</a>
-                                <a class="collapse-item" href="orderlist">Order</a>
                                 <a class="collapse-item" href="transactionlist">Transaction</a>
                             </div>
                         </div>
