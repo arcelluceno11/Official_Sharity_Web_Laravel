@@ -62,7 +62,7 @@ class TransactionController extends Controller
         $transaction = [
             'id' => $id,
             'charityID' => $request->input('charityID'),
-            'remittedAmount' => $request->input('remittedAmount'),
+            'remittedAmount' => round((double)$request->input('remittedAmount')),
             'remittedBy' => session('adminID'),
             'remittedDate' => round(microtime(true) * 1000),
             'remittedProof' => FirebaseHelper::uploadFile($request->file('photoProof'), 'Transaction/' . $id)

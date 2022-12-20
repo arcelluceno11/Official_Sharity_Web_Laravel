@@ -277,8 +277,8 @@
                                 <div class="form-group col-md-3">
                                     <label for="">Sex</label>
                                     <select class="form-select" aria-label="Default select example" name="sex" id="pendingSex" required>
-                                        <option value="Women">Women</option>
-                                        <option value="Men">Men</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Male">Male</option>
                                         <option value="Unisex">Unisex</option>
                                     </select>
 

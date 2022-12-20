@@ -6,7 +6,7 @@
 @extends('layouts.index')
 
 <!-- Page Title -->
-@section('title', 'Manage Donor')
+@section('title', 'Manage Transaction')
 
 <!-- Styles -->
 @section('styles')
