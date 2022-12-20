@@ -189,41 +189,41 @@
                                 id="image" style="width:200px; height:200px;  object-fit: cover; object-position: center;">
                             <button type="button" class="btn btn-success" style="margin-left:50px;">
                                 <input class="form-control" type="file" id="formFile" name="photo"
-                                    onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
+                                    onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])" required>
                             </button>
                         </div>
 
                         <div class="form-group row mt-3">
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">First Name:</label>
-                                <input type="text" name="fname" class="form-control item" placeholder="Arcel">
+                                <input type="text" name="fname" class="form-control item" placeholder="Juan" required>
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Middle Name:</label>
-                                <input type="text" name="mname" class="form-control item" placeholder="V">
+                                <input type="text" name="mname" class="form-control item" placeholder="Tonio">
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Last Name:</label>
-                                <input type="text" name="lname" class="form-control item" placeholder="Luceno">
+                                <input type="text" name="lname" class="form-control item" placeholder="Dela Cruz" required>
                             </div>
                         </div>
                         <div class="form-group row mt-3">
                             <div class="form-group col-md-3">
                                 <label class="form-label" for="">Phone number:</label>
                                 <input type="tel" name="phone" class="form-control item"
-                                    placeholder="+639 XX XXX XXXX">
+                                    placeholder="+639 XX XXX XXXX" required>
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="inputSex">Sex:</label>
-                                <select class="form-select mt-2" aria-label="Default select example" name="sex">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Male</option>
-                                    <option value="2">Female</option>
+                                <select class="form-select mt-2" aria-label="Default select example" name="sex" required>
+                                    <option disabled selected value="">Choose...</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-3">
                                 <label class="form-label" for="">Date of Birth:</label>
-                                <input type="date" name="dob" class="form-control item">
+                                <input type="date" name="dob" class="form-control item" required>
                             </div>
 
                         </div>
@@ -231,17 +231,17 @@
                             <div class="form-group col-md-6">
                                 <label class="form-label" for="inputAddress">Contact Address:</label>
                                 <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"
-                                    name="contactAddress">
+                                    name="contactAddress" required>
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Email Address:</label>
                                 <input type="email" name="email" class="form-control item"
-                                    placeholder="sample@gmail.com">
+                                    placeholder="sample@gmail.com" required>
                             </div>
                         </div>
 
-                        <h5 class="mb-4" style="margin-top: 50px;">Vehicle Information (Not scope of the system)</h5>
-                        <div class="form-group row mb-5 mt-0">
+                        <h5 class="mb-4 d-none" style="margin-top: 50px;">Vehicle Information (Not scope of the system)</h5>
+                        <div class="form-group row mb-5 mt-0 d-none">
                             <div class="form-group col-md-4 ">
                                 <label class="form-label" for="">License Number:</label>
                                 <input type="email" name="licenseNum" class="form-control item"
@@ -256,7 +256,7 @@
                                 <input type="file" name="licenseDoc" class="form-control item">
                             </div>
                         </div>
-                        <div class="form-group row mb-5" style="margin-top:-35px;">
+                        <div class="form-group row mb-5 d-none" style="margin-top:-35px;">
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Plate Number:</label>
                                 <input type="email" name="plateNum" class="form-control item"
@@ -301,39 +301,41 @@
                                 <div class="text-center">
                                     <img src="{{ FirebaseHelper::getLink($driver['photo']) }}" alt="..."
                                         class="img-thumbnail rounded-circle" id="image"
-                                        style="width:150px; height:150px;  object-fit: cover; object-position: center;">
+                                        style="width:200px; height:200px;  object-fit: cover; object-position: center;">
                                 </div>
                                 <div class="form-group row mt-3">
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="">First Name:</label>
                                         <input type="text" name="fname" value="{{ $driver['firstName'] }}"
-                                            class="form-control item" placeholder="First Name">
+                                            class="form-control item" placeholder="First Name" required>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="">Middle Name:</label>
+                                        <input type="text" name="mname" value="{{ array_key_exists('middleName', $driver) ? $driver['middleName'] : '' }}"
+                                            class="form-control item" placeholder="Middle Name">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="">Last Name:</label>
                                         <input type="text" name="lname" value="{{ $driver['lastName'] }}"
-                                            class="form-control item" placeholder="Last Name">
+                                            class="form-control item" placeholder="Last Name" required>
                                     </div>
                                 </div>
                                 <div class="form-group row mt-3">
                                     <div class="form-group col-md-3">
                                         <label class="form-label" for="">Phone number:</label>
                                         <input type="tel" name="phone" value="{{ $driver['phone'] }}"
-                                            class="form-control item" placeholder="+639 XX XXX XXXX">
+                                            class="form-control item" placeholder="+639 XX XXX XXXX" required>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="inputSex">Sex</label>
                                         <select class="form-select mt-2" aria-label="Default select example"
-                                            name="sex">
+                                            name="sex" required>
                                             @if ($driver['sex'] == 'Male')
-                                                <option>Choose...</option>
+                                                <option disabled>Choose...</option>
                                                 <option value="Male" selected>Male</option>
                                                 <option value="Female">Female</option>
                                             @else
-                                                <option>Choose...</option>
+                                                <option disabled>Choose...</option>
                                                 <option value="Male">Male</option>
                                                 <option value="Female" selected>Female</option>
                                             @endif
@@ -343,7 +345,7 @@
                                     <div class="form-group col-md-3">
                                         <label class="form-label" for="">Date of Birth:</label>
                                         <input type="date" name="dob" class="form-control item"
-                                            value="{{ date('Y-m-d', strtotime($driver['dob'])) }}">
+                                            value="{{ date('Y-m-d', strtotime($driver['dob'])) }}" required>
                                     </div>
 
                                 </div>
@@ -352,7 +354,7 @@
                                         <label for="inputAddress">Address</label>
                                         <input type="text" class="form-control" id="inputAddress"
                                             value="{{ $driver['contactAddress'] }}" placeholder="1234 Main St"
-                                            name="contactAddress">
+                                            name="contactAddress" required>
                                     </div>
                                     <div class="form-group col-md-2">
                                         <label for="inputStatus">Status</label>
@@ -367,7 +369,7 @@
                                         <label class="form-label" for="">Email Address:</label>
                                         <fieldset disabled>
                                             <input type="email" name="email" class="form-control item"
-                                                value="{{ $driver['email'] }}" placeholder="sample@gmail.com">
+                                                value="{{ $driver['email'] }}" placeholder="sample@gmail.com" required>
                                         </fieldset>
                                     </div>
                                     <div class="form-group col-md-4">
@@ -379,9 +381,9 @@
                                     </div>
                                 </div>
 
-                                <h5 class="mb-4" style="margin-top: 50px;">Vehicle Information (Not scope of the system)
+                                <h5 class="mb-4 d-none" style="margin-top: 50px;">Vehicle Information (Not scope of the system)
                                 </h5>
-                                <div class="form-group row mb-5 mt-0">
+                                <div class="form-group row mb-5 mt-0 d-none">
                                     <div class="form-group col-md-4 ">
                                         <label class="form-label" for="">License Number:</label>
                                         <input type="email" name="licenseNum" class="form-control item"
@@ -396,8 +398,7 @@
                                         <input type="file" name="licenseDoc" class="form-control item">
                                     </div>
                                 </div>
-
-                                <div class="form-group row mb-5" style="margin-top:-35px;">
+                                <div class="form-group row mb-5 d-none" style="margin-top:-35px;">
                                     <div class="form-group col-md-4">
                                         <label class="form-label" for="">Plate Number:</label>
                                         <input type="email" name="plateNum" class="form-control item"

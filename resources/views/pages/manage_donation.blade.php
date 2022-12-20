@@ -1063,13 +1063,13 @@
                                     <div class="form-check form-check-inline">
                                         <input class="radio form-check-input" type="radio" name="status` + data[key][
                                         'items'
-                                    ][i]['id'] + parseInt(i + 1) + `" id="radioStatus" value="Accepted">
+                                    ][i]['id'] + parseInt(i + 1) + `" id="radioStatus" value="Accepted" required>
                                         <label class="form-check-label">Accept</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="radio form-check-input" type="radio" name="status` + data[key][
                                         'items'
-                                    ][i]['id'] + parseInt(i + 1) + `" id="radioStatus" value="Rejected">
+                                    ][i]['id'] + parseInt(i + 1) + `" id="radioStatus" value="Rejected" required>
                                         <label class="form-check-label">Reject</label>
                                     </div>
                                     `
@@ -1114,20 +1114,20 @@
                                             id="image` + num + `" style="width:150px; height:150px;">
                                         <button type="button" class="btn btn-success">
                                             <input class="form-control" type="file" id="formFile" name="photo` + num + `"
-                                                onchange="document.getElementById('image` + num + `').src = window.URL.createObjectURL(this.files[0])">
+                                                onchange="document.getElementById('image` + num + `').src = window.URL.createObjectURL(this.files[0])" required>
                                         </button>
                                     </div>
                                     `,
                                     `<select class="form-select form-select" name="category` +
-                                    num + `">
-                                        <option selected>Choose Category</option>
+                                    num + `" required>
+                                        <option disabled selected value="">Choose Category</option>
                                         <option value="Jacket and Hoodies">Jacket and Hoodies</option>
                                         <option value="Shirts and Blouses">Shirts and Blouses</option>
                                         <option value="Pants and Jeans">Pants and Jeans</option>
                                     </select>`,
                                     `<select class="form-select form-select" name="color` +
-                                    num + `">
-                                        <option selected>Choose Color</option>
+                                    num + `" required>
+                                        <option disabled selected value="">Choose Color</option>
                                         <option value="White">White</option>
                                         <option value="Black">Black</option>
                                         <option value="Red">Red</option>
@@ -1138,15 +1138,15 @@
                                         <option value="Violet">Violet</option>
                                     </select>`,
                                     `<select class="form-select form-select" name="sex` +
-                                    num + `">
-                                        <option selected>Choose Sex</option>
+                                    num + `" required>
+                                        <option disabled selected value="">Choose Sex</option>
                                         <option value="Men">Men</option>
                                         <option value="Women">Women</option>
                                         <option value="Unisex">Unisex</option>
                                     </select>`,
                                     `<select class="form-select form-select" name="size` +
-                                    num + `">
-                                        <option selected>Choose Size</option>
+                                    num + `" required>
+                                        <option disabled selected value="">Choose Size</option>
                                         <option value="Extra Small">Extra Small</option>
                                         <option value="Small">Small</option>
                                         <option value="Medium">Medium</option>

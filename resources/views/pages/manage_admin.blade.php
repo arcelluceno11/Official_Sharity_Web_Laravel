@@ -226,7 +226,7 @@
                                 style="width:150px; height:150px;  object-fit: cover; object-position: center;">
                             <button class="btn btn-success" style="margin-left:50px;">
                                 <input class="form-control" type="file" id="formFile" name="photo"
-                                    onchange="document.getElementById('imageEditAdmin').src = window.URL.createObjectURL(this.files[0])">
+                                    onchange="document.getElementById('imageEditAdmin').src = window.URL.createObjectURL(this.files[0])" required>
                             </button>
                             @error('photo')
                                 <small class="form-text text-danger">{{ $message }}</small>
@@ -235,14 +235,14 @@
                         <div class="form-group row mt-3 text-center">
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">First Name:</label>
-                                <input id="editFirstName" type="text" name="firstname" class="form-control item">
+                                <input id="editFirstName" type="text" name="firstname" class="form-control item" required>
                                 @error('firstname')
                                     <small class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Last Name:</label>
-                                <input id="editLastName" type="text" name="lastname" class="form-control item">
+                                <input id="editLastName" type="text" name="lastname" class="form-control item" required>
                                 @error('lastname')
                                     <small class="form-text text-danger">{{ $message }}</small>
                                 @enderror
@@ -251,7 +251,7 @@
                         <div class="form-group row mt-3 mb-5 text-center">
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Email Address:</label>
-                                <input id="editEmail" type="email" name="email" class="form-control item">
+                                <input id="editEmail" type="email" name="email" class="form-control item" required>
                                 @error('email')
                                     <small class="form-text text-danger">{{ $message }}</small>
                                 @enderror
@@ -261,7 +261,7 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Password:</label>
-                                <input id="editPassword" type="password" name="password" class="form-control item">
+                                <input id="editPassword" type="password" name="password" class="form-control item" required>
                                 @error('password')
                                     <small class="form-text text-danger">{{ $message }}</small>
                                 @enderror

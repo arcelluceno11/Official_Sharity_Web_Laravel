@@ -28,7 +28,7 @@
                     <div class="card-body text-center shadow">
                         <img id="profilePhoto" class="rounded-circle mb-3 mt-4"
                             src="{{ FirebaseHelper::getLink($admin['photo']) }}"
-                            style="width:150px; height:150px;  object-fit: cover; object-position: center;">
+                            style="width:200px; height:200px;  object-fit: cover; object-position: center;">
                         <div class="mb-3">
                             <input class="form-control" type="file" id="formFile" name="photo"
                                 onchange="document.getElementById('profilePhoto').src = window.URL.createObjectURL(this.files[0])">
