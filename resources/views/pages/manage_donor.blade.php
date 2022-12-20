@@ -127,7 +127,6 @@
                             <th>Email Address</th>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     <tbody>
@@ -148,8 +147,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
-                        <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle"
-                            id="image" style="width:auto; height:200px;">
+                        <img alt="..." class="viewImage img-thumbnail rounded-circle" id="imageView"
+                            style="width:auto; height:200px; object-fit: cover;">
                     </div>
                     <div class="form-group row mt-5">
 
@@ -181,12 +180,6 @@
                         <div class="form-group col-md-3">
                             <label class="form-label" for="">Date of Birth:</label>
                             <input type="text" name="dob" id="dob" class="form-control item" disabled readonly>
-                        </div>
-                    </div>
-                    <div class="form-group row mt-3">
-                        <div class="form-group col-md-3">
-                            <label class="form-label" for="">Status:</label>
-                            <input type="text" name="status" id="status" class="form-control item" disabled readonly>
                         </div>
                     </div>
                 </div>
@@ -282,7 +275,6 @@
                 data[key]['email'],
                 data[key]['firstName'],
                 data[key]['lastName'],
-                data[key]['status'],
                 `
                 <button type="button" class="btnDonorShopperModal btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#viewModal">
                     <i class="fa-solid fa-eye"></i>
@@ -290,9 +282,6 @@
                 `
             ]).node().id = data[key]['id'];
             tableDonorShopper.draw(false);
-
-            //Show Toast
-            new bootstrap.Toast($('#toastDonorShopper')).show();
         }
 
         //Modals
@@ -310,7 +299,15 @@
                     $('#phone').val(data[key]['phone']);
                     $('#dob').val(data[key]['dob']);
                     $('#sex').val(data[key]['sex']);
-                    $('#status').val(data[key]['status']);
+                    $('.viewImage').text(data[key]['profileImage']);
+
+                    if(data[key]['profileImage'] != "none")
+                    {
+                        setImage('View', data[key]['profileImage']);
+                    }
+                    else{
+                        setImage('View', 'gs://sharity-f983e.appspot.com/Users/defaultImage.png');
+                    }
 
                     const addresses = ref(database, 'ContactAddresses/');
                     onValue(addresses, (snapshot) => {
