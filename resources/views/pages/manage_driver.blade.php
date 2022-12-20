@@ -186,7 +186,7 @@
                     <div class="modal-body">
                         <div class="text-center">
                             <img src="{{ asset('profile.JPG') }}" alt="..." class="img-thumbnail rounded-circle"
-                                id="image" style="width:auto; height:200px;">
+                                id="image" style="width:200px; height:200px;  object-fit: cover; object-position: center;">
                             <button type="button" class="btn btn-success" style="margin-left:50px;">
                                 <input class="form-control" type="file" id="formFile" name="photo"
                                     onchange="document.getElementById('image').src = window.URL.createObjectURL(this.files[0])">
@@ -301,7 +301,7 @@
                                 <div class="text-center">
                                     <img src="{{ FirebaseHelper::getLink($driver['photo']) }}" alt="..."
                                         class="img-thumbnail rounded-circle" id="image"
-                                        style="width:auto; height:200px;">
+                                        style="width:150px; height:150px;  object-fit: cover; object-position: center;">
                                 </div>
                                 <div class="form-group row mt-3">
                                     <div class="form-group col-md-4">

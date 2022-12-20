@@ -198,7 +198,7 @@ class DonationController extends Controller
                     'id' => $key,
                     'category' => $item['category'],
                     'color' => $item['color'],
-                    'image' => $item['charityDetails'],
+                    'image' => $item['image'],
                     'sex' => $item['sex'],
                     'size' => $item['size'],
                     'donatedBy' => $donation['donatedBy'],

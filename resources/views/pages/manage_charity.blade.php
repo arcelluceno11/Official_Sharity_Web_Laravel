@@ -228,7 +228,7 @@
                                     style="width:auto; height:200px;">
                                 <button type="button" class="btn btn-success" style="margin-left:50px;">
                                     <input class="form-control" type="file" id="formFile" name="charityPhoto"
-                                        onchange="document.getElementById('charityPhoto').src = window.URL.createObjectURL(this.files[0])">
+                                        onchange="document.getElementById('charityPhoto').src = window.URL.createObjectURL(this.files[0])" required>
                                 </button>
                             </div>
                         </div>
@@ -635,11 +635,11 @@
                                                 data-bs-target="#editModal">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </button>
-                                            <button type="button" class="btnReschedModal btn btn-danger btn-sm" data-bs-toggle="modal"
+                                            <button type="button" class="btnReschedModal btn btn-success btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#reschedModal">
                                                 <i class="fa-solid fa-calendar"></i>
                                             </button>
-                                            <button type="button" class="btnRemoveModal btn btn-success btn-sm" data-bs-toggle="modal"
+                                            <button type="button" class="btnRemoveModal btn btn-danger btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#removeModal">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>`

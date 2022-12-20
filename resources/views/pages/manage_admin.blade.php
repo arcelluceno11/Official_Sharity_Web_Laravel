@@ -363,7 +363,7 @@
                     data[key]['email'],
                     data[key]['name'],
                     `
-                    <button type="button" class="editModal btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal">
+                    <button type="button" class="editModal btn btn-primary btn-sm d-none" data-bs-toggle="modal" data-bs-target="#editModal">
                         <i class="fa-regular fa-pen-to-square"></i>
                     </button>
                     <button type="button" class="deleteModal btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">

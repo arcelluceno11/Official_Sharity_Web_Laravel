@@ -101,7 +101,7 @@ class CharityController extends Controller
         $charityAuth = [
                 'uid' => $id,
                 'email' => $request->input('accountEmail'),
-                'emailVerified' => false,
+                'emailVerified' => true,
                 'password' => $newpass,
                 'displayName' => $request->input('charityName'),
                 'disabled' => false,
