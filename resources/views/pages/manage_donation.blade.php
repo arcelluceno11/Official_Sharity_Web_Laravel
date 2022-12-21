@@ -700,7 +700,7 @@
 
                     //Get Request
                     $.ajax({
-                        url: 'https://api.teliver.xyz/v1/task/list?apikey=3a9bdbc5f2214fe2b0b60797cb535d07',
+                        url: 'https://api.teliver.xyz/v1/task/list?apikey=ec7fb302ced044b69063bddaa48fa9c0',
                         type: 'GET',
                         dataType: 'json',
                         success: function(responseData) {
@@ -749,7 +749,7 @@
 
                     //Get Request
                     $.ajax({
-                        url: 'https://api.teliver.xyz/v1/task/list?apikey=3a9bdbc5f2214fe2b0b60797cb535d07',
+                        url: 'https://api.teliver.xyz/v1/task/list?apikey=ec7fb302ced044b69063bddaa48fa9c0',
                         type: 'GET',
                         dataType: 'json',
                         success: function(responseData) {
@@ -801,7 +801,7 @@
 
                     //Get Request
                     $.ajax({
-                        url: 'https://api.teliver.xyz/v1/task/list?apikey=3a9bdbc5f2214fe2b0b60797cb535d07',
+                        url: 'https://api.teliver.xyz/v1/task/list?apikey=ec7fb302ced044b69063bddaa48fa9c0',
                         type: 'GET',
                         dataType: 'json',
                         success: function(responseData) {
@@ -873,7 +873,7 @@
 
                                 //Table Row
                                 tablePendingModal.row.add([
-                                    data[key]['items'][i]['id'] + 1,
+                                    parseInt(data[key]['items'][i]['id']) + 1,
                                     '<img id="image' + data[key]['items'][i]['id'] +
                                     '" class="img-thumbnail" id="image" style="width:100px; height:100px;">',
                                     data[key]['items'][i]['category'],
@@ -941,7 +941,7 @@
 
                         //Get Task ID
                         $.ajax({
-                            url: 'https://api.teliver.xyz/v1/task/list?apikey=3a9bdbc5f2214fe2b0b60797cb535d07',
+                            url: 'https://api.teliver.xyz/v1/task/list?apikey=ec7fb302ced044b69063bddaa48fa9c0',
                             type: 'GET',
                             dataType: 'json',
                             success: function(responseData) {

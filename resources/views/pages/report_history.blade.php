@@ -317,7 +317,7 @@
             {
                 var category = data[key]['charityDetails']['charityCategory'];
 
-                if(data[key]['status'] != 'Pending'){
+                if(data[key]['status'] == 'Listed'){
                     switch(category)
                     {
                         case 'Animals':
