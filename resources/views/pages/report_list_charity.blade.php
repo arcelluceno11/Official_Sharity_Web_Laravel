@@ -26,39 +26,52 @@
             <h3 class="text-dark mb-0">Charities</h3>
         </div>
         <div class="row">
-            <div class="col-md-6 col-xl-4 mb-4">
+            <div class="col-md-6 col-xl-3 mb-3">
                 <div class="card shadow border-start-primary py-2">
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
                                 <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Total Number of
-                                        Charities</span></div>
+                                        Active Charities</span></div>
+                                <div id="totalActiveCharity" class="text-dark fw-bold h5 mb-0"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-3 mb-3">
+                <div class="card shadow border-start-primary py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col me-2">
+                                <div class="text-uppercase text-danger fw-bold text-xs mb-1"><span>Total Number of
+                                        Registered Charities</span></div>
                                 <div id="totalCharity" class="text-dark fw-bold h5 mb-0"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-xl-4 mb-4">
+            <div class="col-md-6 col-xl-3 mb-3">
                 <div class="card shadow border-start-success py-2">
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
                                 <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Total Number of
-                                        Charities (This Month)</span></div>
+                                        Registered Charities (This Month)</span></div>
                                 <div id="totalCharityMonth" class="totalCharityMonth text-dark fw-bold h5 mb-0"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-xl-4 mb-4">
+            <div class="col-md-6 col-xl-3 mb-3">
                 <div class="card shadow border-start-info py-2">
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
                                 <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>Total Number of Charities
-                                        (This Year)</span></div>
+                                        Registered (This Year)</span></div>
                                 <div class="row g-0 align-items-center">
                                     <div class="col-auto">
                                         <div id="totalCharityYear" class="totalCharityYear text-dark fw-bold h5 mb-0 me-3"></div>
@@ -111,7 +124,6 @@
         <div class="card-body">
             <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
                 <table class="table table-hover table-bordered pt-3 display" id="listCharity" style="">
-
                     <thead class="thead-light">
                         <tr>
                             <th>ID.</th>
@@ -193,7 +205,7 @@
             const data = snapshot.val();
 
             //Totals
-            var totalcharity=0, totalmonth=0, totalyear=0;;
+            var totalcharity=0, totalactivecharity=0, totalmonth=0, totalyear=0;
             var charityMonth = new Date();
             var newcharityMonth = charityMonth.getMonth();
             var newcharityYear = charityMonth.getFullYear();
@@ -201,6 +213,11 @@
             for(var key in data)
             {
                 if(data[key]['status'] == 'Listed'){
+                    totalactivecharity++;
+                }
+                document.getElementById("totalActiveCharity").innerHTML = totalactivecharity;
+
+                if(data[key]['status'] != 'Pending'){
                     totalcharity++;
                 }
                 document.getElementById("totalCharity").innerHTML = totalcharity;
@@ -208,7 +225,7 @@
                 //Get Monthly
                 var listedDate = new Date(data[key]['listedAt']);
                 var newlistedMonth = listedDate.getMonth();
-                if(data[key]['status'] == 'Listed' && newcharityMonth == newlistedMonth){
+                if(data[key]['status'] != 'Pending' && newcharityMonth == newlistedMonth){
                     totalmonth++;
                 }
                 document.getElementById("totalCharityMonth").innerHTML = totalmonth;
@@ -216,7 +233,7 @@
                 //Get Annually
                 var listedDateYear = new Date(data[key]['listedAt']);
                 var newlistedYear = listedDate.getFullYear();
-                if(data[key]['status'] == 'Listed' && newcharityYear == newlistedYear){
+                if(data[key]['status'] != 'Pending' && newcharityYear == newlistedYear){
                     totalyear++;
                 }
                 document.getElementById("totalCharityYear").innerHTML = totalyear;
@@ -230,7 +247,7 @@
                 var dateMonth = new Date(data[key]['listedAt']);
                 var newdateMonth = dateMonth.getMonth()+1;
 
-                if(data[key]['status'] == 'Listed'){
+                if(data[key]['status'] != 'Pending'){
 
                     switch(newdateMonth)
                     {
@@ -281,7 +298,7 @@
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
-                        label: '#',
+                        label: '# of Charities',
                         data: [janMonth, febMonth, marMonth, aprMonth, mayMonth, junMonth, julMonth,augMonth,septMonth,octMonth,novMonth,decMonth],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -319,7 +336,7 @@
                 var dateYear = new Date(data[key]['listedAt']);
                 var newdateYear = dateYear.getFullYear();
 
-                if(data[key]['status'] == 'Listed'){
+                if(data[key]['status'] != 'Pending'){
 
                     switch(newdateYear)
                     {
@@ -349,7 +366,7 @@
                 data: {
                     labels: ['2022', '2023', '2024', '2025', '2026'],
                     datasets: [{
-                        label: '#',
+                        label: '# of Charities',
                         data: [year2022, year2023, year2024, year2025, year2026],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
