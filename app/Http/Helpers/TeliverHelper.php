@@ -7,7 +7,7 @@ class TeliverHelper
 
     public static function createPickupTask($id, $donatedBy, $long, $lat, $name, $address, $phone)
     {
-        $ch = curl_init('https://api.teliver.xyz/v1/task/create?apikey=b59834bda9874493b8e6af7c3f4a102a');
+        $ch = curl_init('https://api.teliver.xyz/v1/task/create?apikey=ec7fb302ced044b69063bddaa48fa9c0');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json'
@@ -43,7 +43,7 @@ class TeliverHelper
 
     public static function createDropTask($id, $donatedBy, $long, $lat, $name, $address, $phone)
     {
-        $ch = curl_init('https://api.teliver.xyz/v1/task/create?apikey=b59834bda9874493b8e6af7c3f4a102a');
+        $ch = curl_init('https://api.teliver.xyz/v1/task/create?apikey=ec7fb302ced044b69063bddaa48fa9c0');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json'
@@ -81,7 +81,7 @@ class TeliverHelper
 
     public static function getTasks()
     {
-        $ch = curl_init('https://api.teliver.xyz/v1/task/list?apikey=b59834bda9874493b8e6af7c3f4a102a');
+        $ch = curl_init('https://api.teliver.xyz/v1/task/list?apikey=ec7fb302ced044b69063bddaa48fa9c0');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json'
@@ -99,7 +99,7 @@ class TeliverHelper
 
     public static function getTrackingUrlTask($task_id)
     {
-        $ch = curl_init('https://api.teliver.xyz/v1/task/trackingurl/' . $task_id . '?apikey=b59834bda9874493b8e6af7c3f4a102a');
+        $ch = curl_init('https://api.teliver.xyz/v1/task/trackingurl/' . $task_id . '?apikey=ec7fb302ced044b69063bddaa48fa9c0');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json'
@@ -117,7 +117,7 @@ class TeliverHelper
 
     public static function createDriver($driver_id, $name, $mobile, $email)
     {
-        $ch = curl_init('https://api.teliver.xyz/v1/invite_user?apikey=b59834bda9874493b8e6af7c3f4a102a');
+        $ch = curl_init('https://api.teliver.xyz/v1/invite_user?apikey=ec7fb302ced044b69063bddaa48fa9c0');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json'
@@ -144,7 +144,7 @@ class TeliverHelper
 
     public static function assignDriver($task_id, $driver_id)
     {
-        $ch = curl_init('https://api.teliver.xyz/v1/task/assign?apikey=b59834bda9874493b8e6af7c3f4a102a');
+        $ch = curl_init('https://api.teliver.xyz/v1/task/assign?apikey=ec7fb302ced044b69063bddaa48fa9c0');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json'
@@ -169,7 +169,7 @@ class TeliverHelper
 
     public static function getTrackingUrlTrip($trip_id)
     {
-        $ch = curl_init('https://api.teliver.xyz/v1/trips/trackingurl/' . $trip_id . '?apikey=b59834bda9874493b8e6af7c3f4a102a');
+        $ch = curl_init('https://api.teliver.xyz/v1/trips/trackingurl/' . $trip_id . '?apikey=ec7fb302ced044b69063bddaa48fa9c0');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json'
