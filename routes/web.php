@@ -14,6 +14,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CharityListController;
 use App\Http\Controllers\DonorListController;
 use App\Http\Controllers\TransactionListController;
+use App\Http\Controllers\ReviewListController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalesController;
@@ -76,4 +77,5 @@ Route::middleware(['preventBackHistory'])->group(function () {
     Route::resource('/charitylist', CharityListController::class);
     Route::resource('/donorshopperlist', DonorListController::class);
     Route::resource('/transactionlist', TransactionListController::class);
+    Route::resource('/reviewlist', ReviewListController::class);
 });
