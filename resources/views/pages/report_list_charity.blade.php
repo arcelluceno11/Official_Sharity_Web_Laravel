@@ -200,7 +200,7 @@
 
             for(var key in data)
             {
-                if(data[key]['status'] != 'Pending'){
+                if(data[key]['status'] == 'Listed'){
                     totalcharity++;
                 }
                 document.getElementById("totalCharity").innerHTML = totalcharity;
@@ -208,7 +208,7 @@
                 //Get Monthly
                 var listedDate = new Date(data[key]['listedAt']);
                 var newlistedMonth = listedDate.getMonth();
-                if(data[key]['status'] != 'Pending' && newcharityMonth == newlistedMonth){
+                if(data[key]['status'] == 'Listed' && newcharityMonth == newlistedMonth){
                     totalmonth++;
                 }
                 document.getElementById("totalCharityMonth").innerHTML = totalmonth;
@@ -216,7 +216,7 @@
                 //Get Annually
                 var listedDateYear = new Date(data[key]['listedAt']);
                 var newlistedYear = listedDate.getFullYear();
-                if(data[key]['status'] != 'Pending' && newcharityYear == newlistedYear){
+                if(data[key]['status'] == 'Listed' && newcharityYear == newlistedYear){
                     totalyear++;
                 }
                 document.getElementById("totalCharityYear").innerHTML = totalyear;
