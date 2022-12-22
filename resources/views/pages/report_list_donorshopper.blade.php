@@ -277,7 +277,7 @@
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
-                        label: 'Number of User',
+                        label: '# of User',
                         data: [janMonth, febMonth, marMonth, aprMonth, mayMonth, junMonth, julMonth,augMonth,septMonth,octMonth,novMonth,decMonth],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -342,7 +342,7 @@
                 data: {
                     labels: ['2022', '2023', '2024', '2025', '2026'],
                     datasets: [{
-                        label: 'Number of User',
+                        label: '# of User',
                         data: [year2022, year2023, year2024, year2025, year2026],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',

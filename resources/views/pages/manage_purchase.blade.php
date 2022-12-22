@@ -633,7 +633,7 @@
 
                     //Get Request
                     $.ajax({
-                        url: 'https://api.teliver.xyz/v1/task/list?apikey=3a9bdbc5f2214fe2b0b60797cb535d07',
+                        url: 'https://api.teliver.xyz/v1/task/list?apikey=ec7fb302ced044b69063bddaa48fa9c0',
                         type: 'GET',
                         dataType: 'json',
                         success: function(responseData) {
@@ -682,7 +682,7 @@
 
                     //Get Request
                     $.ajax({
-                        url: 'https://api.teliver.xyz/v1/task/list?apikey=3a9bdbc5f2214fe2b0b60797cb535d07',
+                        url: 'https://api.teliver.xyz/v1/task/list?apikey=ec7fb302ced044b69063bddaa48fa9c0',
                         type: 'GET',
                         dataType: 'json',
                         success: function(responseData) {
@@ -733,7 +733,7 @@
 
                     //Get Request
                     $.ajax({
-                        url: 'https://api.teliver.xyz/v1/task/list?apikey=3a9bdbc5f2214fe2b0b60797cb535d07',
+                        url: 'https://api.teliver.xyz/v1/task/list?apikey=ec7fb302ced044b69063bddaa48fa9c0',
                         type: 'GET',
                         dataType: 'json',
                         success: function(responseData) {
@@ -869,7 +869,7 @@
 
                         //Get Task ID
                         $.ajax({
-                            url: 'https://api.teliver.xyz/v1/task/list?apikey=3a9bdbc5f2214fe2b0b60797cb535d07',
+                            url: 'https://api.teliver.xyz/v1/task/list?apikey=ec7fb302ced044b69063bddaa48fa9c0',
                             type: 'GET',
                             dataType: 'json',
                             success: function(responseData) {

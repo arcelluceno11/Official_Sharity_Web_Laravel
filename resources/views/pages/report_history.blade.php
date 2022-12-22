@@ -47,7 +47,7 @@
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
-                                <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Total Number of Items:</span></div>
+                                <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Total Number of Listed Clothes</span></div>
                                 <div class="text-dark fw-bold h5 mb-0" id="totalitems"></div>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
             <div class="col-lg-4 col-xl-4">
                 <div class="card shadow mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h6 class="text-primary fw-bold m-0">Charity Category</h6>
+                        <h6 class="text-primary fw-bold m-0">Listed Charity Category</h6>
                     </div>
                     <div class="card-body">
                         <div class="chart-area"><canvas id="charitycategory" height="320"
@@ -83,7 +83,7 @@
             <div class="col-lg-4 col-xl-4">
                 <div class="card shadow mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h6 class="text-primary fw-bold m-0">Products Category</h6>
+                        <h6 class="text-primary fw-bold m-0">Listed Products Category</h6>
                     </div>
                     <div class="card-body">
                         <div class="chart-area"><canvas id="productscategory" height="320"
@@ -317,7 +317,7 @@
             {
                 var category = data[key]['charityDetails']['charityCategory'];
 
-                if(data[key]['status'] != 'Pending'){
+                if(data[key]['status'] == 'Listed'){
                     switch(category)
                     {
                         case 'Animals':
@@ -397,7 +397,7 @@
             {
                 var newcategory = data[key]['category'];
 
-                if(data[key]['status'] != 'Pending'){
+                if(data[key]['status'] == 'Listed'){
                     switch(newcategory)
                     {
                         case 'Jacket and Hoodies':
