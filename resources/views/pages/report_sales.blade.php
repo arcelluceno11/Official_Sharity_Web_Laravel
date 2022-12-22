@@ -46,7 +46,7 @@
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
-                                <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Total Number of Items:</span></div>
+                                <div class="text-uppercase text-success fw-bold text-xs mb-1"><span>Total Number of Listed Items:</span></div>
                                 <div id="totalnumProducts" class="totalnumProducts text-dark fw-bold h5 mb-0"></div>
                             </div>
                         </div>
@@ -275,7 +275,7 @@
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
-                        label: '#',
+                        label: 'Total Profit',
                         data: [janMonth, febMonth, marMonth, aprMonth, mayMonth, junMonth, julMonth,augMonth,septMonth,octMonth,novMonth,decMonth],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -344,7 +344,7 @@
                 data: {
                     labels: ['2022', '2023', '2024', '2025', '2026'],
                     datasets: [{
-                        label: '#',
+                        label: 'Total Profit',
                         data: [year2022, year2023, year2024, year2025, year2026],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -375,6 +375,7 @@
             });
         });
 
+        //Read Products
         const products = ref(database, 'Products/');
         onValue(products, (snapshot) => {
 
@@ -384,7 +385,7 @@
 
             for(var key in data)
             {
-                if(data[key]['status'] == 'Sold' || data[key]['status'] == 'Listed'){
+                if(data[key]['status'] == 'Listed'){
                     totalProducts++;
                 }
                 document.getElementById("totalnumProducts").innerHTML = totalProducts;

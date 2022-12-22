@@ -44,6 +44,7 @@
                                 <a class="collapse-item" href="charitylist">Charity</a>
                                 <a class="collapse-item" href="donorshopperlist">Donor/Shopper</a>
                                 <a class="collapse-item" href="transactionlist">Transaction</a>
+                                <a class="collapse-item" href="reviewlist">Reviews</a>
                             </div>
                         </div>
                         <a class="collapse-item" href="history">History</a>
