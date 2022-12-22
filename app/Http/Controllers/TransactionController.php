@@ -47,12 +47,11 @@ class TransactionController extends Controller
         $database = app('firebase.database');
         $charity = $database->getReference('Charities')->getValue();
 
-        foreach($charity as $x)
-        {
-            if($x['id'] == $request->input('charityID')) {
+        foreach ($charity as $x) {
+            if ($x['id'] == $request->input('charityID')) {
 
                 //Check if Requested Amount is bigger than Current Amount
-                if($request->input('remittedAmount') > $x['transactionDetails']['nonRemitted']) {
+                if ($request->input('remittedAmount') > $x['transactionDetails']['nonRemitted']) {
                     return redirect('transaction')->withErrors(['msg' => 'Remitted Amount is bigger than the current amount of the Charity! Try Again.']);
                     break;
                 }
@@ -62,30 +61,37 @@ class TransactionController extends Controller
         $transaction = [
             'id' => $id,
             'charityID' => $request->input('charityID'),
-            'remittedAmount' => round((double)$request->input('remittedAmount')),
+            'remittedAmount' => round((float)$request->input('remittedAmount')),
             'remittedBy' => session('adminID'),
             'remittedDate' => round(microtime(true) * 1000),
             'remittedProof' => FirebaseHelper::uploadFile($request->file('photoProof'), 'Transaction/' . $id)
         ];
         $database->getReference('Transaction/' . $id)->set($transaction);
 
-        foreach($charity as $x)
-        {
-            if($x['id'] == $request->input('charityID')) {
+        foreach ($charity as $x) {
+            if ($x['id'] == $request->input('charityID')) {
 
-                $newAmount = round((double)$x['transactionDetails']['nonRemitted'] - $request->input('remittedAmount'));
-                $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/nonRemitted/')->set(round((double)$newAmount));
+                $newAmount = round((float)$x['transactionDetails']['nonRemitted'] - $request->input('remittedAmount'));
+                $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/nonRemitted/')->set(round((float)$newAmount));
 
-                if($x['transactionDetails']['remitted'] != null) {
-                    $newRemittedAmnt = round((double)$x['transactionDetails']['remitted'] + $request->input('remittedAmount'));
-                    $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/remitted/')->set(round((double)$newRemittedAmnt));
+                $currentRemitted = $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/remitted/')->getValue();
+                if ($currentRemitted != null) {
+                    $newRemittedAmnt = round((float)$x['transactionDetails']['remitted'] + $request->input('remittedAmount'));
+                    $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/remitted/')->set(round((float)$newRemittedAmnt));
+                } else {
+                    $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/remitted/')->set(round((float)$request->input('remittedAmount')));
                 }
-                else{
-                    $database->getReference('Charities/' . $request->input('charityID') . '/transactionDetails/remitted/')->set(round((double)$request->input('remittedAmount')));
-                }
 
+                //Send Notification to Charity
+                FirebaseHelper::sendNotification(
+                    $request->input('charityID'),
+                    FirebaseHelper::buildNotification("Fund Transfer", "An amount of PHP " .$request->input('remittedAmount')." has been transfer to your account.", null),
+                    [],
+                    "ic_baseline_lightbulb_circle_24"
+                );
             }
         }
+
 
         return redirect('transaction')->withSuccess('Successfully Created');
     }
