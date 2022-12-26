@@ -1123,7 +1123,7 @@
                                         <option disabled selected value="">Choose Category</option>
                                         <option value="Jacket and Hoodies">Jacket and Hoodies</option>
                                         <option value="Shirts and Blouses">Shirts and Blouses</option>
-                                        <option value="Pants and Jeans">Pants and Jeans</option>
+                                        <option value="Bottom Apparel">Bottom Apparel</option>
                                     </select>`,
                                     `<select class="form-select form-select" name="color` +
                                     num + `" required>
@@ -1136,6 +1136,7 @@
                                         <option value="Green">Green</option>
                                         <option value="Blue">Blue</option>
                                         <option value="Violet">Violet</option>
+                                        <option value="Others">Others</option>
                                     </select>`,
                                     `<select class="form-select form-select" name="sex` +
                                     num + `" required>

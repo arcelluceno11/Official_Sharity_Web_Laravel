@@ -95,7 +95,7 @@ class CharityController extends Controller
         $auth = app('firebase.auth');
         $database = app('firebase.database');
         $random = sprintf("%08d", rand(1,10000000));
-        $pass = 'secretPassword'.$random;
+        $pass = $random;
         $newpass = $pass;
         //Add Auth
         $charityAuth = [

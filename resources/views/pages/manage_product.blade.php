@@ -258,7 +258,7 @@
                                     <select class="form-select" aria-label="Default select example" name="category" id="pendingCategory" required>
                                         <option value="Jacket and Hoodies">Jacket and Hoodies</option>
                                         <option value="Shirts and Blouses">Shirts and Blouses</option>
-                                        <option value="Pants and Jeans">Pants and Jeans</option>
+                                        <option value="Bottom Apparel">Bottom Apparel</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3">
@@ -272,6 +272,7 @@
                                         <option value="Green">Green</option>
                                         <option value="Blue">Blue</option>
                                         <option value="Violet">Violet</option>
+                                        <option value="Others">Others</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3">

@@ -419,7 +419,7 @@
                     labels: [
                         'Jacket and Hoodies',
                         'Shirts and Blouses',
-                        'Pants and Jeans',
+                        'Bottom Apparel',
                     ],
                     datasets: [{
                         label: 'My First Dataset',
