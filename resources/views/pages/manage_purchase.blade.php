@@ -875,19 +875,13 @@
                             success: function(responseData) {
                                 for (var task in responseData['data']['task_list']) {
                                     if (responseData['data']['task_list'][task]['status'] ==
-                                        'created') {
-                                        for (var key in data) {
-                                            if (data[key]['id'] == responseData['data'][
-                                                    'task_list'
-                                                ][task]['order_id']) {
+                                        'created' && x == responseData['data']['task_list'][task]['order_id']) {
                                                 //Modal Action
                                                 $('#assignedDriver').attr('action',
                                                     'purchase/assignDriver/' + responseData[
                                                         'data'][
                                                         'task_list'
                                                     ][task]['task_id']);
-                                            }
-                                        }
                                     }
                                 }
                             }
