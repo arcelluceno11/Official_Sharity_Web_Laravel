@@ -138,8 +138,6 @@ class CharityController extends Controller
             'password' => $newpass,
         ];
 
-        Mail::to($request->input('accountEmail'))->send(new CharityMail($mailData));
-
         try{
             $auth->createUser($charityAuth);
             $database->getReference('Charities/'.$id)->update($data);
@@ -148,9 +146,7 @@ class CharityController extends Controller
             return back()->withErrors(['emailExist' => 'Email is already taken.']);
         }
 
-
-
-
+        Mail::to($request->input('accountEmail'))->send(new CharityMail($mailData));
 
         return redirect('charity')->withSuccess('Successfully Listed.');
     }
