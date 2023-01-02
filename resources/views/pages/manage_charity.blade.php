@@ -117,6 +117,11 @@
 <!-- Content -->
 @section('content')
 
+    @if ($errors->any())
+        <div class="alert alert-warning" role="alert">
+            Failed: Email already taken.
+        </div>
+    @enderror
     @if (session('success'))
         <div class="alert alert-success" role="alert">
             {{ session()->get('success') }}
