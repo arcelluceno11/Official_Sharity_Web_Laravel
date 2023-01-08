@@ -193,6 +193,7 @@
             var newdateMonth = date.getMonth();
             var newdateYear = date.getFullYear();
 
+
             for(var key in data)
             {
                 if(data[key]['status'] == 'Complete'){

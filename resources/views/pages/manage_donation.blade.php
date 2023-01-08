@@ -1135,8 +1135,8 @@
                                     `<select class="form-select form-select" name="sex` +
                                     num + `" required>
                                         <option disabled selected value="">Choose Sex</option>
-                                        <option value="Men">Men</option>
-                                        <option value="Women">Women</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
                                         <option value="Unisex">Unisex</option>
                                     </select>`,
                                     `<select class="form-select form-select" name="size` +

@@ -123,8 +123,7 @@
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
-                                <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Total Number of
-                                        Active Charities</span></div>
+                                <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Total Donation Received by Charity</span></div>
                                 <div id="totalAllCharity" class="text-dark fw-bold h5 mb-0"></div>
                             </div>
                         </div>
@@ -136,7 +135,7 @@
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
-                                <div class="text-uppercase text-danger fw-bold text-xs mb-1"><span>Most Received Donation</span></div>
+                                <div class="text-uppercase text-danger fw-bold text-xs mb-1"><span>Total Non-Remitted</span></div>
                                 <div>
                                     <span id="mostCharityName" class="text-dark fw-bold h5 mb-0"></span>
                                     <span id="mostCharity" class="text-dark fw-bold h5 mb-0"></span>
@@ -264,8 +263,6 @@
 
         //Read Charities
         const charities = ref(database, 'Charities/');
-
-
         onValue(charities, (snapshot) => {
             //Data
             const data = snapshot.val();
@@ -484,42 +481,55 @@
 
             var totalreceived = 0, temp, tempName;
 
+            //Receive Charity List
             var receiveCharity = $('#receiveCharity').DataTable();
             receiveCharity.clear().draw();
 
             for (var key in data) {
                 //List Table
-                if(data[key]['status'] == 'Listed'){
-                    if(data[key]['transactionDetails']['remitted'] != null){
-                    receiveCharity.row.add([
-                        data[key]['id'],
-                        data[key]['charityDetails']['charityName'],
-                        data[key]['transactionDetails']['remitted'],
-                    ]).node().id = data[key]['id'];
-                    receiveCharity.draw(false);
-                    }
-                }
-                if(data[key]['status'] == 'Listed'){
-                    for(var i=0;i<10;i++)
+                if(data[key]['status'] != 'Pending'){
+                    if(data[key]['transactionDetails'] != null)
                     {
-                        totalreceived = data[key]['transactionDetails']['remitted'];
+                        if(data[key]['transactionDetails']['remitted'] != null)
+                        {
+                        receiveCharity.row.add([
+                            data[key]['id'],
+                            data[key]['charityDetails']['charityName'],
+                            data[key]['transactionDetails']['remitted'],
+                        ]).node().id = data[key]['id'];
+                        receiveCharity.draw(false);
+                        }
                     }
-                    document.getElementById("totalAllCharity").innerHTML = totalreceived;
-
                 }
-                if(data[key]['status'] == 'Listed'){
-
-                    temp = Math.max(data[key]['transactionDetails']['remitted']);
-                    document.getElementById("mostCharity").innerHTML = temp;
-
-                    tempName = data[key]['charityDetails']['charityName'];
-                    document.getElementById("mostCharityName").innerHTML = tempName;
-
-
-                }
-
             }
+            var totalnonremitted = 0;
+            for (var key in data) {
+                //List Table
+                if(data[key]['status'] != 'Pending'){
+                    if(data[key]['transactionDetails'] != null)
+                    {
+                        if(data[key]['transactionDetails']['nonRemitted'] != null)
+                        {
+                            totalnonremitted += data[key]['transactionDetails']['nonRemitted'];
+                        }
+                    }
+                }
+                document.getElementById("mostCharity").innerHTML = totalnonremitted;
+            }
+        });
 
+        //Transaction
+        const transaction = ref(database, 'Transaction/');
+        onValue(transaction, (snapshot) => {
+            const data = snapshot.val();
+
+            var totalreceive = 0;
+            //Total Donations Receive
+            for(var key in data)
+            {
+                totalreceive += data[key]['remittedAmount'];
+            }
+            document.getElementById("totalAllCharity").innerHTML = totalreceive;
         });
     </script>
 @stop
