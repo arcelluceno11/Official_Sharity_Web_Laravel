@@ -59,6 +59,9 @@
                                                 <input class="form-control" type="password" id="password"
                                                     placeholder="Password" name="password"
                                                     value="{{ $admin['password'] }}" required>
+                                                <input type="checkbox" onclick="myFunction()"> <span
+                                                    style="font-size:15px">Show Password</span>
+
                                             </div>
                                         </div>
                                     </div>
@@ -75,8 +78,8 @@
                                             <div class="mb-3"><label class="form-label" for="lastName">
                                                     <strong>Last Name</strong></label>
                                                 <input class="form-control" type="text" id="lastName"
-                                                    placeholder="Last Name" name="lastName"
-                                                    value="{{ $fullName[1] }}" required>
+                                                    placeholder="Last Name" name="lastName" value="{{ $fullName[1] }}"
+                                                    required>
                                             </div>
                                         </div>
                                     </div>
@@ -95,5 +98,14 @@
 
 <!-- Scripts -->
 @section('scripts')
-
+    <script>
+        function myFunction() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
 @stop

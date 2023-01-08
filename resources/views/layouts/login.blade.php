@@ -77,14 +77,14 @@
 </head>
 
 <body class="text-center" style="background-color: #19B57D">
-    <main class="form-signin" >
+    <main class="form-signin">
         <form action="/login/signIn" method="POST">
             @csrf
 
             <img class="mb-4" src="{{ asset('sharity_white.png') }}" alt="" width="75" height="75" />
             <h1 class="h3 mb-3 fw-normal text-light">Sharity Admin</h1>
 
-            @if ( $errors->any() )
+            @if ($errors->any())
                 <div class="alert alert-warning" role="alert">
                     {{ $errors->first() }}
                 </div>
@@ -97,6 +97,10 @@
             <div class="form-floating">
                 <input type="password" class="form-control" id="floatingPassword" name="password" />
                 <label for="floatingPassword">Password</label>
+                <div style="margin: 8px">
+                    <input type="checkbox" onclick="myFunction()"> <span style="font-size:15px; color: #f5f5f5">Show
+                        Password</span>
+                </div>
             </div>
 
             <button class="w-100 btn btn-lg btn-primary" type="submit">Sign In</button>
@@ -104,5 +108,15 @@
         </form>
     </main>
 </body>
+<script>
+    function myFunction() {
+        var x = document.getElementById("floatingPassword");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
 
 </html>
