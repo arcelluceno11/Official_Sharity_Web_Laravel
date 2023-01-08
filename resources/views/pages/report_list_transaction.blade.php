@@ -109,6 +109,14 @@
         //Read Charities
         const transaction = ref(database, 'Transaction/');
 
+        var resultCharities;
+        const charity = ref(database, 'Charities/');
+        onValue(charity, (snapshot) => {
+            const data = snapshot.val();
+
+            resultCharities = data;
+        });
+
 
         onValue(transaction, (snapshot) => {
             //Data
@@ -119,16 +127,22 @@
             listTransaction.clear().draw();
 
             for (var key in data) {
-                //List Table
-                const date = new Date(data[key]['remittedDate']);
-                    listTransaction.row.add([
-                        data[key]['id'],
-                        data[key]['charityID'],
-                        data[key]['remittedAmount'],
-                        date.toLocaleDateString('en-US')
-                    ]).node().id = data[key]['id'];
-                    listTransaction.draw(false);
+                for(var keycharity in resultCharities)
+                {
+                    if(resultCharities[keycharity]['id'] == data[key]['charityID'])
+                    {
+                        //List Table
+                        const date = new Date(data[key]['remittedDate']);
+                        listTransaction.row.add([
+                            data[key]['id'],
+                            resultCharities[keycharity]['charityDetails']['charityName'],
+                            data[key]['remittedAmount'],
+                            date.toLocaleDateString('en-US')
+                        ]).node().id = data[key]['id'];
+                        listTransaction.draw(false);
 
+                    }
+                }
             }
         });
 

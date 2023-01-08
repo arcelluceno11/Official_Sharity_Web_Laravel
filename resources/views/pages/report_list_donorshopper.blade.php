@@ -228,7 +228,10 @@
             {
                 var dateMonth = new Date(data[key]['dor']);
                 var newdateMonth = dateMonth.getMonth()+1;
+                var newYear = dateMonth.getFullYear();
 
+                if(newYear == '2023')
+                {
                     switch(newdateMonth)
                     {
                         case 1:
@@ -268,6 +271,8 @@
                             decMonth++;
                             break
                     }
+
+                }
             }
 
             //Monthly Graph
