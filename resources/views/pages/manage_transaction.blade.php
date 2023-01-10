@@ -129,52 +129,61 @@
         </div>
     @enderror
 
-    <!--Non-Remittable-->
-    <div class="card shadow">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Non-Remittable</h6>
+
+    <div class="row">
+        <div class="col">
+            <!--Non-Remittable-->
+            <div class="card shadow" style="vertical-align: top;">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Non-Remittable</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+                        <table class="table table-hover table-bordered pt-3 display" id="tableNonRemittable" style="">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width:30px;">No.</th>
+                                    <th>Charity Name</th>
+                                    <th style="width:150px;">Current Money</th>
+                                </tr>
+                            <tbody>
+                            </tbody>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-hover table-bordered pt-3 display" id="tableNonRemittable" style="">
-                    <thead class="thead-light">
-                        <tr>
-                            <th style="width:30px;">No.</th>
-                            <th>Charity Name</th>
-                            <th style="width:150px;">Current Money</th>
-                        </tr>
-                    <tbody>
-                    </tbody>
-                    </thead>
-                </table>
+        <div class="col">
+            <!--Remittable-->
+            <div class="card shadow" style="ertical-align: top;">
+                <div class="card-header py-3">
+                    <div class="row">
+                        <h6 class="m-0 font-weight-bold text-primary">Remittable</h6>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+                        <table class="table table-hover table-bordered pt-3 display" id="tableRemittable" style="">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th style="width:30px;">No.</th>
+                                    <th>Charity Name</th>
+                                    <th style="width:150px;">Current Money</th>
+                                    <th style="width:50px;">Action</th>
+                                </tr>
+                            <tbody>
+                            </tbody>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!--Remittable-->
-    <div class="card shadow mt-5">
-        <div class="card-header py-3">
-            <div class="row">
-                <h6 class="m-0 font-weight-bold text-primary">Remittable</h6>
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
-                <table class="table table-hover table-bordered pt-3 display" id="tableRemittable" style="">
-                    <thead class="thead-light">
-                        <tr>
-                            <th style="width:30px;">No.</th>
-                            <th>Charity Name</th>
-                            <th style="width:150px;">Current Money</th>
-                            <th style="width:50px;">Action</th>
-                        </tr>
-                    <tbody>
-                    </tbody>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
+
+
 
     <!--Remitted-->
     <div class="card shadow mt-5">
@@ -240,8 +249,8 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="form-label" for="">Remitted Amount:</label>
-                                    <input type="number" name="remittedAmount"
-                                        class="remittedAmount form-control item" required>
+                                    <input type="number" name="remittedAmount" id="remittedAmount"
+                                        class="remittedAmount form-control item" min="0" oninput="validity.valid||(value='');" required>
                                 </div>
                             </div>
 
@@ -418,6 +427,7 @@
                     //Assign Values
                     $('#charityID').val(data[key]['id']);
                     $('#charityName').val(data[key]['charityDetails']['charityName']);
+                    $('#remittedAmount').val(data[key]['transactionDetails']['nonRemitted']);
 
                     //ModalAction
                     $('createTransaction').attr('action','transaction/' + data[key]['id']);
