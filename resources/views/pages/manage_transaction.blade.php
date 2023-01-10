@@ -217,7 +217,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">View Account</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Create Transaction</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="createTransaction" action="" method="POST" enctype="multipart/form-data">
