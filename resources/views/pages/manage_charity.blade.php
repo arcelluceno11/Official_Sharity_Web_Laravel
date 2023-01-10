@@ -601,9 +601,16 @@
             //Data
             const data = snapshot.val();
 
+            const d = new Date(); //date today
+            d.setYear(d.getFullYear() - 100);
+            const f = new Date(); //date today
+            f.setYear(f.getFullYear() - 2);
 
+            datePickerId.min = d.toISOString().split("T")[0]; //this simply converts it to the correct format
 
-            datePickerId.max = new Date().toISOString().split("T")[0];
+            datePickerId.max = f.toISOString().split("T")[0]; //this simply converts it to the correct format
+
+            datePickerId.value = f.toISOString().split("T")[0]; //Initial Value
 
             //Pending Table
             var tablePending = $('#tablePending').DataTable();

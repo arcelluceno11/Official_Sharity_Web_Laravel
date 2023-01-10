@@ -402,6 +402,7 @@
         });
         //Earning 10% of the Total of products
         //Delivery Fare -50 pesos every transaction
+        //Sale overall, way apil delivery fee
     </script>
 
 
