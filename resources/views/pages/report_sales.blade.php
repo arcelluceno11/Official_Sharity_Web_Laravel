@@ -222,13 +222,13 @@
             var janMonth=0, febMonth=0,marMonth=0,aprMonth=0,mayMonth=0,junMonth=0,julMonth=0,augMonth=0,septMonth=0,octMonth=0,novMonth=0,decMonth=0;
             for(var key in data)
             {
-                var dateMonth = new Date(data[key]['listedAt']);
-                var newdateMonth = dateMonth.getMonth();
+                var dateMonth = new Date(data[key]['purchaseAt']);
+                var newdateMonths = dateMonth.getMonth()+1;
                 var newYear = dateMonth.getFullYear();
 
                 if(data[key]['status'] == 'Complete' && newYear == '2023'){
 
-                    switch(newdateMonth)
+                    switch(newdateMonths)
                     {
                         case 1:
                             janMonth=janMonth+data[key]['total'];
@@ -383,7 +383,8 @@
 
             const data = snapshot.val();
 
-            var totalProducts = 0, totalSoldProducts = 0;
+
+            var totalProducts = 0, totalSoldProducts = 0, totalSoldProductsAmount=0;
 
             for(var key in data)
             {
@@ -393,13 +394,15 @@
                 document.getElementById("totalnumProducts").innerHTML = totalProducts;
 
                 if(data[key]['status'] == 'Sold'){
-                    totalSoldProducts++
+                    totalSoldProducts++;
                 }
                 document.getElementById("totalnumSoldProducts").innerHTML = totalSoldProducts;
-
             }
 
         });
+        //Earning 10% of the Total of products
+        //Delivery Fare -50 pesos every transaction
+        //Sale overall, way apil delivery fee
     </script>
 
 
