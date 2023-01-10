@@ -265,7 +265,7 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label class="form-label" for="">Established Date:</label>
-                                <input type="date" name="charityEst" class="form-control item" required>
+                                <input type="date" name="charityEst" id="datePickerId" class="form-control item" required>
                             </div>
                             <div class="form-group col-md-4">
                                 <div class="form-group">
@@ -600,6 +600,10 @@
         onValue(charities, (snapshot) => {
             //Data
             const data = snapshot.val();
+
+
+
+            datePickerId.max = new Date().toISOString().split("T")[0];
 
             //Pending Table
             var tablePending = $('#tablePending').DataTable();

@@ -64,8 +64,8 @@
                         <h6 class="text-primary fw-bold m-0">Donor/Shopper Sex</h6>
                     </div>
                     <div class="card-body">
-                        <div class="chart-area"><canvas id="usersex" height="320"
-                                style="display: block; width: 572px; height: 320px;" width="572"></canvas></div>
+                        <div class="chart-area"><canvas id="usersex"
+                                style="display: block; width: 700px; height: 700px;"></canvas></div>
                     </div>
                 </div>
             </div>
@@ -75,8 +75,8 @@
                         <h6 class="text-primary fw-bold m-0">Listed Charity Category</h6>
                     </div>
                     <div class="card-body">
-                        <div class="chart-area"><canvas id="charitycategory" height="320"
-                                style="display: block; width: 572px; height: 320px;" width="572"></canvas></div>
+                        <div class="chart-area"><canvas id="charitycategory"
+                                style="display: block; width: 700px; height: 700px;"></canvas></div>
                     </div>
                 </div>
             </div>
@@ -86,8 +86,8 @@
                         <h6 class="text-primary fw-bold m-0">Listed Products Category</h6>
                     </div>
                     <div class="card-body">
-                        <div class="chart-area"><canvas id="productscategory" height="320"
-                                style="display: block; width: 572px; height: 320px;" width="572"></canvas></div>
+                        <div class="chart-area"><canvas id="productscategory"
+                                style="display: block; width: 700px; height: 700px;" ></canvas></div>
                     </div>
                 </div>
             </div>
@@ -151,7 +151,6 @@
     </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js">
@@ -164,6 +163,8 @@
     </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js">
     </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.4.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <script>
         const annuallyGraph = new Chart(
         document.getElementById('annuallyGraph'),
@@ -292,7 +293,6 @@
                         'Female',
                     ],
                     datasets: [{
-                        label: 'My First Dataset',
                         data: [numMale, numFemale],
                         backgroundColor: [
                         'rgb(255, 99, 132)',
@@ -301,7 +301,28 @@
                         ],
                         hoverOffset: 4
                     }]
+                },
+                options:{
+                    tooltips: {
+                    enabled: false
+                },
+                plugins: {
+                    datalabels: {
+                    formatter: (value, ctx) => {
+                        let datasets = ctx.chart.data.datasets;
+                        if (datasets.indexOf(ctx.dataset) === datasets.length - 1) {
+                        let sum = datasets[0].data.reduce((a, b) => a + b, 0);
+                        let percentage = Math.round((value / sum) * 100) + '%';
+                        return percentage;
+                        } else {
+                        return percentage;
+                        }
+                    },
+                    color: '#fff',
+                    }
                 }
+                }
+
             });
         });
 
@@ -345,6 +366,7 @@
                     }
                 }
             }
+
             const piechart = document.getElementById('charitycategory').getContext('2d');
             const charitycategory = new Chart(piechart, {
                 type: 'pie',
@@ -372,7 +394,28 @@
                         ],
                         hoverOffset: 4
                     }]
+                },
+                options:{
+                    tooltips: {
+                    enabled: false
+                },
+                plugins: {
+                    datalabels: {
+                    formatter: (value, ctx) => {
+                        let datasets = ctx.chart.data.datasets;
+                        if (datasets.indexOf(ctx.dataset) === datasets.length - 1) {
+                        let sum = datasets[0].data.reduce((a, b) => a + b, 0);
+                        let percentage = Math.round((value / sum) * 100) + '%';
+                        return percentage;
+                        } else {
+                        return percentage;
+                        }
+                    },
+                    color: '#fff',
+                    }
                 }
+                }
+
             });
         });
 
@@ -431,9 +474,31 @@
                         ],
                         hoverOffset: 4
                     }]
+                },
+                options:{
+                    tooltips: {
+                    enabled: false
+                },
+                plugins: {
+                    datalabels: {
+                    formatter: (value, ctx) => {
+                        let datasets = ctx.chart.data.datasets;
+                        if (datasets.indexOf(ctx.dataset) === datasets.length - 1) {
+                        let sum = datasets[0].data.reduce((a, b) => a + b, 0);
+                        let percentage = Math.round((value / sum) * 100) + '%';
+                        return percentage;
+                        } else {
+                        return percentage;
+                        }
+                    },
+                    color: '#fff',
+                    }
                 }
+                }
+
             });
         });
     </script>
 @stop
+
 
