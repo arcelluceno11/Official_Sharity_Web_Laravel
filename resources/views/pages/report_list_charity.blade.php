@@ -16,9 +16,9 @@
 <!-- Content -->
 @section('content')
     @if (session('success'))
-    <div class="alert alert-success" role="alert">
-        {{ session()->get('success') }}
-    </div>
+        <div class="alert alert-success" role="alert">
+            {{ session()->get('success') }}
+        </div>
     @enderror
     <!--Total Numbers-->
     <div class="numberCharity">
@@ -70,11 +70,13 @@
                     <div class="card-body">
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
-                                <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>Total Number of Charities
+                                <div class="text-uppercase text-info fw-bold text-xs mb-1"><span>Total Number of
+                                        Charities
                                         Registered (This Year)</span></div>
                                 <div class="row g-0 align-items-center">
                                     <div class="col-auto">
-                                        <div id="totalCharityYear" class="totalCharityYear text-dark fw-bold h5 mb-0 me-3"></div>
+                                        <div id="totalCharityYear"
+                                            class="totalCharityYear text-dark fw-bold h5 mb-0 me-3"></div>
                                     </div>
                                 </div>
                             </div>
@@ -107,6 +109,69 @@
                     <div class="chart-area"><canvas id="annuallyGraph" height="320"
                             style="display: block; width: 572px; height: 320px;" width="572"></canvas></div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="numberCharity">
+        <div class="d-sm-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-dark mb-0">Charities</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-xl-6 mb-6">
+                <div class="card shadow border-start-primary py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col me-2">
+                                <div class="text-uppercase text-primary fw-bold text-xs mb-1"><span>Total Donation Received by Charity</span></div>
+                                <div id="totalAllCharity" class="text-dark fw-bold h5 mb-0"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-6 mb-6">
+                <div class="card shadow border-start-primary py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col me-2">
+                                <div class="text-uppercase text-danger fw-bold text-xs mb-1"><span>Total Non-Remitted</span></div>
+                                <div>
+                                    <span id="mostCharityName" class="text-dark fw-bold h5 mb-0"></span>
+                                    <span id="mostCharity" class="text-dark fw-bold h5 mb-0"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--DataList of Top Charity Who Received Most Donations-->
+    <div class="card shadow mb-5 mt-5">
+        <div class="card-header py-3">
+            <div class="row">
+                <div class="col align-self-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Charity Donation Received</h6>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive " id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table table-hover table-bordered pt-3 display" id="receiveCharity" style="">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>ID.</th>
+                            <th>Charity Name</th>
+                            <th>Donation Received</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -198,8 +263,6 @@
 
         //Read Charities
         const charities = ref(database, 'Charities/');
-
-
         onValue(charities, (snapshot) => {
             //Data
             const data = snapshot.val();
@@ -209,6 +272,7 @@
             var charityMonth = new Date();
             var newcharityMonth = charityMonth.getMonth();
             var newcharityYear = charityMonth.getFullYear();
+
 
             for(var key in data)
             {
@@ -240,14 +304,17 @@
 
             }
 
+
+
             //Monthly Graph Condition
             var janMonth=0, febMonth=0,marMonth=0,aprMonth=0,mayMonth=0,junMonth=0,julMonth=0,augMonth=0,septMonth=0,octMonth=0,novMonth=0,decMonth=0;
             for(var key in data)
             {
                 var dateMonth = new Date(data[key]['listedAt']);
                 var newdateMonth = dateMonth.getMonth()+1;
+                var newYear = dateMonth.getFullYear();
 
-                if(data[key]['status'] != 'Pending'){
+                if(data[key]['status'] != 'Pending' && newYear == '2023'){
 
                     switch(newdateMonth)
                     {
@@ -327,7 +394,6 @@
                     }
                 }
             });
-
 
             //Annually
             var year2022=0, year2023=0,year2024=0,year2025=0,year2026=0;
@@ -412,7 +478,58 @@
                     listCharity.draw(false);
                 }
             }
+
+            var totalreceived = 0, temp, tempName;
+
+            //Receive Charity List
+            var receiveCharity = $('#receiveCharity').DataTable();
+            receiveCharity.clear().draw();
+
+            for (var key in data) {
+                //List Table
+                if(data[key]['status'] != 'Pending'){
+                    if(data[key]['transactionDetails'] != null)
+                    {
+                        if(data[key]['transactionDetails']['remitted'] != null)
+                        {
+                        receiveCharity.row.add([
+                            data[key]['id'],
+                            data[key]['charityDetails']['charityName'],
+                            data[key]['transactionDetails']['remitted'],
+                        ]).node().id = data[key]['id'];
+                        receiveCharity.draw(false);
+                        }
+                    }
+                }
+            }
+            var totalnonremitted = 0;
+            for (var key in data) {
+                //List Table
+                if(data[key]['status'] != 'Pending'){
+                    if(data[key]['transactionDetails'] != null)
+                    {
+                        if(data[key]['transactionDetails']['nonRemitted'] != null)
+                        {
+                            totalnonremitted += data[key]['transactionDetails']['nonRemitted'];
+                        }
+                    }
+                }
+                document.getElementById("mostCharity").innerHTML = totalnonremitted;
+            }
         });
 
+        //Transaction
+        const transaction = ref(database, 'Transaction/');
+        onValue(transaction, (snapshot) => {
+            const data = snapshot.val();
+
+            var totalreceive = 0;
+            //Total Donations Receive
+            for(var key in data)
+            {
+                totalreceive += data[key]['remittedAmount'];
+            }
+            document.getElementById("totalAllCharity").innerHTML = totalreceive;
+        });
     </script>
 @stop

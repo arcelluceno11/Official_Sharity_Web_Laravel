@@ -193,6 +193,7 @@
             var newdateMonth = date.getMonth();
             var newdateYear = date.getFullYear();
 
+
             for(var key in data)
             {
                 if(data[key]['status'] == 'Complete'){
@@ -223,8 +224,9 @@
             {
                 var dateMonth = new Date(data[key]['listedAt']);
                 var newdateMonth = dateMonth.getMonth();
+                var newYear = dateMonth.getFullYear();
 
-                if(data[key]['status'] == 'Complete'){
+                if(data[key]['status'] == 'Complete' && newYear == '2023'){
 
                     switch(newdateMonth)
                     {

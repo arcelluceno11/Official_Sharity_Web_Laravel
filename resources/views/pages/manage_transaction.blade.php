@@ -377,9 +377,8 @@
         tableRemittable.clear().draw();
 
         //Tables
+        var i=1, j=1;
         for (var key in data) {
-
-            var i=1, j=1;
 
             if(data[key]['charityDetails'] != null && data[key]['transactionDetails'] != null)
             {
@@ -439,11 +438,12 @@
         tableRemitted.clear().draw();
 
         //Tables
+        var k = 1;
+
         for (var key in data) {
 
             for (var keyCharities in resultCharities)
             {
-                var k = 1;
                 if(resultCharities[keyCharities]['id'] == data[key]['charityID'])
                 {
                     const remitted = new Date(data[key]['remittedDate']);

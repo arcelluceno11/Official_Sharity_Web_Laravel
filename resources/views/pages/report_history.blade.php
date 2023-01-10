@@ -306,19 +306,19 @@
         });
 
         //Charity
-        const charity = ref(database, 'Charities/');
-        onValue(charity, (snapshot) => {
-
+        const charities = ref(database, 'Charities/');
+        onValue(charities, (snapshot) => {
+            //Data
             const data = snapshot.val();
-
             //Charity Category Pie
             var animals=0, arts=0, comDev=0, education=0, environmental=0, health=0, human=0;
+
             for(var key in data)
             {
-                var category = data[key]['charityDetails']['charityCategory'];
+
 
                 if(data[key]['status'] == 'Listed'){
-                    switch(category)
+                    switch(data[key]['charityDetails']['charityCategory'])
                     {
                         case 'Animals':
                             animals++;
@@ -391,7 +391,7 @@
                 document.getElementById("totalitems").innerHTML = totalProducts;
 
             }
-            //Charity Category Pie
+
             var jackets=0, shirts=0, pants=0;
             for(var key in data)
             {
@@ -413,7 +413,7 @@
                 }
             }
             const piechart = document.getElementById('productscategory').getContext('2d');
-            const charitycategory = new Chart(piechart, {
+            const productcategory = new Chart(piechart, {
                 type: 'pie',
                 data: {
                     labels: [
